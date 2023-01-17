@@ -15,7 +15,7 @@
             <div class="flex justify-between items-center px-8 py-4">
                 <figure>
                     {{-- temporary logo might change later --}}
-                    <a href="/"><img src="/images/logos/main_logo.svg" alt="" width="100" height=""></a>
+                    <a href="/"><img src="/images/logo/main_logo.svg" alt="" width="100" height=""></a>
                 </figure>
                 {{-- search --}}
                 <div class="flex-grow px-36 3xl:px-96">
@@ -66,18 +66,162 @@
                 </div>
             </nav>
         </header>
-        
+
         {{-- TODO: set timer with js --}}
         {{-- hero / carousel --}}
         <section>
-            <figure class="h-96 bg-slate-100 flex items-center justify-center mb-20">
-                <img src="/images/logos/main_logo.svg" alt="" width="500">
+            <figure class="h-96 bg-slate-100 flex items-center justify-center">
+                <img src="/images/logo/main_logo.svg" alt="" width="500">
             </figure>
         </section>
         
         <main>
-            <div>
+            <div class="container mx-auto p-10">
 
+
+                <div class="grid grid-cols-3 gap-x-5">
+                    {{-- card --}}
+                    <div class="flex flex-col justify-between transition-color duration-200 p-6 shadow-md space-y-3 hover:shadow-2xl">
+                        <figure class="self-center h-52">
+                            <img src="/images/grocery/watermelon_grocery.jpeg" alt="" width="" style="max-width: 100%; max-height:100%">
+                        </figure>
+
+                        {{-- card body --}}
+                        <div class="space-y-3 mt-2">
+                            {{-- name --}}
+                            <h3 class="text-center font-semibold"><a href="">Watermelon</a></h3>
+                            <div class="flex flex-col items-center space-y-3">
+                                {{-- categories --}}
+                                <ul class="flex flex-wrap space-x-2">
+                                    <li class="px-2 py-1 bg-sky-100 rounded-xl text-black text-sm"><a href="">fruit</a></li>
+                                    <li class="px-2 py-1 bg-sky-100 rounded-xl text-black text-sm"><a href="">organic</a></li>
+                                    <li class="px-2 py-1 bg-sky-100 rounded-xl text-black text-sm"><a href="">local</a></li>
+                                </ul>
+                                {{-- ratings --}}
+                                <div>
+                                    <i class="fa-solid fa-star text-yellow-400"></i>
+                                    <i class="fa-solid fa-star text-yellow-400"></i>
+                                    <i class="fa-solid fa-star text-yellow-400"></i>
+                                    <i class="fa-solid fa-star text-slate-200"></i>
+                                    <i class="fa-solid fa-star text-slate-200"></i>
+                                </div>
+                            </div>
+                            {{-- price and vendor --}}
+                            <div class="flex items-center justify-between border-t py-2">
+                                <div>
+                                    <h5 class="px-2 py-px my-2 w-24 bg-yellow-300 text-black font-semibold rounded-xl text-center">1.99$</h5>
+                                    <span class="text-sm text-slate-700">By Organic Myanmar</span>
+                                </div>
+                                {{-- purchase quantity --}}
+                                <div class="flex items-center text-center border border-slate-400 divide-x divide-slate-400">
+                                    <div class="text-2xl w-10">-</div>
+                                    <div class="w-10">1</div>
+                                    <div class="w-10 text-xl">+</div>
+                                </div>
+                            </div>
+                            <div>
+                                <form action="" method="POST">
+                                    {{-- bg-blue-600 hover:bg-blue-700 --}}
+                                    <button class="w-full text-center bg-lime-500 py-1.5 rounded-lg text-white shadow-md hover:bg-lime-600">Add to Cart</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col justify-between transition-color duration-200 p-6 shadow-md space-y-3 hover:shadow-2xl">
+                        <figure class="self-center h-52">
+                            <img src="/images/grocery/tangerine_grocery.jpeg" alt="" width="" style="max-width: 100%; max-height:100%">
+                        </figure>
+
+                        {{-- card body --}}
+                        <div class="space-y-3 mt-2">
+                            {{-- name --}}
+                            <h3 class="text-center font-semibold"><a href="">Tangerine</a></h3>
+                            <div class="flex flex-col items-center space-y-3">
+                                {{-- categories --}}
+                                <ul class="flex flex-wrap space-x-2">
+                                    <li class="px-2 py-1 bg-sky-100 rounded-xl text-black text-sm"><a href="">fruit</a></li>
+                                    <li class="px-2 py-1 bg-sky-100 rounded-xl text-black text-sm"><a href="">organic</a></li>
+                                    <li class="px-2 py-1 bg-sky-100 rounded-xl text-black text-sm"><a href="">local</a></li>
+                                </ul>
+                                {{-- ratings --}}
+                                <div>
+                                    <i class="fa-solid fa-star text-yellow-400"></i>
+                                    <i class="fa-solid fa-star text-yellow-400"></i>
+                                    <i class="fa-solid fa-star text-yellow-400"></i>
+                                    <i class="fa-solid fa-star text-slate-200"></i>
+                                    <i class="fa-solid fa-star text-slate-200"></i>
+                                </div>
+                            </div>
+                            {{-- price and vendor --}}
+                            <div class="flex items-center justify-between border-t py-2">
+                                <div>
+                                    <h5 class="px-2 py-px my-2 w-24 bg-yellow-300 text-black font-semibold rounded-xl text-center">1.99$</h5>
+                                    <span class="text-sm text-slate-700">By Organic Myanmar</span>
+                                </div>
+                                {{-- purchase quantity --}}
+                                <div class="flex items-center text-center border border-slate-400 divide-x divide-slate-400">
+                                    <div class="text-2xl w-10">-</div>
+                                    <div class="w-10">1</div>
+                                    <div class="w-10 text-xl">+</div>
+                                </div>
+                            </div>
+                            <div>
+                                <form action="" method="POST">
+                                    {{-- bg-blue-600 hover:bg-blue-700 --}}
+                                    <button class="w-full text-center bg-lime-500 py-1.5 rounded-lg text-white shadow-md hover:bg-lime-600">Add to Cart</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col justify-between transition-color duration-200 p-6 shadow-md space-y-3 hover:shadow-2xl">
+                        <figure class="self-center h-52">
+                            <img src="/images/grocery/chicken_eggs_grocery.jpeg" alt="" width="" class="" style="max-width:100%;
+                            max-height:100%;">
+                        </figure>
+
+                        {{-- card body --}}
+                        <div class="space-y-3 mt-2">
+                            {{-- name --}}
+                            <h3 class="text-center font-semibold"><a href="">Chicken Eggs</a></h3>
+                            <div class="flex flex-col items-center space-y-3">
+                                {{-- categories --}}
+                                <ul class="flex flex-wrap space-x-2">
+                                    <li class="px-2 py-1 bg-sky-100 rounded-xl text-black text-sm"><a href="">meat</a></li>
+                                    <li class="px-2 py-1 bg-sky-100 rounded-xl text-black text-sm"><a href="">egg</a></li>
+                                </ul>
+                                {{-- ratings --}}
+                                <div>
+                                    <i class="fa-solid fa-star text-yellow-400"></i>
+                                    <i class="fa-solid fa-star text-yellow-400"></i>
+                                    <i class="fa-solid fa-star text-yellow-400"></i>
+                                    <i class="fa-solid fa-star text-yellow-400"></i>
+                                    <i class="fa-solid fa-star text-slate-200"></i>
+                                </div>
+                            </div>
+                            {{-- price and vendor --}}
+                            <div class="flex items-center justify-between border-t py-2">
+                                <div>
+                                    <h5 class="px-2 py-px my-2 w-24 bg-yellow-300 text-black font-semibold rounded-xl text-center">1.99$</h5>
+                                    <span class="text-sm text-slate-700">By Organic Myanmar</span>
+                                </div>
+                                {{-- purchase quantity --}}
+                                <div class="flex items-center text-center border border-slate-400 divide-x divide-slate-400">
+                                    <div class="text-2xl w-10">-</div>
+                                    <div class="w-10">1</div>
+                                    <div class="w-10 text-xl">+</div>
+                                </div>
+                            </div>
+                            <div>
+                                <form action="" method="POST">
+                                    {{-- bg-blue-600 hover:bg-blue-700 --}}
+                                    <button class="w-full text-center bg-lime-500 py-1.5 rounded-lg text-white shadow-md hover:bg-lime-600">Add to Cart</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>  
             </div>
         </main>
 
@@ -100,7 +244,7 @@
                 <section class="flex justify-between items-end">
                     <div class="space-y-3">
                         <figure>
-                            <a href="/"><img src="/images/logos/main_logo.svg" alt="" width="100"></a>
+                            <a href="/"><img src="/images/logo/main_logo.svg" alt="" width="100"></a>
                         </figure>
                         <p class="italic tracking-wider font-semibold">Shop anytime, anywhere with us</p>
                         <div>
@@ -113,7 +257,7 @@
                                 <a href="mailto:enquiry@ygnmart.com" class="hover:text-black">enquiry@ygnmart.com</a>
                             </div>
                         </div>
-                        <p class="text-sm">Copyright &copy; 2023 Yangon Mart</p>
+                        <p class="text-sm">Copyright &copy; <time>2023</time> Yangon Mart</p>
                     </div>
                     <div class="flex flex-col">
                         <h3 class="font-semibold mb-2">About</h3>
