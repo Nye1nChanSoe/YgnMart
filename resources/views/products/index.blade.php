@@ -7,6 +7,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <title>Home Page</title>
+
+    {{-- TODO: add this to the compiled css file in public dir --}}
+    <style>
+        [x-cloak] {
+            display: none;
+        }
+    </style>
+
 </head>
 <body>
     <section>
@@ -32,11 +40,17 @@
                     </div>
                 </div>
                 <div class="flex items-center space-x-8">
-                    <div>
-                        <select name="lang_preference" id="">
-                            <option value="en">EN</option>
-                            <option value="mm">MM</option>
-                        </select>
+                    <div x-data="{ open: false }" class="relative">
+                        <button @@click="open = !open" class="flex items-center">
+                            EN
+                            <svg class="pl-1 w-5 h-5 inline pointer-events-none right-2" x-bind:class="{ 'rotate-90 transition-all duration-400':open }" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                            </svg>
+                        </button>
+                        <div x-show="open" class="absolute py-2 bg-white shadow-lg w-16 mt-1 max-h-56 overflow-auto border z-50" x-cloak x-transition>
+                            <a href="" class="block w-full text-sm leading-6 hover:bg-blue-500 hover:text-white pl-1">EN</a>
+                            <a href="" class="block w-full text-sm leading-6 hover:bg-blue-500 hover:text-white pl-1">MM</a>
+                        </div>
                     </div>
                     <a href="" class="hover:text-blue-600" id="cart">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -48,21 +62,19 @@
             </div>
 
             <nav class="container mx-auto flex items-center justify-between mb-10 px-4">
-                <div class="relative bg-slate-100 rounded-xl">
+                <div x-data="{ open:false }" class="relative bg-slate-100 hover:bg-slate-200 rounded-xl">
                     {{-- hard coded width w-32 --}}
-                    <button class="bg-transparent py-2 px-3 text-left text-sm font-semibold w-full lg:w-32">
-                        Category
+                    <button @@click="open=!open" class="bg-transparent py-2 px-3 text-left text-sm font-semibold w-full lg:w-28">
+                        Foods
                         {{-- svgs are block by default in tailwind --}}
-                        <svg class="inline transform -rotate-90 absolute pointer-events-none right-2" width="22" height="22" viewBox="0 0 22 22">
-                            <g fill="none" fill-rule="evenodd">
-                                <path stroke="#000" stroke-opacity=".012" stroke-width=".5" d="M21 1v20.16H.84V1z"></path>
-                                <path fill="#222" d="M13.854 7.224l-3.847 3.856 3.847 3.856-1.184 1.184-5.04-5.04 5.04-5.04z"></path>
-                            </g>
+                        <svg class="w-4 h-5 inline absolute pointer-events-none right-2" x-bind:class="{ 'rotate-90 transition-all duration-400':open }" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
                         </svg>
                     </button> 
-                    {{--TODO: toggle visibility with js --}}
                     {{-- position absolute so it won't distrub the page flow --}}
-                    <div class="hidden absolute py-2 bg-gray-50 w-full mt-1 max-h-52 overflow-auto rounded-xl z-50">
+                    <div x-show="open" class="absolute py-2 bg-white shadow-lg w-full mt-1 max-h-56 overflow-auto rounded-xl z-50" x-cloak x-transition>
+                        <a href="" class="block text-left px-3 text-sm leading-8 hover:bg-blue-500 hover:text-white focus:bg-blue-500 focuse:text-white">Foods</a>
+                        <a href="" class="block text-left px-3 text-sm leading-8 hover:bg-blue-500 hover:text-white focus:bg-blue-500 focuse:text-white">Foods</a>
                         <a href="" class="block text-left px-3 text-sm leading-8 hover:bg-blue-500 hover:text-white focus:bg-blue-500 focuse:text-white">Foods</a>
                         <a href="" class="block text-left px-3 text-sm leading-8 hover:bg-blue-500 hover:text-white focus:bg-blue-500 focuse:text-white">Foods</a>
                         <a href="" class="block text-left px-3 text-sm leading-8 hover:bg-blue-500 hover:text-white focus:bg-blue-500 focuse:text-white">Foods</a>
@@ -74,7 +86,6 @@
             </nav>
         </header>
 
-        {{-- TODO: set timer with js --}}
         {{-- hero / carousel --}}
         <section>
             <figure class="h-96 bg-slate-100 flex items-center justify-center">
@@ -89,7 +100,7 @@
                 <div class="grid grid-cols-3 gap-x-5">
                     {{-- card --}}
                     <div class="flex flex-col justify-between transition-color duration-200 p-6 shadow-md space-y-3 hover:shadow-2xl">
-                        <figure class="self-center h-52">
+                        <figure class="self-center h-40">
                             <img src="/images/grocery/watermelon_grocery.jpeg" alt="" width="" style="max-width: 100%; max-height:100%">
                         </figure>
 
@@ -120,23 +131,30 @@
                                     <span class="text-sm text-slate-700">By Organic Myanmar</span>
                                 </div>
                                 {{-- purchase quantity --}}
-                                <div class="flex items-center text-center border border-slate-400 divide-x divide-slate-400">
-                                    <div class="text-2xl w-10">-</div>
-                                    <div class="w-10">1</div>
-                                    <div class="w-10 text-xl">+</div>
+                                <div x-data="{counter:1}" class="flex items-center text-center border border-slate-400 divide-x divide-slate-400">
+                                    <div>
+                                        <template x-if="counter >= 2">
+                                            <button @@click="counter--" class="text-2xl w-10 hover:text-red-500">-</button>
+                                        </template>
+                                        <template x-if="counter === 1">
+                                            <button @@click="counter" class="text-2xl w-10">-</button>
+                                        </template>
+                                    </div>
+                                    <div x-text="counter" class="w-10"></div>
+                                    <button @@click="counter++" class="w-10 text-xl hover:text-blue-500">+</button>
                                 </div>
                             </div>
                             <div>
                                 <form action="" method="POST">
                                     {{-- bg-blue-600 hover:bg-blue-700 --}}
-                                    <button class="w-full text-center bg-lime-500 py-1.5 rounded-lg text-white shadow-md hover:bg-lime-600">Add to Cart</button>
+                                    <button class="w-full text-center bg-blue-600 py-1.5 rounded-lg text-white shadow-md hover:bg-blue-700">Add to Cart</button>
                                 </form>
                             </div>
                         </div>
                     </div>
 
                     <div class="flex flex-col justify-between transition-color duration-200 p-6 shadow-md space-y-3 hover:shadow-2xl">
-                        <figure class="self-center h-52">
+                        <figure class="self-center h-40">
                             <img src="/images/grocery/tangerine_grocery.jpeg" alt="" width="" style="max-width: 100%; max-height:100%">
                         </figure>
 
@@ -167,23 +185,30 @@
                                     <span class="text-sm text-slate-700">By Organic Myanmar</span>
                                 </div>
                                 {{-- purchase quantity --}}
-                                <div class="flex items-center text-center border border-slate-400 divide-x divide-slate-400">
-                                    <div class="text-2xl w-10">-</div>
-                                    <div class="w-10">1</div>
-                                    <div class="w-10 text-xl">+</div>
+                                <div x-data="{counter:1}" class="flex items-center text-center border border-slate-400 divide-x divide-slate-400">
+                                    <div>
+                                        <template x-if="counter >= 2">
+                                            <button @@click="counter--" class="text-2xl w-10 hover:text-red-500">-</button>
+                                        </template>
+                                        <template x-if="counter === 1">
+                                            <button @@click="counter" class="text-2xl w-10">-</button>
+                                        </template>
+                                    </div>
+                                    <div x-text="counter" class="w-10"></div>
+                                    <button @@click="counter++" class="w-10 text-xl hover:text-blue-500">+</button>
                                 </div>
                             </div>
                             <div>
                                 <form action="" method="POST">
                                     {{-- bg-blue-600 hover:bg-blue-700 --}}
-                                    <button class="w-full text-center bg-lime-500 py-1.5 rounded-lg text-white shadow-md hover:bg-lime-600">Add to Cart</button>
+                                    <button class="w-full text-center bg-blue-600 py-1.5 rounded-lg text-white shadow-md hover:bg-blue-700">Add to Cart</button>
                                 </form>
                             </div>
                         </div>
                     </div>
 
                     <div class="flex flex-col justify-between transition-color duration-200 p-6 shadow-md space-y-3 hover:shadow-2xl">
-                        <figure class="self-center h-52">
+                        <figure class="self-center h-40">
                             <img src="/images/grocery/chicken_eggs_grocery.jpeg" alt="" width="" class="" style="max-width:100%;
                             max-height:100%;">
                         </figure>
@@ -214,16 +239,23 @@
                                     <span class="text-sm text-slate-700">By Organic Myanmar</span>
                                 </div>
                                 {{-- purchase quantity --}}
-                                <div class="flex items-center text-center border border-slate-400 divide-x divide-slate-400">
-                                    <div class="text-2xl w-10">-</div>
-                                    <div class="w-10">1</div>
-                                    <div class="w-10 text-xl">+</div>
+                                <div x-data="{counter:1}" class="flex items-center text-center border border-slate-400 divide-x divide-slate-400">
+                                    <div>
+                                        <template x-if="counter >= 2">
+                                            <button @@click="counter--" class="text-2xl w-10 hover:text-red-500">-</button>
+                                        </template>
+                                        <template x-if="counter === 1">
+                                            <button @@click="counter" class="text-2xl w-10">-</button>
+                                        </template>
+                                    </div>
+                                    <div x-text="counter" class="w-10"></div>
+                                    <button @@click="counter++" class="w-10 text-xl hover:text-blue-500">+</button>
                                 </div>
                             </div>
                             <div>
                                 <form action="" method="POST">
                                     {{-- bg-blue-600 hover:bg-blue-700 --}}
-                                    <button class="w-full text-center bg-lime-500 py-1.5 rounded-lg text-white shadow-md hover:bg-lime-600">Add to Cart</button>
+                                    <button class="w-full text-center bg-blue-600 py-1.5 rounded-lg text-white shadow-md hover:bg-blue-700">Add to Cart</button>
                                 </form>
                             </div>
                         </div>
@@ -251,7 +283,7 @@
                 <section class="flex justify-between items-end">
                     <div class="space-y-3">
                         <figure>
-                            <a href="/"><img src="/images/logo/main_logo.svg" alt="" width="100"></a>
+                            <img src="/images/logo/main_logo.svg" alt="" width="100">
                         </figure>
                         <p class="italic tracking-wider font-semibold">Shop anytime, anywhere with us</p>
                         <div>
