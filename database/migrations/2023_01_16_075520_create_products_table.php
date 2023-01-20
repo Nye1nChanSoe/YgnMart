@@ -15,8 +15,9 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->notNullable();
-            $table->string('slug')->unique();
+            $table->text('name')->notNullable();            // fresh organic watermelon
+            $table->text('slug')->unique();
+            $table->string('meta_type')->notNullable();     // watermelon
             $table->integer('price')->notNullable();
             $table->foreignId('measurement_id');
             $table->text('description');
