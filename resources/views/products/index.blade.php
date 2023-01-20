@@ -13,6 +13,21 @@
         [x-cloak] {
             display: none;
         }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(90%);
+            }
+            to {
+                transform: translateX(0);
+            }
+        }
+
+        /* Ease-in" means that the animation starts slowly and gradually speeds up over time */
+        /* Ease-out" means that the animation starts quickly and gradually slows down over time. */
+        .slide {
+            animation: slideIn 0.4s ease-out;
+        }
     </style>
 
 </head>
@@ -212,6 +227,7 @@
         <section>
             <div x-data="{
                     images: ['Promo 1', 'Promo 2', 'Event 1', 'Event 2'],
+                    imagesSplide: ['images/grocery/apple.jpeg', 'images/grocery/banana.jpeg', 'images/grocery/orange.jpeg', 'images/grocery/watermelon.jpeg'],
                     activeImage: null,
         
                     prev() 
@@ -249,7 +265,7 @@
             >
                 <template x-for="image in images">
                     {{-- TODO: add carousel images that are wide enough --}}
-                    <div x-show="activeImage === image" class="flex h-full items-center justify-center">
+                    <div x-show="activeImage === image" class="flex h-full splide items-center justify-center slide">
                         {{-- <img x-bind:src="image" alt="" style="width: 100%; height:100%; object-fit:fit"> --}}
                         <p x-text=image class="text-6xl font-bold tracking-widest"></p>
                     </div>
@@ -285,7 +301,7 @@
 
         {{-- TODO: divide sections and display related products for each section --}}
         <main>
-            <div class="container mx-auto grid grid-cols-2 gap-x-1 gap-y-2 px-2 md:grid-cols-3 lg:grid-cols-4 xl:gird-cols-6 mb-10">
+            <div class="container mx-auto grid grid-cols-2 gap-x-1 gap-y-2 px-2 mb-10 md:grid-cols-3 lg:grid-cols-4 3xl:grid-cols-6">
 
                 {{-- card --}}
                 <div class="flex flex-col px-3 py-1 border border-gray-300 space-y-3 hover:shadow">
