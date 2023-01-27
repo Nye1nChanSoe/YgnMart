@@ -20,3 +20,36 @@
 .scrollbar::-webkit-scrollbar-thumb:hover {
     background: rgb(56 189 248);
 }
+
+[x-cloak] {
+    display: none;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(90%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+/* Ease-in" means that the animation starts slowly and gradually speeds up over time */
+/* Ease-out" means that the animation starts quickly and gradually slows down over time. */
+.slide {
+    animation: slideIn 0.4s ease-out;
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(120%);
+    }
+}
+
+.slide-out {
+    animation: slideOut 0.7s ease-out;
+}

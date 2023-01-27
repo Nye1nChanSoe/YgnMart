@@ -23,7 +23,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('phone_number')->unique();
             $table->timestamp('phone_verified_at')->nullable();
-            $table->boolean('is_active');
+            // $table->boolean('is_active');
             $table->string('image')->nullable();
             $table->rememberToken();
             $table->timestamps();
