@@ -15,11 +15,11 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->text('name')->notNullable();            // fresh organic watermelon
+            $table->text('name');                   // fresh organic watermelon
             $table->string('slug')->unique();
-            $table->string('meta_type')->notNullable();     // watermelon
-            $table->integer('price')->notNullable();
-            $table->foreignId('measurement_id');
+            $table->string('meta_type');            // watermelon
+            $table->integer('price');
+            $table->foreignId('measurement_id')->nullable();
             $table->text('description');
             $table->string('image')->nullable();   // will provide the default image at first 
             $table->timestamps();

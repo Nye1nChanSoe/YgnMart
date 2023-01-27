@@ -69,43 +69,9 @@
 
             {{-- TODO: sidebar accordion or hamburger menu in small screens --}}
             <nav class="container mx-auto flex items-start flex-col justify-between md:flex-row md:items-center">
-                <x-dropdown>
-                    <x-slot name="trigger">
-                        <button @@click="open=!open" class="inline-flex items-center hover:bg-slate-200 py-2 px-3 text-left text-sm font-semibold w-24 rounded-xl lg:bg-slate-50 lg:w-32" x-bind:class="{ 'bg-slate-200': open }">
-                            Foods
-                            <x-icon name="chevron-right" class="absolute pointer-events-none right-6 lg:right-12" x-bind:class="{ 'rotate-90 transition-all duration-400':open }" />
-                        </button>
-                    </x-slot>
-
-                    {{-- TODO: populate drop down items with category records from database --}}
-                    <x-dropdown-item href="/" :active="true">
-                        All
-                    </x-dropdown-item>
-                    <x-dropdown-item href="/">
-                        Fish
-                    </x-dropdown-item>
-                    <x-dropdown-item href="/">
-                        Vegetables
-                    </x-dropdown-item>
-                    <x-dropdown-item href="/">
-                        Meta
-                    </x-dropdown-item>
-                    <x-dropdown-item href="/">
-                        Snack
-                    </x-dropdown-item>
-                    <x-dropdown-item href="/">
-                        Seafood
-                    </x-dropdown-item>
-                    <x-dropdown-item href="/">
-                        Pantry Staples
-                    </x-dropdown-item>
-                    <x-dropdown-item href="/">
-                        Bakery
-                    </x-dropdown-item>
-                    <x-dropdown-item href="/">
-                        Fruits
-                    </x-dropdown-item>
-                </x-dropdown>
+                <x-category-dropdown type="food" />
+                <x-category-dropdown type="beverages" />
+                <x-category-dropdown type="households" />
             </nav>
         </header>
 
