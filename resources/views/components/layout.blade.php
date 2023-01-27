@@ -50,8 +50,8 @@
                             <x-icon name="cart" />
 
                             {{-- notification --}}
-                            <span class="absolute -bottom-1 -right-2 flex h-3 w-3">
-                            <span class="absolute -bottom-1 -right-2 flex h-3 w-3">
+                            <span class="absolute -bottom-1 -right-1 flex h-3 w-3">
+                            <span class="absolute -bottom-1 -right-1 flex h-3 w-3">
                                 <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-300 opacity-75"></span>
                                 <span class="relative inline-flex rounded-full h-3 w-3 bg-sky-300 text-xs"></span>
                             </span>
@@ -61,7 +61,7 @@
                     {{-- profile --}}
                     <x-profile-dropdown />
                     @else
-                    <a href="/login" class="text-sm font-semibold hover:text-blue-600 lg:text-base">Login</a>
+                    <a href="/login" class="text-sm font-semibold hover:text-blue-600 lg:text-base">Register</a>
                     <a href="/register" class="text-sm font-semibold hover:text-blue-600 lg:text-base">Sign up</a>
                     @endauth
                 </div>
