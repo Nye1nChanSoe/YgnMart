@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', [ProductController::class, 'index'])->name('home');
+Route::get('/products/{product:slug}', [ProductController::class, 'show']);
 
 /** guest middleware will redirect the users if the authenticated user try to manually search for these routes */
 Route::get('/register', [RegisterController::class, 'create'])->middleware('guest')->name('register');

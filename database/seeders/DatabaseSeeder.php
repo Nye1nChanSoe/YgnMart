@@ -81,7 +81,7 @@ class DatabaseSeeder extends Seeder
         /** seeding products */
         foreach($this->fruits as $fruit)
         {
-            $name = ucfirst('fresh '.$fruit.' '.fake()->sentence(rand(6, 10)));
+            $name = ucfirst('fresh '.$fruit.' '.rtrim(fake()->sentence(rand(6, 10)), '.'));
             $product = Product::factory()->create([
                 'name' => $name,
                 'slug' => strtolower(str_replace(' ', '-', $name)),
@@ -94,7 +94,7 @@ class DatabaseSeeder extends Seeder
         }
         foreach($this->alcohols as $alcohol)
         {
-            $name = ucfirst('imported '.$alcohol.' '.fake()->sentence(rand(6, 10)));
+            $name = ucfirst('imported '.$alcohol.' '.rtrim(fake()->sentence(rand(6, 10)), '.'));
             $product = Product::factory()->create([
                 'name' => $name,
                 'slug' => strtolower(str_replace(' ', '-', $name)),
@@ -106,7 +106,7 @@ class DatabaseSeeder extends Seeder
         }
         foreach($this->soft_drinks as $soft_drink)
         {
-            $name = ucfirst($soft_drink.' '.fake()->sentence(rand(6, 10)));
+            $name = ucfirst($soft_drink.' '.rtrim(fake()->sentence(rand(6, 10)), '.'));
             $product = Product::factory()->create([
                 'name' => $name,
                 'slug' => strtolower(str_replace(' ', '-', $name)),

@@ -61,8 +61,8 @@
                     {{-- profile --}}
                     <x-profile-dropdown />
                     @else
-                    <a href="/login" class="text-sm font-semibold hover:text-blue-600 lg:text-base">Register</a>
-                    <a href="/register" class="text-sm font-semibold hover:text-blue-600 lg:text-base">Sign up</a>
+                    <a href="/register" class="text-sm font-semibold hover:text-blue-600 lg:text-base">Register</a>
+                    <a href="/login" class="text-sm font-semibold hover:text-blue-600 lg:text-base">Sign in</a>
                     @endauth
                 </div>
             </div>

@@ -14,4 +14,12 @@ class ProductController extends Controller
             'products' => Product::all(),
         ]);
     }
+
+    public function show(Product $product)
+    {
+        return view('products.show', [
+            'product' => $product,
+            'categories' => $product->categories,
+        ]);
+    }
 }
