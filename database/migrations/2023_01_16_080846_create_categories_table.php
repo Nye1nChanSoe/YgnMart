@@ -15,12 +15,14 @@ return new class extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->string('type');             // food, beverages, household, medicine etc..
-            $table->string('name');
-            $table->string('slug')->unique();
+            $table->string('name')->unique();               // fruits, meat, alcohol, seasonings, cleaning, medicine etc..
+            $table->foreignId('category_type_id');         
             $table->text('description');
             $table->string('image')->nullable();
             $table->timestamps();
+
+            /** constraints */
+            $table->foreign('category_type_id')->references('id')->on('category_types')->onDelete('cascade');
         });
     }
 

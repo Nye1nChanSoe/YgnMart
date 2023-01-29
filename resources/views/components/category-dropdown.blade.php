@@ -9,8 +9,8 @@
     </x-slot>
 
     {{-- TODO: populate drop down items with category records from database --}}
-    @foreach ($categories->where('type', $type) as $category)
-        <x-dropdown-item href="/">
+    @foreach ($categories as $category)
+        <x-dropdown-item href="/{{strtolower(str_replace(' ', '-',$category->name))}}">
             {{$category->name}}
         </x-dropdown-item>
     @endforeach

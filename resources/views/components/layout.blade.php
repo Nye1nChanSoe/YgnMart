@@ -69,9 +69,12 @@
 
             {{-- TODO: sidebar accordion or hamburger menu in small screens --}}
             <nav class="container mx-auto flex items-start flex-col justify-between md:flex-row md:items-center">
-                <x-category-dropdown type="food" />
-                <x-category-dropdown type="beverages" />
-                <x-category-dropdown type="households" />
+                @foreach (App\Models\CategoryType::all() as $categoryType)
+                <x-category-dropdown
+                    type="{{$categoryType->type}}"
+                    :id="$categoryType->id"
+                />
+                @endforeach
             </nav>
         </header>
 
@@ -81,10 +84,10 @@
             <div class="container mx-auto flex flex-col px-8 py-6 text-slate-600 md:px-12">
                 <section class="flex justify-center items-center md:justify-between">
                     <div class="space-y-4 text-center md:text-left">
-                            <div class="text-center md:text-left">
-                                <p class="text-sm">We accept multiple payments</p>
-                            </div>
-                            <h2 class="text-xl font-bold lg:text-2xl">Start shopping with Yangon Mart today.</h2>
+                        <div class="text-center md:text-left">
+                            <p class="text-sm">We accept multiple payments</p>
+                        </div>
+                        <h2 class="text-xl font-bold lg:text-2xl">Start shopping with Yangon Mart today.</h2>
                         <a href="/register" class="block w-full bg-blue-600 p-2 rounded-xl text-center shadow-lg text-white hover:bg-blue-700">Sign up</a>
                     </div>
                     

@@ -18,9 +18,7 @@ class CategoryFactory extends Factory
     {
         $name = fake()->unique()->word();
         return [
-            'type' => 'type',
             'name' => $name,
-            'slug' => strtolower($name),
             'description' => fake()->paragraph(),
         ];
     }

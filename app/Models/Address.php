@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Product extends Model
+class Address extends Model
 {
     use HasFactory;
 
-    
+
     /** relations */
-    public function categories()
+    public function users()
     {
-        return $this->belongsToMany(Category::class)->withTimestamps();
+        return $this->hasMany(User::class);
     }
 }
