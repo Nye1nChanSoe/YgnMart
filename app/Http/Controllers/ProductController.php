@@ -42,6 +42,6 @@ class ProductController extends Controller
             ]);
         }
 
-        return redirect()->route('cartItem', ['product' => $product]);
+        return redirect()->route('cart.item', ['product' => $product]);
     }
 }

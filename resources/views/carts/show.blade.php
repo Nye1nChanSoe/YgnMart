@@ -10,6 +10,6 @@
         <div>
             {{$product->price}}
         </div>
-        <a href="/cart" class="text-blue-500 hover:text-blue-700">Check cart</a>
+        <a href="/cart" class="text-blue-500 hover:text-blue-700">Go to cart</a>
     </div>
 </x-layout>

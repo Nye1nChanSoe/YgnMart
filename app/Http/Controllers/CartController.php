@@ -11,7 +11,7 @@ class CartController extends Controller
     public function index()
     {
         return view('carts.index', [
-            'carts' => Cart::with('product')->where('user_id', auth()->id())->get(),
+            'carts' => Cart::with('product')->where('user_id', auth()->id())->orderBy('created_at', 'asc')->get(),
         ]);
     }
 
@@ -23,8 +23,20 @@ class CartController extends Controller
         ]);
     }
 
-    public function store()
+    public function destroy(Cart $cart)
     {
-        
+        // Can add more functionalities like recently added items 
+        // Add this cart item to the recently added items before deletion
+
+        $cart->delete();
+        $quantity = $cart->quantity;
+        $totalPrice = $cart->product->price * $quantity;
+        return response()->json(['message' => 'Item removed from the cart', 'totalPrice' => $totalPrice, 'quantity' => $quantity]);
+    }
+
+
+    public function checkout()
+    {
+
     }
 }

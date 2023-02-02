@@ -29,4 +29,6 @@ Route::post('/cart', function() {
     return redirect()->route('login')->with('warning', 'You need to login first');
 });
 
-Route::get('/cart/product/{product:slug}', [CartController::class, 'show'])->middleware('auth')->name('cartItem');
+Route::get('/cart/product/{product:slug}', [CartController::class, 'show'])->middleware('auth')->name('cart.item');
+Route::delete('/cart/{cart:id}', [CartController::class, 'destroy']);
+
