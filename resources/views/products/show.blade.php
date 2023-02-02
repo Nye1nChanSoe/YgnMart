@@ -4,7 +4,7 @@
 ])
 
 <x-layout>
-    <section class="container mx-auto mb-20 px-3 md:px-8">
+    <x-container>
         {{-- TODO: breadcrumbs --}}
         <div class="my-10">
             implement > breadcrumbs > links > here
@@ -51,10 +51,11 @@
                     }"
                     class="flex items-center pt-4 space-x-4"
                 >
-                    <form action="" method="post">
+                    <form action="/addToCart" method="POST">
                         @csrf
                         {{-- x-model is two-way bound, meaning it both "sets" and "gets". In addition to changing data, if the data itself changes, the element will reflect the change. --}}
                         <input type="hidden" name="quantity" x-model="quantity">
+                        <input type="hidden" name="product" value="{{$product->id}}">
                         <x-button class="rounded-full shadow-lg bg-blue-400">
                             <x-icon name="cart" />
                         </x-button>
@@ -106,5 +107,5 @@
         <div class="bg-slate-200 w-full mt-10">
             <p>List of related products here</p>
         </div>
-    </section>
+    </x-container>
 </x-layout>
