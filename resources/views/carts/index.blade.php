@@ -3,7 +3,7 @@
 ])
 
 <x-layout>
-    <x-container>
+    <x-container class="mt-14">
         <div class="rounded-lg py-5 px-10 shadow-sm border">
             <h4 class="text-xs text-gray-700">Shopping cart</h4>
 
@@ -105,7 +105,7 @@
             method: 'DELETE', 
             headers: {
                 'Content-Type': 'application/json',
-
+                
                 // To resolve the issue, you need to include a CSRF token in your AJAX request:
                 // The CSRF TOKEN is embedded in the meta tag 
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
@@ -115,13 +115,14 @@
             if(!response.ok) {
                 throw new Error('Network was not ok');
             }
-
+            
             return response.json();
         })
         .then(data => {
             /* remove the deleted items and recalculate the total price and dynamically update with the x-text */
             this.count -= data.quantity;
             this.total -= data.totalPrice;
+            this.cartItemCounter = data.count;
         })
         .catch(error => {
             console.error('There was a problem with the fetch operation:', error);

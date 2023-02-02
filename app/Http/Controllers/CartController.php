@@ -29,12 +29,21 @@ class CartController extends Controller
         // Add this cart item to the recently added items before deletion
 
         $cart->delete();
+        
         $quantity = $cart->quantity;
         $totalPrice = $cart->product->price * $quantity;
-        return response()->json(['message' => 'Item removed from the cart', 'totalPrice' => $totalPrice, 'quantity' => $quantity]);
+        $count = Cart::where('user_id', auth()->id())->count();
+
+        return response()->json([
+            'message' => 'Item removed from the cart', 
+            'totalPrice' => $totalPrice, 
+            'quantity' => $quantity, 
+            'count' => $count,
+        ]);
     }
 
 
+    // TODO: Add Stripe
     public function checkout()
     {
 

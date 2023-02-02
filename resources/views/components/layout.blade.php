@@ -10,7 +10,7 @@
     <title>Home Page</title>
 </head>
 <body>
-    <section>
+    <section x-data="notification">
 
         {{-- Logos and navigation --}}
         <header class="container mx-auto space-y-4 mb-6 px-3 py-1 lg:px-8">
@@ -51,11 +51,8 @@
                             <x-icon name="cart" />
 
                             {{-- notification --}}
-                            <span class="absolute -bottom-1 -right-1 flex h-3 w-3">
-                            <span class="absolute -bottom-1 -right-1 flex h-3 w-3">
-                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-300 opacity-75"></span>
-                                <span class="relative inline-flex rounded-full h-3 w-3 bg-sky-300 text-xs"></span>
-                            </span>
+                            <div x-show="cartItemCounter" x-text="cartItemCounter" class="absolute -top-3.5 -right-3 inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-sky-400 border-2 border-white rounded-full md:-top-3 md:-right-3" x-cloak x-transition>
+                            </div>
                         </a>
                     </div>
                     @auth
@@ -141,3 +138,15 @@
     <x-flash />
 </body>
 </html>
+
+<script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('notification', () => ({
+            cartItemCounter: {{ App\Models\Cart::where('user_id', auth()->id())->count() }},
+            addToCart() {
+                this.cartItemCounter = {{ App\Models\Cart::where('user_id', auth()->id())->count() }};
+                console.log(this.counter);
+            }
+        }))
+    });
+</script>

@@ -56,7 +56,7 @@
                         {{-- x-model is two-way bound, meaning it both "sets" and "gets". In addition to changing data, if the data itself changes, the element will reflect the change. --}}
                         <input type="hidden" name="quantity" x-model="quantity">
                         <input type="hidden" name="product" value="{{$product->id}}">
-                        <x-button class="rounded-full shadow-lg bg-blue-400">
+                        <x-button class="rounded-full shadow-lg bg-blue-400" @@click="addToCart">
                             <x-icon name="cart" />
                         </x-button>
                     </form>
@@ -89,15 +89,11 @@
                 <div class="pt-4 space-y-1">
                     <div class="flex text-sm items-center space-x-2 ">
                         <span>Delivery Available</span>
-                        <svg class="w-4 h-4 text-green-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
+                        <x-icon name="check" />
                     </div>
                     <div class="flex text-sm items-center space-x-2 ">
                         <span>Multipayment Available</span>
-                        <svg class="w-4 h-4 text-green-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
+                        <x-icon name="check" />
                     </div>
                 </div>
             </div>

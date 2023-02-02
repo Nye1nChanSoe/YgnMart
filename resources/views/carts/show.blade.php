@@ -3,13 +3,11 @@
 ])
 
 <x-layout>
-    <div class="container mx-auto px-4 py-6">
-        <div>
-            {{$product->name}}
-        </div>
-        <div>
-            {{$product->price}}
+    <x-container class="mt-14">
+        <div class="flex items-center">
+            <p class="mr-2">Items added</p>
+            <x-icon name="check" />
         </div>
         <a href="/cart" class="text-blue-500 hover:text-blue-700">Go to cart</a>
-    </div>
+    </x-container>
 </x-layout>
