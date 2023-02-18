@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <title>Home Page</title>
 </head>
 <body>
-    <section>
+    <section x-data="notification">
 
         {{-- Logos and navigation --}}
         <header class="container mx-auto space-y-4 mb-6 px-3 py-1 lg:px-8">
@@ -46,66 +47,32 @@
                         </div>
                     </div>
                     <div class="relative">
-                        <a href="" class="hover:text-blue-600" id="cart">
+                        <a href="/cart" class="hover:text-blue-600" id="cart">
                             <x-icon name="cart" />
 
                             {{-- notification --}}
-                            <span class="absolute -bottom-1 -right-2 flex h-3 w-3">
-                            <span class="absolute -bottom-1 -right-2 flex h-3 w-3">
-                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-300 opacity-75"></span>
-                                <span class="relative inline-flex rounded-full h-3 w-3 bg-sky-300 text-xs"></span>
-                            </span>
+                            <div x-show="cartItemCounter" x-text="cartItemCounter" class="absolute -top-3.5 -right-3 inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-sky-400 border-2 border-white rounded-full md:-top-3 md:-right-3" x-cloak x-transition>
+                            </div>
                         </a>
                     </div>
                     @auth
                     {{-- profile --}}
                     <x-profile-dropdown />
                     @else
-                    <a href="/login" class="text-sm font-semibold hover:text-blue-600 lg:text-base">Login</a>
-                    <a href="/register" class="text-sm font-semibold hover:text-blue-600 lg:text-base">Sign up</a>
+                    <a href="/register" class="text-sm font-semibold hover:text-blue-600 lg:text-base">Register</a>
+                    <a href="/login" class="text-sm font-semibold hover:text-blue-600 lg:text-base">Sign in</a>
                     @endauth
                 </div>
             </div>
 
             {{-- TODO: sidebar accordion or hamburger menu in small screens --}}
             <nav class="container mx-auto flex items-start flex-col justify-between md:flex-row md:items-center">
-                <x-dropdown>
-                    <x-slot name="trigger">
-                        <button @@click="open=!open" class="inline-flex items-center hover:bg-slate-200 py-2 px-3 text-left text-sm font-semibold w-24 rounded-xl lg:bg-slate-50 lg:w-32" x-bind:class="{ 'bg-slate-200': open }">
-                            Foods
-                            <x-icon name="chevron-right" class="absolute pointer-events-none right-6 lg:right-12" x-bind:class="{ 'rotate-90 transition-all duration-400':open }" />
-                        </button>
-                    </x-slot>
-
-                    {{-- TODO: populate drop down items with category records from database --}}
-                    <x-dropdown-item href="/" :active="true">
-                        All
-                    </x-dropdown-item>
-                    <x-dropdown-item href="/">
-                        Fish
-                    </x-dropdown-item>
-                    <x-dropdown-item href="/">
-                        Vegetables
-                    </x-dropdown-item>
-                    <x-dropdown-item href="/">
-                        Meta
-                    </x-dropdown-item>
-                    <x-dropdown-item href="/">
-                        Snack
-                    </x-dropdown-item>
-                    <x-dropdown-item href="/">
-                        Seafood
-                    </x-dropdown-item>
-                    <x-dropdown-item href="/">
-                        Pantry Staples
-                    </x-dropdown-item>
-                    <x-dropdown-item href="/">
-                        Bakery
-                    </x-dropdown-item>
-                    <x-dropdown-item href="/">
-                        Fruits
-                    </x-dropdown-item>
-                </x-dropdown>
+                @foreach (App\Models\CategoryType::all() as $categoryType)
+                <x-category-dropdown
+                    type="{{$categoryType->type}}"
+                    :id="$categoryType->id"
+                />
+                @endforeach
             </nav>
         </header>
 
@@ -115,10 +82,10 @@
             <div class="container mx-auto flex flex-col px-8 py-6 text-slate-600 md:px-12">
                 <section class="flex justify-center items-center md:justify-between">
                     <div class="space-y-4 text-center md:text-left">
-                            <div class="text-center md:text-left">
-                                <p class="text-sm">We accept multiple payments</p>
-                            </div>
-                            <h2 class="text-xl font-bold lg:text-2xl">Start shopping with Yangon Mart today.</h2>
+                        <div class="text-center md:text-left">
+                            <p class="text-sm">We accept multiple payments</p>
+                        </div>
+                        <h2 class="text-xl font-bold lg:text-2xl">Start shopping with Yangon Mart today.</h2>
                         <a href="/register" class="block w-full bg-blue-600 p-2 rounded-xl text-center shadow-lg text-white hover:bg-blue-700">Sign up</a>
                     </div>
                     
@@ -171,3 +138,15 @@
     <x-flash />
 </body>
 </html>
+
+<script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('notification', () => ({
+            cartItemCounter: {{ App\Models\Cart::where('user_id', auth()->id())->count() }},
+            addToCart() {
+                this.cartItemCounter = {{ App\Models\Cart::where('user_id', auth()->id())->count() }};
+                console.log(this.counter);
+            }
+        }))
+    });
+</script>

@@ -24,6 +24,7 @@ class RegisterController extends Controller
             'phone_number' => ['required', Rule::unique('users', 'phone_number')],
         ]);
 
+        // TODO: 
         $address = $request->validate([
             'street' => [''],
         ]);

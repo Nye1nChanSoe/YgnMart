@@ -13,16 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('carts', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();               // fruits, meat, alcohol, seasonings, cleaning, medicine etc..
-            $table->foreignId('category_type_id');         
-            $table->text('description');
-            $table->string('image')->nullable();
+            $table->foreignId('user_id');
+            $table->foreignId('product_id');
+            $table->integer('quantity');
             $table->timestamps();
 
             /** constraints */
-            $table->foreign('category_type_id')->references('id')->on('category_types')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->unique(['user_id', 'product_id']);
         });
     }
 
@@ -33,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('carts');
     }
 };

@@ -55,4 +55,16 @@ class User extends Authenticatable
     {
         $this->attributes['password'] = bcrypt($password);
     }
+
+
+    /** relations */
+    public function address()
+    {
+        return $this->belongsTo(Address::class);
+    }
+
+    public function cart()
+    {
+        return $this->hasOne(Cart::class);
+    }
 }

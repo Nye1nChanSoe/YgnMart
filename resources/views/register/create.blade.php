@@ -1,7 +1,7 @@
 <x-layout>
     <div class="container mx-auto flex justify-between items-center my-10 px-8 space-x-6 md:px-16">
-        <div class="hidden self-stretch basis-1/2 md:flex md:items-center md:justify-center">
-            <img src="images/grocery/apple.jpeg" alt="">
+        <div class="hidden self-stretch basis-1/2 md:flex md:flex-col md:items-center md:justify-center">
+            <img src="images/creative/shopmore_savemoney.png" alt="">
         </div>
         <x-card class="text-slate-700 p-10 basis-1/2">
             <h2 class="text-center text-2xl font-semibold mb-8">Create an Account</h2>
