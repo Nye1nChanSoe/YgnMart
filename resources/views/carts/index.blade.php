@@ -1,7 +1,3 @@
-@props([
-    'products'
-])
-
 <x-layout>
     <x-container class="mt-14">
         <div class="rounded-lg py-5 px-10 shadow-sm border">
@@ -15,7 +11,7 @@
             </div>
 
             {{-- cart container --}}
-            <form action="/checkout" method="POST" class="divide-y divide-gray-200"
+            <form action="{{ route('carts.checkout') }}" method="POST" class="divide-y divide-gray-200"
                 x-data="{
                     count: 0,
                     total: 0,
@@ -28,7 +24,9 @@
                     @endforeach 
                     }
                 }"
-            >                    
+            >
+                @csrf
+                                    
                 {{-- cart item --}}
                 @if (!$carts->isEmpty())
                     @foreach ($carts as $cart)
@@ -101,7 +99,7 @@
 <script>
     function removeItem()
     {
-        fetch(`/cart/${this.id}`, {
+        fetch(`/carts/${this.id}`, {
             method: 'DELETE', 
             headers: {
                 'Content-Type': 'application/json',

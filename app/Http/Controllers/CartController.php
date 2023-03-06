@@ -42,4 +42,10 @@ class CartController extends Controller
             'count' => $count,
         ]);
     }
+
+    /** can add to transition table for analytics in this method */
+    public function checkout()
+    {
+        return redirect()->route('checkout.index');
+    }
 }

@@ -47,7 +47,7 @@
                         </div>
                     </div>
                     <div class="relative">
-                        <a href="/cart" class="hover:text-blue-600" id="cart">
+                        <a href="{{ route('carts.index') }}" class="hover:text-blue-600" id="cart">
                             <x-icon name="cart" />
 
                             {{-- notification --}}

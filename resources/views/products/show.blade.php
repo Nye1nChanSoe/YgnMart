@@ -1,5 +1,4 @@
 @props([
-    'product',
     'categories'
 ])
 

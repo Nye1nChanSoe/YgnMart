@@ -1,13 +1,14 @@
 <?php
 
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/', [ProductController::class, 'index'])->name('home')->name('products.index');
+Route::get('/', [ProductController::class, 'index'])->name('home');
 Route::get('/products/{product:slug}', [ProductController::class, 'show'])->name('products.show');
 
 Route::middleware(['guest'])->group(function() {
@@ -23,8 +24,12 @@ Route::middleware(['auth'])->group(function() {
 
     Route::post('/add', [ProductController::class, 'addToCart'])->name('products.add');
 
-    Route::get('/cart', [CartController::class, 'index'])->name('cart');
-    Route::post('/cart', [CartController::class, 'store']);
-    Route::get('/cart/{product:slug}', [CartController::class, 'show'])->name('cart.show');
-    Route::delete('/cart/{cart:id}', [CartController::class, 'destroy']);
+    Route::get('/carts', [CartController::class, 'index'])->name('carts.index');
+    Route::post('/carts', [CartController::class, 'store']);
+    Route::post('/carts/checkout', [CartController::class, 'checkout'])->name('carts.checkout');
+    Route::get('/carts/{product:slug}', [CartController::class, 'show'])->name('carts.show');
+    Route::delete('/carts/{cart:id}', [CartController::class, 'destroy']);
+
+    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+    Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
 });
