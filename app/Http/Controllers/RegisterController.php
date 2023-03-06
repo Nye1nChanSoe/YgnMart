@@ -31,6 +31,7 @@ class RegisterController extends Controller
 
         /** created accounts are user by default */
         $userCredentials['role'] = 'user';
+        $userCredentials['user_status'] = 'active';
         $user = User::create($userCredentials);
 
         auth()->login($user);

@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\CategoryType;
 use App\Models\CategoryTypes;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -46,6 +47,16 @@ class DatabaseSeeder extends Seeder
         Category::truncate();
         Product::truncate();
 
+        /** TODO: delete later */
+        User::create([
+            'name' => 'Nyein Chan Soe',
+            'username' => 'admin',
+            'role' => 'user',
+            'email' => 'admin@email.com',
+            'phone_number' => '091231233',
+            'password' => 'password',
+            'user_status' => 'active',
+        ]);
 
         /** seeding categoryTypes */
         foreach($this->categoryTypes as $categoryType)

@@ -84,7 +84,7 @@
                             SubTotal (<span x-text="count" class="font-semibold" id="quantity="></span> items) 
                             <span x-text="total.toLocaleString('en-US')" class="text-lg font-semibold text-center bg-slate-100 px-3 py-[2px] rounded-lg"></span>
                         </div>
-                        <button type="submit" class="text-sm bg-blue-500 text-white px-3 py-[4px] mt-4 rounded-lg shadow hover:bg-blue-600">
+                        <button type="submit" class="text-base bg-blue-500 text-white px-3 py-[4px] mt-6 rounded-lg shadow hover:bg-blue-600">
                             Proceed to checkout
                         </button>
                     </div>

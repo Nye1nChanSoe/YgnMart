@@ -58,12 +58,12 @@ class User extends Authenticatable
 
 
     /** relations */
-    public function address()
+    public function addresses()
     {
-        return $this->belongsTo(Address::class);
+        return $this->hasMany(Address::class);
     }
 
-    public function cart()
+    public function carts()
     {
         return $this->hasMany(Cart::class);
     }

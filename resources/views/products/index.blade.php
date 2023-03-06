@@ -8,7 +8,7 @@
             @foreach ($products as $product)
                 <x-product-card>
                     <div class="self-center h-32 md:h-40">
-                        <img src="{{$product->image ? asset($product->image) : asset('images/no-image.png')}}" alt="" style="max-width: 100%; height:100%">
+                        <img src="{{$product->image ? asset($product->image) : asset('images/no-image.png')}}" alt="" style="max-width: 100%; height:100%; object-fit:contain">
                     </div>
                     
                     {{-- name and stock --}}

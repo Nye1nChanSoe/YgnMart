@@ -29,11 +29,13 @@ class SessionController extends Controller
         
         /** generate a new session id to protect against session fixation */
         session()->regenerate();
+        auth()->user()->update(['user_status' => 'active']);
         return redirect()->route('home')->with('success', 'Welcome back, '.auth()->user()->name);
     }
 
     public function destroy()
     {
+        auth()->user()->update(['user_status' => 'inactive']);
         auth()->logout();
 
         /** remove all the data from current session */

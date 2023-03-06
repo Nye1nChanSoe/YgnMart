@@ -12,13 +12,13 @@
 }
 
 .scrollbar::-webkit-scrollbar-thumb {
-    background: rgb(125 211 252);
+    background: #7dd3fc;
     border-radius: 100vh;
     border: 3px solid #f6f7ed;
 }
 
 .scrollbar::-webkit-scrollbar-thumb:hover {
-    background: rgb(56 189 248);
+    background: #38bdf8;
 }
 
 [x-cloak] {

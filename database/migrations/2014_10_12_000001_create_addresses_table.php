@@ -15,11 +15,16 @@ return new class extends Migration
     {
         Schema::create('addresses', function (Blueprint $table) {
             $table->id();
-            $table->string('address_name')->nullable();         // home, work given by the user
+            $table->foreignId('user_id');
+            $table->string('label')->nullable();         // home, work given by the user
             $table->string('street');
             $table->string('ward');
             $table->string('township');
+            $table->boolean('is_default')->default(false);
             $table->timestamps();
+
+            /** constraints */
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
