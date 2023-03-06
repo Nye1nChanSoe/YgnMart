@@ -34,18 +34,12 @@ class CartController extends Controller
         $totalPrice = $cart->product->price * $quantity;
         $count = Cart::where('user_id', auth()->id())->count();
 
+        /** AJAX request so send JSON respond back to the client */
         return response()->json([
             'message' => 'Item removed from the cart', 
             'totalPrice' => $totalPrice, 
             'quantity' => $quantity, 
             'count' => $count,
         ]);
-    }
-
-
-    // TODO: Add Stripe
-    public function checkout()
-    {
-
     }
 }

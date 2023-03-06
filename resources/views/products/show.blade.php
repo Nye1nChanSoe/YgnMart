@@ -51,7 +51,7 @@
                     }"
                     class="flex items-center pt-4 space-x-4"
                 >
-                    <form action="/addToCart" method="POST">
+                    <form action="{{ route('products.add') }}" method="POST">
                         @csrf
                         {{-- x-model is two-way bound, meaning it both "sets" and "gets". In addition to changing data, if the data itself changes, the element will reflect the change. --}}
                         <input type="hidden" name="quantity" x-model="quantity">
