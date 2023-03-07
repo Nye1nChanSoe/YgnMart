@@ -15,13 +15,13 @@ class CheckoutController extends Controller
             return redirect()->route('carts.index');
         }
 
-        $cartItems = Cart::where('user_id', auth()->id())->get();
+        $cartItems = Cart::with('product')->where('user_id', auth()->id())->orderBy('created_at', 'asc')->get();
         $addresses = auth()->user()->addresses;
         return view('checkout.index', compact(['cartItems', 'addresses']));
     }
 
-    public function store()
+    public function store(Request $request)
     {
-        
+        dd($request->input());
     }
 }
