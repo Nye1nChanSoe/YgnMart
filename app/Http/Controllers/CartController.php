@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
+use App\Models\Checkout;
+use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class CartController extends Controller
 {
@@ -44,8 +47,20 @@ class CartController extends Controller
     }
 
     /** can add to transition table for analytics in this method */
-    public function checkout()
+    public function checkout(Request $request)
     {
+        /**
+         * the first argument, single array with the 'user_id' attribute is used to search for its value in database.
+         * If exists, it will be updated with the second argument, 
+         * If it's not exists, a new record will be created using both arguments 'user_id' and 'total_price'
+         */
+        Checkout::updateOrCreate(
+            ['user_id' => auth()->id()],
+            [
+                'total_price' => $request->input('total_amount')
+            ]
+        );
+
         return redirect()->route('checkout.index');
     }
 }

@@ -13,7 +13,7 @@
             {{-- cart container --}}
             <form action="{{ route('carts.checkout') }}" method="POST" class="divide-y divide-gray-200"
                 x-data="{
-                    count: 0,
+                    count: 0,   
                     total: 0,
 
                     init()
@@ -81,6 +81,7 @@
                 <template x-if="count > 0">
                     <div class="flex flex-col justify-center items-end pt-8 pb-3">
                         <div>
+                            <input type="hidden" name="total_amount" x-model="total">
                             SubTotal (<span x-text="count" class="font-semibold" id="quantity="></span> items) 
                             <span x-text="total.toLocaleString('en-US')" class="text-lg font-semibold text-center bg-slate-100 px-3 py-[2px] rounded-lg"></span>
                         </div>
