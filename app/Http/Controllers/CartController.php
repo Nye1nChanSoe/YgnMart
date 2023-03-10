@@ -57,7 +57,7 @@ class CartController extends Controller
         Checkout::updateOrCreate(
             ['user_id' => auth()->id()],
             [
-                'total_price' => $request->input('total_amount')
+                'total_price' => $request->input('total_amount'),
             ]
         );
 

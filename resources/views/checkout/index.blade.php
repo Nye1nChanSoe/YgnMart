@@ -1,11 +1,12 @@
 <x-layout>
     <x-container>
         {{-- TODO: breadcrumbs --}}
-        <div class="my-10">
+        {{-- <div class="my-10">
             implement > breadcrumbs > links > here
-        </div>
+        </div> --}}
         
-        <div class="flex space-x-2">
+        <form id="payment-form" action="" method="POST" class="flex flex-col space-x-4 md:flex-row">
+            @csrf
             {{-- Main Checkout UI --}}
             <div class="basis-3/4 divide-y space-y-6">
 
@@ -13,7 +14,8 @@
                 {{-- Address --}}
                 <div
                     x-data="{
-                        open: {{$addresses->isEmpty() ? 'true' : 'false'}},
+                        open: false,
+                        text: {{$addresses->isEmpty() ? '\'Add\'' : '\'Change\''}},
                     }" 
                     class="flex space-x-4 pt-6"
                 >
@@ -22,7 +24,7 @@
                     </div>
                     <div class="flex grow justify-between items-start pr-10">
                         <h2 class="font-semibold w-48">Delivery Address</h2>
-                        <div class="flex flex-col flex-1 mr-4">
+                        <div class="flex flex-col flex-1 mr-4 text-sm">
                             <div>
                                 @if(!$addresses->isEmpty())
                                     @foreach ($addresses as $address)
@@ -32,10 +34,10 @@
                                         @endif
                                     @endforeach
                                 @else
-                                    <p class="text-gray-400 text-sm">Please add the address for delivery</p>
+                                    <button type="button" x-on:click="open=!open"><p class="text-gray-400 text-sm cursor-pointer">Please add the address for delivery</p></button>
                                 @endif
                             </div>
-                            <div x-show="open" class="border rounded-lg mt-6">
+                            <div x-show="open" class="border rounded-lg mt-6" x-transition>
                                 <div class="p-3">
                                     <h2 class="font-semibold mb-3">Your addresses</h2>
                                     @foreach ($addresses as $address)
@@ -45,7 +47,7 @@
                                         </div>
                                     @endforeach
                                     {{-- modal to add new address --}}
-                                    <button class="mt-3">+ <span class="text-sm text-lime-600 hover:text-lime-700">Add new address</span></button>
+                                    <button type="button" class="mt-3">+ <span class="text-sm text-lime-600 hover:text-lime-700">Add new address</span></button>
                                 </div>
                                 <div class="p-3 bg-slate-100">
                                     <button type="button" class="bg-blue-500 text-white py-1 px-2 text-sm rounded-lg hover:bg-blue-600">Use this address</button>
@@ -53,7 +55,7 @@
                             </div>
                         </div>
 
-                        <button type="button" x-on:click="open=!open" class="text-blue-500 hover:text-blue-700 text-sm">Change</button>
+                        <button type="button" x-on:click="open=!open" class="text-blue-500 hover:text-blue-700 text-sm" x-text="text"></button>
                     </div>
                 </div>
 
@@ -61,7 +63,7 @@
                 <div 
                     x-data="{
                         open:false, 
-                        payment:'card'
+                        payment:'card',
                     }" 
                     class="flex space-x-4 pt-6"
                 >
@@ -75,49 +77,35 @@
                                 <div x-show="payment==='cash'">
                                     <p class="text-gray-400 text-sm">Pay with <span class="text-gray-600 font-semibold">cash<x-icon name="cash" class="inline ml-1.5" /></span></p>
                                 </div>
-                                <div x-show="payment==='card'">
-                                    <p class="text-gray-400 text-sm">Pay with <span class="text-gray-600 font-semibold">card<x-icon name="card" class="inline ml-1.5" /></span></p>
-                                    <form id="payment-form" action="{{ route('payment.store') }}" method="POST" class="flex flex-col space-y-3 mt-3">
-                                        @csrf
+                                <div x-show="payment==='card'" x-transition>
+                                    <div class="flex flex-col">
                                         <input type="hidden" id="client-secret-key" value="{{$clientSecret}}">
-                                        <div>
-                                            <label for="card-holder-name" class="block text-gray-600 mb-2">Card Holder's Name</label>
-                                            <input type="text" id="card-holder-name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline focus:outline-slate-300" placeholder="Enter card holder's name">
-                                        </div>
-                                        <div>
-                                            <label for="card-number" class="block text-gray-600 mb-2">Card Number</label>
+                                        <div class="mb-2">
+                                            <label for="card-number" class="block text-gray-600 mb-2">Card Number <span class="text-red-300">*</span></label>
                                             <div id="card-number" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline focus:outline-slate-300"></div>
                                         </div>
-                                        <div class="flex justify-between space-x-8">
+                                        <div class="flex justify-between gap-x-4 mb-2">
                                             <div class="flex-1">
-                                                <label for="card-expiry-date" class="block text-gray-600 mb-2">Card Expiry</label>
+                                                <label for="card-expiry-date" class="block text-gray-600 mb-2">Card Expiry <span class="text-red-300">*</span></label>
                                                 <div id="card-expiry-date" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline focus:outline-slate-300"></div>
                                             </div>
                                             <div class="flex-1">
-                                                <label for="card-cvc" class="block text-gray-600 mb-2">Card CVC</label>
+                                                <label for="card-cvc" class="block text-gray-600 mb-2">Card CVC <span class="text-red-300">*</span></label>
                                                 <div id="card-cvc" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline focus:outline-slate-300"></div>
                                             </div>
                                         </div>
                                         <div id="card-errors" role="alert" class="text-red-500 mb-4"></div>
-                                        <button id="payment-submit" type="submit" class="self-start bg-blue-500 text-white py-1.5 px-3 text-sm rounded-lg hover:bg-blue-600">Submit Payment</button>
-                                    </form>
-                                    <script src="https://js.stripe.com/v3/"></script>
-                                    <script>
-                                        window.publicApiKeys = {
-                                            stripeKey: "{{ env('STRIPE_PUBLIC_KEY') }}"
-                                        };
-                                    </script>
-                                    <script src="{{ asset('js/stripePayment.js') }}"></script>
+                                    </div>
                                 </div>
                             </div>
                             <div x-show="open" class="flex-1 border border-slate-300 rounded-lg px-4 py-2 mt-7 text-sm space-y-2" x-cloak x-transition>
                                 <div>
                                     <label for="">Cash</label>
-                                    <input type="radio" name="payment_method" value="cash" x-model="payment">                            
+                                    <input type="radio" name="payment_method" value="cash" x-model="payment" x-on:click="open=!open">                            
                                 </div>
                                 <div>
                                     <label for="">Credit Card</label>
-                                    <input type="radio" name="payment_method" value="card" x-model="payment">                            
+                                    <input type="radio" name="payment_method" value="card" x-model="payment" x-on:click="open=!open">                            
                                 </div>
                             </div>
                         </div>
@@ -150,7 +138,7 @@
                                     <p class="text-gray-400 text-sm">You do not have any discount coupons currently</p>
                                 </div>
                                 <div class="p-3 bg-slate-100">
-                                    <x-button class="text-sm rounded-lg">Use this coupon</x-button>
+                                    <button type="button" class="bg-blue-500 text-white py-1 px-2 text-sm rounded-lg hover:bg-blue-600">Use this coupon</button>
                                 </div>
                             </div>
                         </div>
@@ -180,14 +168,14 @@
                                 <x-icon name="chevron-down" x-bind:class="{ '-rotate-180 duration-400':open }"/>
                             </button>
                         </div>
-                        <div x-show="open" class="border p-1 divide-y mb-4 rounded-lg">
+                        <div x-show="open" class="border p-1 divide-y mb-4 rounded-lg" x-transition>
                             @foreach ($cartItems as $cart)
                                 <div class="flex space-x-4 items-center text-xs p-3">
-                                    <img src="{{$cart->product->image}}" alt="" width="120" style="object-fit:contain">
-                                    <div class="space-y-1">
-                                        <p>{{$cart->product->name}}</p>
-                                        <p>Quantity <span>{{$cart->quantity}}</span></p>
-                                        <p>Price <span>{{$cart->product->price * $cart->quantity}}</span></p>
+                                    <img src="{{$cart->product->image ? asset($cart->product->image) : asset('images/no-image.png')}}" alt="" width="120" style="object-fit:contain">
+                                    <div class="space-y-1 text-gray-800">
+                                        <p class="">{{$cart->product->name}}</p>
+                                        <p>Quantity <span class="font-semibold">{{$cart->quantity}}</span></p>
+                                        <p class="py-1">Price <span class="font-semibold">{{$cart->product->price * $cart->quantity}}</span></p>
                                     </div>
                                 </div>
                                 <input type="hidden" name="items[]" value="{{$cart->id}}">
@@ -197,7 +185,7 @@
 
                         {{-- Order Total --}}
                         <div class="flex border rounded-lg p-6 space-x-6 items-center justify-between">
-                            <x-button class="rounded-xl px-6">Order now</x-button>
+                            <button id="payment-submit" type="submit" class="shadow bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Order Now</button>
                             <div>
                                 <p class="text-sm">Total price</p>
                                 <p class="text-sm">Delivery fees</p>
@@ -213,6 +201,21 @@
             <div class="basis-1/4 border p-3 px-5 self-start space-y-3">
                 <h2 class="text-center font-semibold">Order Summary</h2>
             </div>
-        </div>
+        </form>
     </x-container>
 </x-layout>
+
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+    /** declare global variables which are necessary in external JavaScript file to handle Stripe payments */
+    window.publicApiKeys = {
+        stripeKey: "{{ env('STRIPE_PUBLIC_KEY') }}"
+    };
+
+    window.user = {
+        name: '{{ auth()->user()->name }}',
+        email: '{{ auth()->user()->email }}',
+        phone_number: '{{ auth()->user()->phone_number }}'
+    };
+</script>
+<script src="{{ asset('/js/stripePayment.js') }}"></script>

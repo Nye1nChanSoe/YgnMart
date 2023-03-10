@@ -13,40 +13,34 @@ cardCvcElement.mount('#card-cvc');
 var form = document.getElementById('payment-form');
 var submitBtn = document.getElementById('payment-submit');
 
+// Listen for changes in the card elements and enable/disable the submit button accordingly
+// To prevent submitting without card information
+
+        
 /** Handle validation errors */
+var displayError = document.getElementById('card-errors');
 cardNumberElement.addEventListener('change', function(event) {
-    var displayError = document.getElementById('card-errors');
-    if(event.error)
-    {
+    if(event.error) {
         displayError.textContent = event.error.message;
-    }
-    else
-    {
+    } else {
         displayError.textContent = "";
     }
 });
 cardExpiryElement.addEventListener('change', function(event) {
-    var displayError = document.getElementById('card-errors');
-    if(event.error)
-    {
+    if(event.error) {
         displayError.textContent = event.error.message;
-    }
-    else
-    {
+    } else {
         displayError.textContent = "";
     }
 });
 cardCvcElement.addEventListener('change', function(event) {
-    var displayError = document.getElementById('card-errors');
-    if(event.error)
-    {
+    if(event.error) {
         displayError.textContent = event.error.message;
-    }
-    else
-    {
+    } else {
         displayError.textContent = "";
     }
 });
+
 
 form.addEventListener('submit', function(event) {
     event.preventDefault();
@@ -54,36 +48,88 @@ form.addEventListener('submit', function(event) {
     // TODO: add processing animation and disable the submit button to prevent multiple submissions
     submitBtn.disabled = true;
 
-    /** retrieve card data from elements */
-    var cardHolderName = document.getElementById('card-holder-name').value;
-    var cardData = {
-        number: cardNumberElement.value,
-        expiry: cardExpiryElement.value,
-        cvc: cardCvcElement.value
-    };
-
     /** retrieve client_secret key which is unique to the individual PaymentIntent object */
     var clientSecret = document.getElementById('client-secret-key').value;
+
     /** confirm the payment */
     stripe.confirmCardPayment(clientSecret, {
         payment_method: {
-            card: cardData,
+            card: cardNumberElement,
             billing_details: {
-                name: cardHolderName
+                name: window.user.name,
+                email: window.user.email,
+                phone: window.user.phone_number,
             }
-        }
-    }).then(function(result) {
+        },
+    })
+    .then(function(result) {
         if(result.error) 
         {
-            var errorElement = document.getElementById('card-errors');
-            errorElement.textContent = validationErrors[0].message;
-            // errorElement.classList.add('text-red-500 text-sm');
+            console.log(result.error.message);
+            displayError.textContent = result.error.message;
 
             submitBtn.disabled = false;
         }
         else
         {
+            // Payment confirmed, send AJAX request to server-side to update checkout and order status
+            console.log(result.paymentIntent);
 
+            var paymentIntentId = result.paymentIntent.id;
+            console.log('/checkout/' + paymentIntentId);
+
+            // send AJAX request to update the record of checkouts table's status column
+            fetch('/checkout/' + paymentIntentId, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+
+                    // The CSRF TOKEN is embedded in the meta tag 
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({
+                    payment_intent_id: paymentIntentId 
+                })
+            }).then(function(response) {
+                if(!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            }).then(function(data) {
+                console.log(data);  // handle the response data as needed
+
+                // send another AJAX request to create a new order
+                fetch('/orders', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+    
+                        // The CSRF TOKEN is embedded in the meta tag 
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: JSON.stringify({
+                        payment_intent_id: paymentIntentId 
+                    })
+                }).then(function(response) {
+                    if(!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                }).then(function(data) {
+                    console.log(data);  // handle the response data as needed
+
+                    // Redirect to order page to diplay the order details
+                    window.location.href = '/orders';
+                }).catch(function(error) {
+                    console.log('Error: ', error);
+
+                    // display error message to user if necessary
+                });
+            }).catch(function(error) {
+                console.log('Error: ', error);
+
+                // display error message to user if necessary
+            });
         }
     });
 });

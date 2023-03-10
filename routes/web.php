@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
-use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionController;
@@ -32,6 +32,8 @@ Route::middleware(['auth'])->group(function() {
     Route::delete('/carts/{cart:id}', [CartController::class, 'destroy']);
 
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
-    Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
-    Route::post('/payment', [PaymentController::class, 'store'])->name('payment.store');
+    Route::delete('/checkout/{checkout:payment_intent_id}', [CheckoutController::class, 'destroy'])->name('checkout.destroy');
+
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
 });

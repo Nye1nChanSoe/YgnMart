@@ -13,14 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('checkouts', function (Blueprint $table) {
+        Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            $table->string('order_no')->unique();
             $table->foreignId('user_id');
+            $table->string('payment_intent_id');
+            $table->string('payment_type');
             $table->integer('total_price');
-            $table->string('payment_intent_id')->nullable();
-            $table->string('status')->nullable();           
+            $table->text('description')->nullable();
             $table->timestamps();
-
+            
             /** constraints */
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
@@ -33,6 +35,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('checkouts');
+        Schema::dropIfExists('orders');
     }
 };
