@@ -6,6 +6,7 @@ use App\Models\Order;
 use App\Models\Product;
 use App\Traits\StripePaymentTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Stripe\Exception\ApiErrorException;
 
@@ -51,7 +52,6 @@ class OrderController extends Controller
             $order->payment_type = $paymentMethod;
             $this->cancelPaymentOnStripe($request->json('payment_intent_id'));
         }
-        
         if($paymentMethod == 'card')
         {
             $order->payment_intent_id = $request->json('payment_intent_id');
@@ -80,13 +80,20 @@ class OrderController extends Controller
     {
         $paymentIntent = $this->retrievePayment($paymentIntentId);
 
-        try {
-            if($paymentIntent->status !== 'succeeded' && $paymentIntent->status !== 'canceled')
-            {
+        try 
+        {
+            if($paymentIntent->status !== 'succeeded' && $paymentIntent->status !== 'canceled') {
                 $paymentIntent->cancel();
+            } else {
+                Log::warning('Unexpected payment intent status: '. $paymentIntent->status);
             }
-        } catch(ApiErrorException $e) {
-
+        } 
+        catch(ApiErrorException $e) 
+        {
+            Log::error('Error canceling payment intent: '. $e->getMessage());
+            return response()->json([
+                'message' => 'Error canceling payment intent',
+            ], 400);
         }
     }
 }

@@ -306,11 +306,13 @@ function processOrder()
 
                 })
                 .catch(function(error) {
-                    console.log('Error: ', error);
+                    console.error('Error: ', error);
+                    alert('There was an error processing your request. Please try again later.');
                 });
             })
             .catch(function(error) {
-                console.log('Error: ', error);
+                console.error('Error: ', error);
+                alert('There was an error processing your request. Please try again later.');
             });
         });
     }
@@ -398,12 +400,12 @@ function processOrder()
 
                         })
                         .catch(function(error) {
-                            console.log('Error: ', error);
+                            console.error('Error: ', error);
                             displayError.textContent = error.message;
                         });
                     })
                     .catch(function(error) {
-                        console.log('Error: ', error);
+                        console.error('Error: ', error);
                         displayError.textContent = error.message;
                     });
                 }
