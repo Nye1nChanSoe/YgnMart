@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Cart;
 use App\Models\Checkout;
-use App\Models\Order;
 use App\Models\Product;
+use App\Traits\StripePaymentTrait;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class CartController extends Controller
 {
+    use StripePaymentTrait;
+
     public function index()
     {
         return view('carts.index', [
@@ -46,20 +47,41 @@ class CartController extends Controller
         ]);
     }
 
-    /** can add to transition table for analytics in this method */
+    /** handles the login for checkout */
     public function checkout(Request $request)
     {
-        /**
-         * the first argument, single array with the 'user_id' attribute is used to search for its value in database.
-         * If exists, it will be updated with the second argument, 
-         * If it's not exists, a new record will be created using both arguments 'user_id' and 'total_price'
-         */
-        Checkout::updateOrCreate(
-            ['user_id' => auth()->id()],
+        $checkout = Checkout::updateOrCreate(
+            ['user_id' => auth()->id()],       // search with user_id  if exists ? update : create
             [
                 'total_price' => $request->input('total_amount'),
             ]
         );
+
+        $user = auth()->user();
+
+        $paymentOptions = array([
+            'amount' => $checkout->total_price * 100,
+            'currency' => 'mmk',
+            'payment_method_types' => ['card'],     // https://stripe.com/docs/payments/payment-methods/overview
+            'statement_descriptor' => 'Yangon Mart',
+            'description' => 'Online Purchase',
+            'receipt_email' => $user->email,
+            'metadata' => [
+                'customer_id' => $user->id,
+            ]
+        ]);
+
+        /** check if a payment intent ID already exists in the checkout record or not */
+        if(!$checkout->payment_intent_id) 
+        {
+            $paymentIntent = $this->createPayment($paymentOptions);
+            $checkout->payment_intent_id = $paymentIntent->id;
+            $checkout->save();
+        } 
+        else 
+        {
+            $paymentIntent = $this->updatePayment($checkout->payment_intent_id, $paymentOptions);
+        }
 
         return redirect()->route('checkout.index');
     }

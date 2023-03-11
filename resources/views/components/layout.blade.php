@@ -35,7 +35,7 @@
                 </div>
 
                 {{-- lang, cart, login --}}
-                <div class="flex items-center h-9 space-x-6 lg:space-x-8">
+                <div class="flex items-center h-9 space-x-6 xl:space-x-8">
                     <div x-data="{ open: false }" class="relative">
                         <button @@click="open = !open" class="flex items-center text-sm lg:text-base hover:text-gray-600">
                             EN

@@ -29,11 +29,12 @@ Route::middleware(['auth'])->group(function() {
     Route::post('/carts', [CartController::class, 'store']);
     Route::post('/carts/checkout', [CartController::class, 'checkout'])->name('carts.checkout');
     Route::get('/carts/{product:slug}', [CartController::class, 'show'])->name('carts.show');
-    Route::delete('/carts/{cart:id}', [CartController::class, 'destroy']);
+    Route::delete('/carts/{cart}', [CartController::class, 'destroy']);
 
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
-    Route::delete('/checkout/{checkout:payment_intent_id}', [CheckoutController::class, 'destroy'])->name('checkout.destroy');
+    Route::delete('/checkout/{checkout}', [CheckoutController::class, 'destroy'])->name('checkout.destroy');
 
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{orders:order_code}', [OrderController::class, 'show'])->name('orders.show');
     Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
 });

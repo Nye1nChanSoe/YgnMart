@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->string('order_no')->unique();
+            $table->string('order_code')->unique();
             $table->foreignId('user_id');
-            $table->string('payment_intent_id');
+            $table->string('payment_intent_id')->nullable();        // nullable if the payment is made with cash
             $table->string('payment_type');
             $table->integer('total_price');
             $table->text('description')->nullable();

@@ -19,8 +19,8 @@
                     init()
                     {
                     @foreach($carts as $cart)
-                        this.count += {{$cart->quantity}}
-                        this.total += {{$cart->product->price * $cart->quantity}}
+                        this.count += {{$cart->quantity}};
+                        this.total += {{$cart->product->price * $cart->quantity}};
                     @endforeach 
                     }
                 }"
@@ -60,10 +60,12 @@
                         </div>
                         <div class="font-semibold">
                             {{number_format($cart->product->price, 0, '.', ',')}}
+                            <span class="text-xs font-normal">K</span>
                         </div>
                     </div>
                     @endforeach
                 @endif
+                {{-- x-if completely add or remove elements rather than just changing it's CSS to display none like x-show  --}}
                 <template x-if="count == 0">
                     <div class="flex flex-col items-center">
                         <div class="mx-auto w-40 rotate-12">
@@ -83,7 +85,10 @@
                         <div>
                             <input type="hidden" name="total_amount" x-model="total">
                             SubTotal (<span x-text="count" class="font-semibold" id="quantity="></span> items) 
-                            <span x-text="total.toLocaleString('en-US')" class="text-lg font-semibold text-center bg-slate-100 px-3 py-[2px] rounded-lg"></span>
+                            <div class="bg-slate-100 px-3 py-[2px] rounded-lg inline-flex items-center space-x-1">
+                                <span x-text="total.toLocaleString('en-US')" class="text-lg font-semibold text-center"></span>
+                                <span class="text-xs">Kyat</span>
+                            </div>
                         </div>
                         <button type="submit" class="text-base bg-blue-500 text-white px-3 py-[4px] mt-6 rounded-lg shadow hover:bg-blue-600">
                             Proceed to checkout

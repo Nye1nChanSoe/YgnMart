@@ -1,43 +1,63 @@
 <x-layout>
     <x-container>
-        {{-- TODO: breadcrumbs --}}
-        {{-- <div class="my-10">
+        {{-- TODO: breadcrubs --}}
+        <div class="my-10">
             implement > breadcrumbs > links > here
-        </div> --}}
-        
-        <form id="payment-form" action="" method="POST" class="flex flex-col space-x-4 md:flex-row">
-            @csrf
-            {{-- Main Checkout UI --}}
-            <div class="basis-3/4 divide-y space-y-6">
+        </div>
 
-                {{-- TODO: Allow user to pick up or delivery for their purchases --}}
-                {{-- Address --}}
-                <div
+        {{-- The form wrapping around the whole checkout process --}}
+        <form 
+            x-data="{
+                payment: 'card',
+                total: 0,
+                quantities: [],
+                products: [],
+
+                init()
+                {
+                    this.total = {{$checkout->total_price}};
+                    @foreach($cartItems as $cart)
+                        this.quantities.push({{$cart->quantity}});
+                        this.products.push({{$cart->product->id}});
+                    @endforeach
+                }
+            }" 
+
+            action="" 
+            method="POST" 
+            x-bind:id = "payment==='cash' ? 'cash-payment-form' : 'card-payment-form'" 
+            class="flex justify-between"
+        >
+            @csrf
+            <div class="flex-1 space-y-6 divide-y mr-6 p-4">
+                <!-- Address -->
+                <div 
                     x-data="{
-                        open: false,
-                        text: {{$addresses->isEmpty() ? '\'Add\'' : '\'Change\''}},
+                        open: {{$addresses->isEmpty() ? 'true' : 'false'}},
                     }" 
-                    class="flex space-x-4 pt-6"
+                    class="flex justify-between space-x-4 mr-8"
                 >
-                    <div>
-                        <h1 class="text-sky-800 font-semibold">1</h1>
-                    </div>
-                    <div class="flex grow justify-between items-start pr-10">
+                    <h1 class="text-sky-800 font-semibold">1</h1>
+                    <div class="flex items-start flex-1">
                         <h2 class="font-semibold w-48">Delivery Address</h2>
-                        <div class="flex flex-col flex-1 mr-4 text-sm">
+                        <div class="flex flex-col flex-1 text-sm mr-6">
                             <div>
                                 @if(!$addresses->isEmpty())
                                     @foreach ($addresses as $address)
                                         @if ($address->is_default)
-                                            <p>{{$address->user->name}}</p>
-                                            <p>{{$address->street}}, {{$address->ward}}, {{$address->township}}</p>
+                                        <p>{{$address->user->name}}</p>
+                                        <p>{{$address->street}}, {{$address->ward}}, {{$address->township}}</p>
                                         @endif
                                     @endforeach
                                 @else
-                                    <button type="button" x-on:click="open=!open"><p class="text-gray-400 text-sm cursor-pointer">Please add the address for delivery</p></button>
+                                <p class="text-gray-400 text-sm cursor-pointer">Please add the address for delivery</p>
                                 @endif
                             </div>
-                            <div x-show="open" class="border rounded-lg mt-6" x-transition>
+                            <div 
+                                x-show="open" 
+                                class="border rounded-lg mt-6" 
+                                x-transition
+                            >
                                 <div class="p-3">
                                     <h2 class="font-semibold mb-3">Your addresses</h2>
                                     @foreach ($addresses as $address)
@@ -54,168 +74,340 @@
                                 </div>
                             </div>
                         </div>
-
-                        <button type="button" x-on:click="open=!open" class="text-blue-500 hover:text-blue-700 text-sm" x-text="text"></button>
-                    </div>
-                </div>
-
-                {{-- Payment --}}
-                <div 
-                    x-data="{
-                        open:false, 
-                        payment:'card',
-                    }" 
-                    class="flex space-x-4 pt-6"
-                >
-                    <div>
-                        <h1 class="text-sky-800 font-semibold">2</h1>
-                    </div>
-                    <div class="flex grow justify-between items-start pr-10">
-                        <h2 class="font-semibold w-48">Payment Method</h2>
-                        <div class="flex flex-col flex-1 mr-10">
-                            <div class="flex-1 text-sm">
-                                <div x-show="payment==='cash'">
-                                    <p class="text-gray-400 text-sm">Pay with <span class="text-gray-600 font-semibold">cash<x-icon name="cash" class="inline ml-1.5" /></span></p>
-                                </div>
-                                <div x-show="payment==='card'" x-transition>
-                                    <div class="flex flex-col">
-                                        <input type="hidden" id="client-secret-key" value="{{$clientSecret}}">
-                                        <div class="mb-2">
-                                            <label for="card-number" class="block text-gray-600 mb-2">Card Number <span class="text-red-300">*</span></label>
-                                            <div id="card-number" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline focus:outline-slate-300"></div>
-                                        </div>
-                                        <div class="flex justify-between gap-x-4 mb-2">
-                                            <div class="flex-1">
-                                                <label for="card-expiry-date" class="block text-gray-600 mb-2">Card Expiry <span class="text-red-300">*</span></label>
-                                                <div id="card-expiry-date" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline focus:outline-slate-300"></div>
-                                            </div>
-                                            <div class="flex-1">
-                                                <label for="card-cvc" class="block text-gray-600 mb-2">Card CVC <span class="text-red-300">*</span></label>
-                                                <div id="card-cvc" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline focus:outline-slate-300"></div>
-                                            </div>
-                                        </div>
-                                        <div id="card-errors" role="alert" class="text-red-500 mb-4"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div x-show="open" class="flex-1 border border-slate-300 rounded-lg px-4 py-2 mt-7 text-sm space-y-2" x-cloak x-transition>
-                                <div>
-                                    <label for="">Cash</label>
-                                    <input type="radio" name="payment_method" value="cash" x-model="payment" x-on:click="open=!open">                            
-                                </div>
-                                <div>
-                                    <label for="">Credit Card</label>
-                                    <input type="radio" name="payment_method" value="card" x-model="payment" x-on:click="open=!open">                            
-                                </div>
-                            </div>
-                        </div>
-                        <button type="button" x-on:click="open=!open">
-                            <x-icon name="chevron-down" x-bind:class="{ '-rotate-180 duration-400':open }"/>
+                        <button type="button" @@click="open=!open">
+                            <x-icon name="chevron-down" class="hover:bg-slate-50 rounded-full" x-bind:class="{ '-rotate-180 duration-400':open }" />
                         </button>
                     </div>
                 </div>
+                <!-- End Address -->
 
-                {{-- Discount Coupons --}}
-                <div
+                <!-- Payment -->
+                <div 
                     x-data="{
                         open: false,
                     }"
-                    class="flex space-x-4 pt-6"
+                    class="flex justify-between space-x-4 pt-5 mr-8"
                 >
-                    <div>
-                        <h1 class="text-sky-800 font-semibold">3</h1>
-                    </div>
-                    <div class="flex grow justify-between items-start pr-10">
-                        <h2 class="font-semibold w-48">Apply coupons</h2>
-                        <div class="flex flex-col flex-1">
-                            <div class="flex-1 text-sm">
-                                <label for="">Discount code: </label>
-                                <input type="text" name="discount_coupon" class="bg-gray-50 py-1 px-2 border border-gray-300 text-gray-900 text-sm rounded-lg outline-1 outline-sky-800" placeholder="Example D-5t87z">
-                            </div>
-                            <div x-show="open" class="flex-1 border rounded-lg mt-7" x-cloak x-transition>
-                                <div class="p-3">
-                                    <h2 class="font-semibold mb-3">Your discount coupons</h2>
-                                    <p class="text-gray-400 text-sm">You do not have any discount coupons currently</p>
+                    <h1 class="text-sky-800 font-semibold">2</h1>
+                    <div class="flex items-start flex-1">
+                        <h2 class="font-semibold w-48">Payment Method</h2>
+                        <div class="flex flex-col flex-1 text-sm mr-10">
+                            {{-- radio buttons --}}
+                            <div>
+                                <div class="flex items-center mb-3">
+                                    <input id="payment-cash" type="radio" name="payment_method" value="cash" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300" x-model="payment" checked>
+                                    <label for="payment-cash" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Pay with cash</label>
                                 </div>
-                                <div class="p-3 bg-slate-100">
-                                    <button type="button" class="bg-blue-500 text-white py-1 px-2 text-sm rounded-lg hover:bg-blue-600">Use this coupon</button>
+                                <div class="flex items-center">
+                                    <input id="payment-card" type="radio" name="payment_method" value="card" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300" x-model="payment">
+                                    <label for="payment-card" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Pay with cards</label>
+                                    <x-icon name="card-solid" class="ml-2 text-blue-400"/>
+                                </div>
+                            </div>
+
+                            <div x-show="payment==='card'" class="mt-6" x-transition>
+                                <div class="flex flex-col">
+                                    <input type="hidden" id="client-secret-key" name="client_secret_key" value="{{$clientSecret}}">
+                                    <input type="hidden" id="checkout-id" name="checkout_id" value="{{$checkout->id}}">
+                                    <div class="mb-2">
+                                        <label for="card-number" class="block text-gray-600 mb-2">Card Number <span class="text-red-300">*</span></label>
+                                        <div id="card-number" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline focus:outline-slate-300"></div>
+                                    </div>
+                                    <div class="flex justify-between mb-2 md:gap-x-2 lg:gap-x-4">
+                                        <div class="flex-1">
+                                            <label for="card-expiry-date" class="block text-gray-600 mb-2">Card Expiry <span class="text-red-300">*</span></label>
+                                            <div id="card-expiry-date" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline focus:outline-slate-300"></div>
+                                        </div>
+                                        <div class="flex-1">
+                                            <label for="card-cvc" class="block text-gray-600 mb-2">Card CVC <span class="text-red-300">*</span></label>
+                                            <div id="card-cvc" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline focus:outline-slate-300"></div>
+                                        </div>
+                                    </div>
+                                    <div id="card-errors" role="alert" class="text-red-500"></div>
                                 </div>
                             </div>
                         </div>
-                        <button type="button" x-on:click="open=!open">
-                            <x-icon name="chevron-down" x-bind:class="{ '-rotate-180 duration-400':open }"/>
-                        </button>
                     </div>
                 </div>
+                <!-- End Payment -->
 
-                {{-- Product Review  --}}
-                <div
+                <!-- Product Review -->
+                <div 
                     x-data="{
                         open: true,
-                        totalPrice: 0,
-                        totalQuantity: 0,
-                        products: [],
-                    }" 
-                    class="flex space-x-4 pt-6"
+                    }"
+                    class="flex justify-between space-x-4 pt-5 mr-8"
                 >
-                    <div>
-                        <h1 class="text-sky-800 font-semibold">4</h1>
-                    </div>
-                    <div class="flex-1 pr-10 mb-5">
-                        <div class="flex items-start justify-between">
-                            <h2 class="font-semibold w-48 mb-4">Product review</h2>
-                            <button type="button" x-on:click="open=!open">
-                                <x-icon name="chevron-down" x-bind:class="{ '-rotate-180 duration-400':open }"/>
+                    <h1 class="text-sky-800 font-semibold">3</h1>
+                    <div class="flex-1 items-start">
+                        <div class="flex flex-1 justify-between">
+                            <h2 class="font-semibold w-48">Product Review</h2>
+                            <button type="button" @@click="open=!open">
+                                <x-icon name="chevron-down" class="hover:bg-slate-50 rounded-full" x-bind:class="{ '-rotate-180 duration-400':open }" />
                             </button>
                         </div>
-                        <div x-show="open" class="border p-1 divide-y mb-4 rounded-lg" x-transition>
+
+                        {{-- products display --}}
+                        <div x-show="open" class="mt-4 mr-10 p-3 border rounded-lg divide-y space-y-3">
                             @foreach ($cartItems as $cart)
-                                <div class="flex space-x-4 items-center text-xs p-3">
-                                    <img src="{{$cart->product->image ? asset($cart->product->image) : asset('images/no-image.png')}}" alt="" width="120" style="object-fit:contain">
-                                    <div class="space-y-1 text-gray-800">
-                                        <p class="">{{$cart->product->name}}</p>
-                                        <p>Quantity <span class="font-semibold">{{$cart->quantity}}</span></p>
-                                        <p class="py-1">Price <span class="font-semibold">{{$cart->product->price * $cart->quantity}}</span></p>
+                            <div class="flex items-center">
+                                <img src="{{$cart->product->image ? asset($cart->product->image) : asset('images/no-image.png')}}" alt="" width="120" style="object-fit:contain">
+                                <div class="text-sm ml-8">
+                                    <p class="text-gray-900">{{$cart->product->name}}</p>
+                                    <div class="bg-slate-50 rounded-lg mt-2 p-2 w-36">
+                                        <p>Quantity: <span class="font-semibold ml-1">{{$cart->quantity}}</span></p>
+                                        <p>Price: <span class="font-semibold text-lime-700 ml-1">{{number_format($cart->product->price * $cart->quantity, 0, '.', ',')}}</span> Kyat</p>
                                     </div>
                                 </div>
-                                <input type="hidden" name="items[]" value="{{$cart->id}}">
-                                <input type="hidden" name="total_amount" value="{{$cart->product->price * $cart->quantity}}">
+                            </div>
                             @endforeach
                         </div>
 
-                        {{-- Order Total --}}
-                        <div class="flex border rounded-lg p-6 space-x-6 items-center justify-between">
-                            <button id="payment-submit" type="submit" class="shadow bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Order Now</button>
-                            <div>
-                                <p class="text-sm">Total price</p>
-                                <p class="text-sm">Delivery fees</p>
-                            </div>
-                            <p>Order Total</p>
-                        </div>
+                        {{-- final order --}}
+                        <div class="flex justify-between items-center border rounded-lg p-4 mt-4 mr-10">
 
+                            <button id="payment-submit" type="submit" x-on:click="processOrder" class="w-40 px-4 py-2 bg-blue-500 text-white rounded-lg text-lg hover:bg-blue-600">Order Now</button>
+                            <div id="payment-loading" class="flex justify-center items-center w-40 px-4 py-2 bg-blue-50 rounded-lg text-lg space-x-2">
+                                <span class="text-gray-500">Ordering</span>
+                                <div class="spinner"></div>
+                            </div>
+
+                            <div class="flex flex-col items-center text-xl">
+                                <h1 class="text-lg">Total</h1>
+                                <div class="flex items-center">
+                                    <p x-text="total.toLocaleString('en-US')" class="font-semibold text-lime-700 inline text-2xl"></p>
+                                    <span class="text-xs ml-2"> Kyat</span>
+                                </div>
+                            </div>
+                        </div>
+                        <input id="quantities" type="hidden" name="quantities" value="" x-model="quantities">
+                        <input id="products" type="hidden" name="products" value="" x-model="products">
+                        <input id="total-amount" type="hidden" name="total_amount" value="" x-model="total">
                     </div>
                 </div>
+                <!-- End Review -->
             </div>
 
-            {{-- TODO: Quick checkout --}}
-            <div class="basis-1/4 border p-3 px-5 self-start space-y-3">
-                <h2 class="text-center font-semibold">Order Summary</h2>
+            {{-- quick purchase --}}
+            <div class="bg-slate-100 p-4">
+                Order Summary
             </div>
         </form>
+
     </x-container>
 </x-layout>
 
 <script src="https://js.stripe.com/v3/"></script>
 <script>
-    /** declare global variables which are necessary in external JavaScript file to handle Stripe payments */
-    window.publicApiKeys = {
-        stripeKey: "{{ env('STRIPE_PUBLIC_KEY') }}"
-    };
+var stripe = Stripe("{{ env('STRIPE_PUBLIC_KEY') }}");
 
-    window.user = {
-        name: '{{ auth()->user()->name }}',
-        email: '{{ auth()->user()->email }}',
-        phone_number: '{{ auth()->user()->phone_number }}'
-    };
+/** create pre-build stripe elements like card number, card expiry ... */
+var elements = stripe.elements();
+var cardNumberElement = elements.create('cardNumber');
+var cardExpiryElement = elements.create('cardExpiry');
+var cardCvcElement = elements.create('cardCvc');
+
+/** Handle validation errors */
+var displayError = document.getElementById('card-errors');
+cardNumberElement.addEventListener('change', function(event) {
+    if(event.error) {
+        displayError.textContent = event.error.message;
+    } else {
+        displayError.textContent = "";
+    }
+});
+cardExpiryElement.addEventListener('change', function(event) {
+    if(event.error) {
+        displayError.textContent = event.error.message;
+    } else {
+        displayError.textContent = "";
+    }
+});
+cardCvcElement.addEventListener('change', function(event) {
+    if(event.error) {
+        displayError.textContent = event.error.message;
+    } else {
+        displayError.textContent = "";
+    }
+});
+
+cardNumberElement.mount('#card-number');
+cardExpiryElement.mount('#card-expiry-date');
+cardCvcElement.mount('#card-cvc');
+
+var paymentSubmit = document.getElementById('payment-submit');
+var paymentLoading = document.getElementById('payment-loading');
+paymentLoading.style.display = 'none';
+
+/** input fields */
+var totalAmount = document.getElementById('total-amount');
+var products = document.getElementById('products');
+var quantities = document.getElementById('quantities');
+var id = document.getElementById('checkout-id');
+
+function processOrder()
+{
+    var cashForm = document.getElementById('cash-payment-form');
+    var cardForm = document.getElementById('card-payment-form');
+
+    if(cashForm) 
+    {
+        console.log('Cash Form submitted asynchronously');
+        cashForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            paymentSubmit.style.display = 'none';
+            paymentLoading.style.display = 'flex';
+            const formData = {
+                total_amount: totalAmount.value,
+                products: products.value,
+                quantities: quantities.value,
+                payment_method: 'cash'
+            };
+            console.log('Purchase Data: ', formData);
+
+            // send AJAX request to remove checkout record and create new order record
+            fetch('/checkout/' + id.value, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    // include CSRF TOKEN in the request so the server can verify it
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                }
+            })
+            .then(function(response) {
+                if(!response.ok) {
+                    throw new Error('Internal server error. Response was not OK');
+                }
+                return response.json();
+            })
+            .then(function(data) {
+                console.log(data.message);
+                fetch('/orders', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    },
+                    body: JSON.stringify({
+                        form_data: formData     // send form data in the json payload to create order record
+                    })
+                })
+                .then(function(response) {
+                    if(!response.ok) {
+                        throw new Error('Internal server error. Response was not OK');
+                    }
+                    return response.json();
+                })
+                .then(function(data) {
+                    console.log(data.message);
+
+                    window.location.href = '/orders/' + data.order_code;
+
+                })
+                .catch(function(error) {
+                    console.log('Error: ', error);
+                });
+            })
+            .catch(function(error) {
+                console.log('Error: ', error);
+            });
+        });
+    }
+
+    if(cardForm) {
+        console.log('Card Form submitted asynchronously');
+        cardForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            paymentSubmit.style.display = 'none';
+            paymentLoading.style.display = 'flex';
+            const formData = {
+                total_amount: totalAmount.value,
+                products: products.value,
+                quantities: quantities.value,
+                payment_method: 'card'
+            };
+            console.log('Purchase Data: ', formData);
+
+            /* 
+             Client secret is a unique string generated by the stripe server and sent
+             to the client (this application). It is used to authenticate the client (my server)
+             and verified that the payment information is being submitted by the authorized user
+            */
+            const clientSecret = document.getElementById('client-secret-key').value;
+            stripe.confirmCardPayment(clientSecret, {
+                payment_method: {
+                    card: cardNumberElement,
+                    billing_details: {
+                        name: "{{auth()->user()->name}}",
+                        email: "{{auth()->user()->email}}",
+                        phone: "{{auth()->user()->phone_number}}",
+                    }
+                },
+            })
+            .then(function(result) {    // Stripe send back a response containing a result object
+                if(result.error) 
+                {
+                    console.log(result.error.message);
+                    displayError.textContent = result.error.message;
+                    paymentSubmit.style.display = 'block';
+                    paymentLoading.style.display = 'none';
+                }
+                else
+                {
+                    console.log('Payment Status: ', result.paymentIntent.status);
+                    var paymentIntentId = result.paymentIntent.id;
+
+                    // send AJAX request to remove checkout record and create new order record
+                    fetch('/checkout/' + id.value, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        },
+                    })
+                    .then(function(response) {
+                        if(!response.ok) {
+                            throw new Error('Internal server error. Response was not OK');
+                        }
+                        return response.json();
+                    })
+                    .then(function(data) {
+                        console.log(data.message); 
+                        fetch('/orders', {      // send another AJAX request to create a new order
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                            },
+                            body: JSON.stringify({
+                                payment_intent_id: paymentIntentId,
+                                form_data: formData 
+                            })
+                        })
+                        .then(function(response) {
+                            if(!response.ok) {
+                                throw new Error('Internal server error. Response was not OK');
+                            }
+                            return response.json();
+                        })
+                        .then(function(data) {
+                            console.log(data.message);  // handle the response data as needed
+
+                            window.location.href = '/orders/' + data.order_code;
+
+                        })
+                        .catch(function(error) {
+                            console.log('Error: ', error);
+                            displayError.textContent = error.message;
+                        });
+                    })
+                    .catch(function(error) {
+                        console.log('Error: ', error);
+                        displayError.textContent = error.message;
+                    });
+                }
+            });
+        });
+    }   
+}
 </script>
-<script src="{{ asset('/js/stripePayment.js') }}"></script>
