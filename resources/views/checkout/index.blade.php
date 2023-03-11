@@ -289,6 +289,7 @@ function processOrder()
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                     },
                     body: JSON.stringify({
+                        payment_intent_id: "{{$checkout->payment_intent_id}}",
                         form_data: formData     // send form data in the json payload to create order record
                     })
                 })

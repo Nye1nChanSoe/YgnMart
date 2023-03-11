@@ -49,7 +49,7 @@ class OrderController extends Controller
         if($paymentMethod == 'cash')
         {
             $order->payment_type = $paymentMethod;
-            // $this->cancelPaymentOnStripe($request->json('payment_intent_id'));
+            $this->cancelPaymentOnStripe($request->json('payment_intent_id'));
         }
         
         if($paymentMethod == 'card')
