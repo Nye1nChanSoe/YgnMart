@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
-use App\Models\Product;
 use App\Traits\StripePaymentTrait;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -14,9 +14,9 @@ class OrderController extends Controller
 {
     use StripePaymentTrait;
 
-    public function show()
+    public function show(Order $order)
     {
-        return view('orders.show');
+        return view('orders.show', compact('order'));
     }
 
     /** 
@@ -33,6 +33,19 @@ class OrderController extends Controller
         ]);
     }
 
+    public function success(Request $request)
+    {
+        try 
+        {
+            $order = Order::where('order_code', $request->input('order'))->firstOrFail();
+            return view('orders.success', compact(['order']));
+        } 
+        catch (ModelNotFoundException $e) 
+        {
+            return redirect()->route('home');
+        }
+    }
+
     /**
      * @param string $paymentMethod
      * @return Order
@@ -42,7 +55,7 @@ class OrderController extends Controller
         $paymentMethod = $request->json('form_data.payment_method');
 
         $order = new Order();
-        $order->order_code = 'od_'.Str::uuid()->toString();
+        $order->order_code = 'od-'.Str::uuid()->toString();
         $order->user_id = auth()->id();
         $order->total_price = $request->json('form_data.total_amount');
         $order->description = 'Payment test description';
@@ -60,13 +73,15 @@ class OrderController extends Controller
 
         $order->save();
 
-        /** create order_product records */
         $productIdArray = explode(",", $request->json('form_data.products'));
         $quantityArray = explode(",", $request->json('form_data.quantities'));
+        
         for($i = 0; $i < count($productIdArray); ++ $i)
         {
             $records[$productIdArray[$i]] = ['quantity' => $quantityArray[$i]];
         }
+
+        /** create order_product records */
         $order->products()->attach($records);
 
         return $order;

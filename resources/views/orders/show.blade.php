@@ -1,3 +1,5 @@
 <x-layout>
-    hello
+   <x-container>
+        {{$order->id}}
+   </x-container>
 </x-layout>

@@ -1,3 +1,7 @@
+@php
+    $user = auth()->user();    
+@endphp
+
 <x-layout>
     <x-container>
         {{-- TODO: breadcrubs --}}
@@ -75,7 +79,7 @@
                             </div>
                         </div>
                         <button type="button" @@click="open=!open">
-                            <x-icon name="chevron-down" class="hover:bg-slate-50 rounded-full" x-bind:class="{ '-rotate-180 duration-400':open }" />
+                            <x-icon name="chevron-down" class="hover:text-blue-600 rounded-full" x-bind:class="{ '-rotate-180 duration-400':open }" />
                         </button>
                     </div>
                 </div>
@@ -91,7 +95,7 @@
                     <h1 class="text-sky-800 font-semibold">2</h1>
                     <div class="flex items-start flex-1">
                         <h2 class="font-semibold w-48">Payment Method</h2>
-                        <div class="flex flex-col flex-1 text-sm mr-10">
+                        <div class="flex flex-col flex-1 text-sm mr-6">
                             {{-- radio buttons --}}
                             <div>
                                 <div class="flex items-center mb-3">
@@ -106,24 +110,32 @@
                             </div>
 
                             <div x-show="payment==='card'" class="mt-6" x-transition>
-                                <div class="flex flex-col">
-                                    <input type="hidden" id="client-secret-key" name="client_secret_key" value="{{$clientSecret}}">
-                                    <input type="hidden" id="checkout-id" name="checkout_id" value="{{$checkout->id}}">
-                                    <div class="mb-2">
-                                        <label for="card-number" class="block text-gray-600 mb-2">Card Number <span class="text-red-300">*</span></label>
-                                        <div id="card-number" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline focus:outline-slate-300"></div>
+                                <input type="hidden" id="client-secret-key" name="client_secret_key" value="{{$clientSecret}}">
+                                <input type="hidden" id="checkout-id" name="checkout_id" value="{{$checkout->id}}">
+                                <div id="card" class="appearance-none border border-black/25 rounded-lg w-80 py-2 px-3"></div>
+                                <div id="card-errors" role="alert" class="text-red-500 mt-2"></div>
+                            </div>
+                        </div>
+                        <div x-data="{ show:false }" class="relative" @@mouseleave="show=false">
+                            <button type="button" @@mouseenter="show=true">
+                                <x-icon name="info" class="text-black hover:text-blue-600" />
+                            </button>
+                            <div x-show="show" class="absolute top-5 right-0 border p-2 bg-slate-100 rounded-lg">
+                                <div class="text-xs text-gray-700 w-60">
+                                    <h2 class="mb-2">You can test the payment</h2>
+                                    <div class="flex space-x-4">
+                                        <span class="text-sky-500">4242424242424242</span>
+                                        <span class="text-gray-500">Succeessful payment</span>
                                     </div>
-                                    <div class="flex justify-between mb-2 md:gap-x-2 lg:gap-x-4">
-                                        <div class="flex-1">
-                                            <label for="card-expiry-date" class="block text-gray-600 mb-2">Card Expiry <span class="text-red-300">*</span></label>
-                                            <div id="card-expiry-date" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline focus:outline-slate-300"></div>
-                                        </div>
-                                        <div class="flex-1">
-                                            <label for="card-cvc" class="block text-gray-600 mb-2">Card CVC <span class="text-red-300">*</span></label>
-                                            <div id="card-cvc" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline focus:outline-slate-300"></div>
-                                        </div>
+                                    {{-- <div class="flex space-x-4">
+                                        <span class="text-sky-500">4000000000009995</span>
+                                        <span class="text-gray-500">Always declined</span>
                                     </div>
-                                    <div id="card-errors" role="alert" class="text-red-500"></div>
+                                    <div class="flex space-x-4">
+                                        <span class="text-sky-500">4000002500003155</span>
+                                        <span class="text-gray-500">Requires authentication</span>
+                                    </div> --}}
+                                    {{-- <p class="mt-1.5 mr-2 text-gray-500">Check more <a href="https://stripe.com/docs/testing" target="_blank" class="underline hover:text-gray-700">https://stripe.com/docs/testing</a></p> --}}
                                 </div>
                             </div>
                         </div>
@@ -143,7 +155,7 @@
                         <div class="flex flex-1 justify-between">
                             <h2 class="font-semibold w-48">Product Review</h2>
                             <button type="button" @@click="open=!open">
-                                <x-icon name="chevron-down" class="hover:bg-slate-50 rounded-full" x-bind:class="{ '-rotate-180 duration-400':open }" />
+                                <x-icon name="chevron-down" class="hover:text-blue-600 rounded-full" x-bind:class="{ '-rotate-180 duration-400':open }" />
                             </button>
                         </div>
 
@@ -201,29 +213,36 @@
 <script>
 var stripe = Stripe("{{ env('STRIPE_PUBLIC_KEY') }}");
 
-/** create pre-build stripe elements like card number, card expiry ... */
+
+/** 
+ * create pre-build stripe elements like card number, card expiry ... 
+ * https://stripe.com/docs/payments/accept-card-payments?platform=web&ui=elements
+ */
 var elements = stripe.elements();
-var cardNumberElement = elements.create('cardNumber');
-var cardExpiryElement = elements.create('cardExpiry');
-var cardCvcElement = elements.create('cardCvc');
+
+var style = {
+    base: {
+        fontFamily: 'Roboto, Open Sans, Segoe UI, sans-serif',
+        fontSize: '16px',
+        fontSmoothing: 'antialiased',
+        '::placeholder': {
+            color: 'gray'
+        },
+        color: 'black',
+        fontWeight: 500,
+    },
+    invalid: {
+        color: '#D22B2B',
+    }
+};
+
+var cardElement = elements.create('card', {style:style});
+
+cardElement.mount('#card');
 
 /** Handle validation errors */
 var displayError = document.getElementById('card-errors');
-cardNumberElement.addEventListener('change', function(event) {
-    if(event.error) {
-        displayError.textContent = event.error.message;
-    } else {
-        displayError.textContent = "";
-    }
-});
-cardExpiryElement.addEventListener('change', function(event) {
-    if(event.error) {
-        displayError.textContent = event.error.message;
-    } else {
-        displayError.textContent = "";
-    }
-});
-cardCvcElement.addEventListener('change', function(event) {
+cardElement.addEventListener('change', function(event) {
     if(event.error) {
         displayError.textContent = event.error.message;
     } else {
@@ -231,9 +250,6 @@ cardCvcElement.addEventListener('change', function(event) {
     }
 });
 
-cardNumberElement.mount('#card-number');
-cardExpiryElement.mount('#card-expiry-date');
-cardCvcElement.mount('#card-cvc');
 
 var paymentSubmit = document.getElementById('payment-submit');
 var paymentLoading = document.getElementById('payment-loading');
@@ -302,7 +318,7 @@ function processOrder()
                 .then(function(data) {
                     console.log(data.message);
 
-                    window.location.href = '/orders/' + data.order_code;
+                    window.location.href = '/orders/success?order=' + encodeURIComponent(data.order_code);
 
                 })
                 .catch(function(error) {
@@ -339,13 +355,13 @@ function processOrder()
             const clientSecret = document.getElementById('client-secret-key').value;
             stripe.confirmCardPayment(clientSecret, {
                 payment_method: {
-                    card: cardNumberElement,
+                    card: cardElement,
                     billing_details: {
-                        name: "{{auth()->user()->name}}",
-                        email: "{{auth()->user()->email}}",
-                        phone: "{{auth()->user()->phone_number}}",
-                    }
-                },
+                        name: "{{$user->name}}",
+                        email: "{{$user->email}}",
+                        phone: "{{$user->phone_number}}",
+                    },
+                }
             })
             .then(function(result) {    // Stripe send back a response containing a result object
                 if(result.error) 
@@ -396,7 +412,7 @@ function processOrder()
                         .then(function(data) {
                             console.log(data.message);  // handle the response data as needed
 
-                            window.location.href = '/orders/' + data.order_code;
+                            window.location.href = '/orders/success?order=' + encodeURIComponent(data.order_code);
 
                         })
                         .catch(function(error) {
