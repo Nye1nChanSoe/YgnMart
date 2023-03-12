@@ -73,3 +73,10 @@
         transform: rotate(360deg);       
     }
 }
+
+.bg-forcefields {
+    background-image: url("/public/images/scattered-forcefields.svg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
