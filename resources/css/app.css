@@ -74,9 +74,11 @@
     }
 }
 
-.bg-forcefields {
-    background-image: url("/public/images/scattered-forcefields.svg");
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
+@media screen and (min-width: 768px) {
+    .bg-forcefields {
+        background-image: url("/public/images/scattered-forcefields.svg");
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+    }
 }

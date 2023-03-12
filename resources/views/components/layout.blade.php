@@ -10,10 +10,31 @@
     <title>Home Page</title>
 </head>
 <body>
-    <section x-data="notification">
+    <section x-data="notification" class="relative">
+
+        {{-- hamburger menu for small screen sizes --}}
+        <div class="block absolute top-6 w-full px-2 z-30 sm:hidden">
+            <div 
+                x-data="{ open:false }" 
+                class="relative"
+                @@click.outside="open=false"
+            >
+                <button type="button" @@click="open=!open" class="absolute right-3">
+                    <x-icon name="hamburger" x-show="!open" />
+                    <x-icon name="close" x-show="open" />
+                </button>
+                <div x-show="open" class="absolute top-6 w-full rounded drop-shadow-xl bg-white" x-cloak x-transition>
+                    @foreach (App\Models\CategoryType::all() as $categoryType)
+                    {{-- pass id to the view component class --}}
+                    <x-category-menu :id="$categoryType->id" type="{{$categoryType->type}}" />
+                    @endforeach
+                </div>
+            </div>
+        </div>
+        
 
         {{-- Logos and navigation --}}
-        <header class="container mx-auto space-y-4 mb-6 px-3 py-1 lg:px-8">
+        <header class="container mx-auto space-y-3 mb-4 px-3 py-1 lg:px-8">
             <div class="flex flex-col justify-between items-center space-y-5 py-2 md:flex-row md:space-y-0">
 
                 <div>
@@ -37,7 +58,7 @@
                 {{-- lang, cart, login --}}
                 <div class="flex items-center h-9 space-x-6 xl:space-x-8">
                     <div x-data="{ open: false }" class="relative">
-                        <button @@click="open = !open" class="flex items-center text-sm lg:text-base hover:text-gray-600">
+                        <button @@click="open = !open" class="flex items-center lg:text-base hover:text-gray-600">
                             EN
                             <x-icon name="chevron-right" class="inline pointer-events-none pl-1" x-bind:class="{ 'rotate-90 transition-all duration-400':open }" />
                         </button>
@@ -65,8 +86,7 @@
                 </div>
             </div>
 
-            {{-- TODO: sidebar accordion or hamburger menu in small screens --}}
-            <nav class="container mx-auto flex items-start flex-col justify-between md:flex-row md:items-center">
+            <nav class="hidden container mx-auto flex-row justify-between items-center sm:flex">
                 @foreach (App\Models\CategoryType::all() as $categoryType)
                 <x-category-dropdown
                     type="{{$categoryType->type}}"
@@ -145,7 +165,7 @@
             cartItemCounter: {{ App\Models\Cart::where('user_id', auth()->id())->count() }},
             addToCart() {
                 this.cartItemCounter = {{ App\Models\Cart::where('user_id', auth()->id())->count() }};
-                console.log(this.counter);
+                console.log(this.cartItemCounter);
             }
         }))
     });
