@@ -2,20 +2,19 @@
 
 namespace App\View\Components;
 
-use App\Models\Category;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\Component;
 
 class CategoryMenu extends Component
 {
     /**
-     * ID of the category_types table
+     * Main category type
      */
-    public $id;
+    public $type;
 
-    /** id passed from blade template :id=record->id */
-    public function __construct($id)
+    public function __construct($type)
     {
-        $this->id = $id;
+        $this->type = $type;
     }
 
     /**
@@ -25,7 +24,9 @@ class CategoryMenu extends Component
      */
     public function render()
     {
-        $categories = Category::where('category_type_id', $this->id)->get();
-        return view('components.category-menu', compact('categories'));
+        $subTypes = DB::table('categories')
+            ->where('type', $this->type)
+            ->pluck('sub_type');
+        return view('components.category-menu', compact('subTypes'));
     }
 }

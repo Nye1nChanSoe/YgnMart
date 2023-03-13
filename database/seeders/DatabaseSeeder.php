@@ -14,9 +14,6 @@ use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
-    /** category_types */
-    private array $categoryTypes = ['food', 'beverages', 'households'];
-
     /**categories */
     private array $foods = ['bakery', 'fish', 'fruits', 'meat', 'pantry staples', 'snacks' ,'seafood', 'seasonings', 'vegetables'];
     private array $beverages = ['alcohol', 'cold drinks', 'coffee', 'dairy', 'h2o', 'juice', 'milk', 'soft drinks', 'tea', 'water'];
@@ -43,7 +40,7 @@ class DatabaseSeeder extends Seeder
 
 
         /** to avoid unique items collision when seeding again */
-        CategoryType::truncate();
+        User::truncate();
         Category::truncate();
         Product::truncate();
 
@@ -58,41 +55,33 @@ class DatabaseSeeder extends Seeder
             'user_status' => 'active',
         ]);
 
-        /** seeding categoryTypes */
-        foreach($this->categoryTypes as $categoryType)
-        {
-            CategoryType::create([
-                'type' => $categoryType
-            ]);
-        }
-
         /** seeding categories */
         foreach($this->foods as $food) 
         {
             Category::factory()->create([
-                'name' => ucwords($food),
-                'category_type_id' => CategoryType::find(1),
+                'type' => 'Food',
+                'sub_type' => ucwords($food),
             ]);
         }
         foreach($this->beverages as $beverage) 
         {
             Category::factory()->create([
-                'name' => ucwords($beverage),
-                'category_type_id' => CategoryType::find(2),
+                'type' => 'Beverages',
+                'sub_type' => ucwords($beverage),
             ]);
         }
         foreach($this->households as $household) 
         {
             Category::factory()->create([
-                'name' => ucwords($household),
-                'category_type_id' => CategoryType::find(3),
+                'type' => 'Household',
+                'sub_type' => ucwords($household),
             ]);
         }
 
         /** seeding products */
         foreach($this->fruits as $fruit)
         {
-            $name = ucfirst('fresh '.$fruit.' '.rtrim(fake()->sentence(rand(6, 10)), '.'));
+            $name = ucfirst('fresh '.$fruit.' '.rtrim(fake()->sentence(rand(4, 6)), '.'));
             $product = Product::factory()->create([
                 'name' => $name,
                 'slug' => strtolower(str_replace(' ', '-', $name)),
@@ -100,31 +89,31 @@ class DatabaseSeeder extends Seeder
                 'image' => 'images/grocery/'.$fruit.'.jpeg',
             ]);
 
-            $categories = Category::where('name', 'fruits')->get();
+            $categories = Category::where('sub_type', 'fruits')->get();
             $product->categories()->sync($categories);
         }
         foreach($this->alcohols as $alcohol)
         {
-            $name = ucfirst('imported '.$alcohol.' '.rtrim(fake()->sentence(rand(6, 10)), '.'));
+            $name = ucfirst('imported '.$alcohol.' '.rtrim(fake()->sentence(rand(4, 6)), '.'));
             $product = Product::factory()->create([
                 'name' => $name,
                 'slug' => strtolower(str_replace(' ', '-', $name)),
                 'meta_type' => strtolower($alcohol),
                 // 'image' => 'images/grocery/'.$alcohol.'.jpeg',
             ]);
-            $categories = Category::where('name', 'alcohol')->get();
+            $categories = Category::where('sub_type', 'alcohol')->get();
             $product->categories()->sync($categories);
         }
         foreach($this->soft_drinks as $soft_drink)
         {
-            $name = ucfirst($soft_drink.' '.rtrim(fake()->sentence(rand(6, 10)), '.'));
+            $name = ucfirst($soft_drink.' '.rtrim(fake()->sentence(rand(4, 6)), '.'));
             $product = Product::factory()->create([
                 'name' => $name,
                 'slug' => strtolower(str_replace(' ', '-', $name)),
                 'meta_type' => strtolower($soft_drink),
                 // 'image' => 'images/grocery/'.$soft_drink.'.jpeg',
             ]);
-            $categories = Category::where('name', 'soft drinks')->get();
+            $categories = Category::where('sub_type', 'soft drinks')->get();
             $product->categories()->sync($categories);
         }
     }

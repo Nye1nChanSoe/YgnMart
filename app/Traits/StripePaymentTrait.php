@@ -2,6 +2,8 @@
 
 namespace App\Traits;
 
+use Illuminate\Support\Facades\Log;
+use Stripe\Exception\ApiErrorException;
 use Stripe\PaymentIntent;
 use Stripe\Stripe;
 
@@ -52,5 +54,32 @@ trait StripePaymentTrait
 
         $intent = PaymentIntent::update($id, $data);
         return $intent;
+    }
+
+    /**
+     * Cancel the specified Payment on Strip server
+     * 
+     * @param string $id PaymentIntent's id 
+     * @return void
+     */
+    public function cancelPayment($id)
+    {
+        $paymentIntent = $this->retrievePayment($id);
+
+        try 
+        {
+            if($paymentIntent->status !== 'succeeded' && $paymentIntent->status !== 'canceled') {
+                $paymentIntent->cancel();
+            } else {
+                Log::warning('Unexpected payment intent status: '. $paymentIntent->status);
+            }
+        } 
+        catch(ApiErrorException $e) 
+        {
+            Log::error('Error canceling payment intent: '. $e->getMessage());
+            return response()->json([
+                'message' => 'Error canceling payment intent',
+            ], 400);
+        }
     }
 }

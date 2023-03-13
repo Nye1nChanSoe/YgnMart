@@ -6,9 +6,8 @@ use App\Models\Order;
 use App\Traits\StripePaymentTrait;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
-use Stripe\Exception\ApiErrorException;
 
 class OrderController extends Controller
 {
@@ -47,6 +46,8 @@ class OrderController extends Controller
     }
 
     /**
+     * Process the order based on the payment method
+     * 
      * @param string $paymentMethod
      * @return Order
      */
@@ -55,7 +56,7 @@ class OrderController extends Controller
         $paymentMethod = $request->json('form_data.payment_method');
 
         $order = new Order();
-        $order->order_code = 'od-'.Str::uuid()->toString();
+        $order->order_code = 'c' . Carbon::now()->format('yds') . strtolower(Str::random('3'));
         $order->user_id = auth()->id();
         $order->total_price = $request->json('form_data.total_amount');
         $order->description = 'Payment test description';
@@ -63,7 +64,7 @@ class OrderController extends Controller
         if($paymentMethod == 'cash')
         {
             $order->payment_type = $paymentMethod;
-            $this->cancelPaymentOnStripe($request->json('payment_intent_id'));
+            $this->cancelPayment($request->json('payment_intent_id'));
         }
         if($paymentMethod == 'card')
         {
@@ -85,30 +86,5 @@ class OrderController extends Controller
         $order->products()->attach($records);
 
         return $order;
-    }
-
-    /**
-     * @param string $paymentIntentId Stripe's unique identifier for payment intents
-     * @return void
-     */
-    protected function cancelPaymentOnStripe($paymentIntentId)
-    {
-        $paymentIntent = $this->retrievePayment($paymentIntentId);
-
-        try 
-        {
-            if($paymentIntent->status !== 'succeeded' && $paymentIntent->status !== 'canceled') {
-                $paymentIntent->cancel();
-            } else {
-                Log::warning('Unexpected payment intent status: '. $paymentIntent->status);
-            }
-        } 
-        catch(ApiErrorException $e) 
-        {
-            Log::error('Error canceling payment intent: '. $e->getMessage());
-            return response()->json([
-                'message' => 'Error canceling payment intent',
-            ], 400);
-        }
     }
 }

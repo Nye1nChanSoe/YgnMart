@@ -1,3 +1,8 @@
+@php
+use Illuminate\Support\Facades\DB;
+$types = DB::table('categories')->distinct('type')->pluck('type');
+@endphp
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,7 +14,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <title>Home Page</title>
 </head>
-<body>
+<body class="antialiased ">
     <section x-data="notification" class="relative">
 
         {{-- hamburger menu for small screen sizes --}}
@@ -24,9 +29,8 @@
                     <x-icon name="close" x-show="open" />
                 </button>
                 <div x-show="open" class="absolute top-6 w-full rounded drop-shadow-xl bg-white" x-cloak x-transition>
-                    @foreach (App\Models\CategoryType::all() as $categoryType)
-                    {{-- pass id to the view component class --}}
-                    <x-category-menu :id="$categoryType->id" type="{{$categoryType->type}}" />
+                    @foreach ($types as $type)
+                    <x-category-menu :type="$type" />
                     @endforeach
                 </div>
             </div>
@@ -86,12 +90,10 @@
                 </div>
             </div>
 
+            {{-- Navigation --}}
             <nav class="hidden container mx-auto flex-row justify-between items-center sm:flex">
-                @foreach (App\Models\CategoryType::all() as $categoryType)
-                <x-category-dropdown
-                    type="{{$categoryType->type}}"
-                    :id="$categoryType->id"
-                />
+                @foreach ($types as $type)
+                <x-category-dropdown :type="$type" />
                 @endforeach
             </nav>
         </header>
