@@ -20,7 +20,7 @@
                 <div class="flex items-center">
                     @foreach ($categories as $category)
                         <div class="text-xs text-slate-600 px-3 py-1 border border-blue-400 rounded-full hover:text-black hover:border-blue-600">
-                            {{$category->name}}
+                            {{$category->sub_type}}
                         </div>
                     @endforeach
                 </div>

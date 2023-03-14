@@ -9,28 +9,41 @@ class Product extends Model
 {
     use HasFactory;
 
+    // For Future References 
+    // https://laravel.com/docs/10.x/queries#logical-grouping
+    // https://laravel.com/docs/10.x/queries#advanced-where-clauses
+    // https://laravel.com/docs/10.x/eloquent-relationships#querying-relationship-existence
+    // https://laravel.com/docs/10.x/collections#method-when
 
     /**
      * Common query logic for searching products based on name, meta_type and description
      * 
-     * @param QueryBuilder $query to add additional constraints to the query
-     * @param string|array $term the search term
+     * @param Illuminate\Database\Query\Builder $query query builder instance to add additional constraints to the query
+     * @param array $term the search term
      */
-    public function scopeFilter($query, $term)
+    public function scopeFilter($query, $terms)
     {
-        if($term)
-        {
-            return $query->where(fn($q) => $q->where('name', 'like', '%'.$term.'%')
-                ->orWhere('meta_type', 'like', '%'.$term.'%')
-                ->orWhere('description', 'like', '%'.$term.'%')
-                ->orWhereHas('categories', fn($q) => $q->where('type', 'like', '%'.$term.'%')
-                    ->orWhere('sub_type', 'like', '%'.$term.'%')
+        $terms = array_map(fn($term) => str_replace('-', '', $term), $terms);
+
+        $query->when($terms['search'] ?? false, fn($query, $search) => $query
+            ->where(fn($query) => $query
+                ->where('name', 'like', "%{$search}%")
+                ->orWhere('meta_type', 'like', "%{$search}%")
+                ->orWhere('description', 'like', "%{$search}%")
+                ->orWhereHas('categories', fn($query) => $query          /** categories is the name of the relationship defined */
+                    ->where('type', 'like', "%{$search}%")
+                    ->orWhere('sub_type', 'like', "%{$search}%")
                 )
-            );
-        }
+            )
+        );
 
+        $query->when($terms['category'] ?? false, fn($query, $category) => $query
+            ->whereHas('categories', fn($query) => $query
+                ->where('type', 'like', "%{$category}%")
+                ->orWhere('sub_type', 'like', "%{$category}%")
+            )
+        );
     }
-
     
     /** relations */
     public function categories()

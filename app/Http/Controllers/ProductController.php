@@ -11,7 +11,7 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::oldest()
-            ->filter(request('search'))
+            ->filter(request(['search', 'category']))
             ->get();
 
         return view('products.index', compact('products'));
@@ -28,11 +28,12 @@ class ProductController extends Controller
     public function addToCart(Request $request)
     {
         $product = Product::find($request->product);
+        $cart = Cart::where('user_id', auth()->id())->where('product_id', $product->id);
 
-        if(Cart::where('product_id', $product->id)->exists())
+        if($cart->exists())
         {
-            $quantity = Cart::where('product_id', $product->id)->first()->quantity;
-            Cart::where('product_id', $product->id)->update(['quantity'=> $request->quantity + $quantity]);
+            $quantity = $cart->first()->quantity;
+            $cart->update(['quantity'=> $request->quantity + $quantity]);
         }
         else 
         {
