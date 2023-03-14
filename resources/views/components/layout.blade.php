@@ -54,7 +54,7 @@ $types = DB::table('categories')->distinct('type')->pluck('type');
                                     <x-icon name="search"/>
                                 </button>
                             </div>
-                            <input type="text" name="search" class="w-full px-10 py-2 rounded-xl focus:ring-1 focus:ring-gray-800 focus:outline-none" placeholder="Search everything you need">
+                            <input type="text" name="search" class="w-full px-10 py-2 rounded-xl focus:ring-1 focus:ring-gray-800 focus:outline-none" placeholder="Search everything you need" value="{{request('search') ?? ''}}">
                         </form>
                     </div>
                 </div>

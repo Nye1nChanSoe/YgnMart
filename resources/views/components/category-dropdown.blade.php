@@ -7,7 +7,13 @@
     </x-slot>
 
     @foreach ($subTypes as $subType)
-    <x-dropdown-item href="/{{strtolower(str_replace(' ', '-',$subType))}}">
+    @php
+        $searchSubType = strtolower(str_replace(' ', '-',$subType));
+    @endphp
+    <x-dropdown-item 
+        href="/?category={{ $searchSubType }}"
+        :active="request()->query('category') === $searchSubType"
+    >
         {{$subType}}
     </x-dropdown-item>
     @endforeach

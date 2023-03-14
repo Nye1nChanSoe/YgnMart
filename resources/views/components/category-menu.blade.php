@@ -8,7 +8,14 @@
 
     <div x-show="open" class="h-32 overflow-y-scroll scrollbar border-b" x-cloak x-transition>
         @foreach ($subTypes as $subType)
-        <x-dropdown-item href="/{{strtolower(str_replace(' ', '-',$subType))}}" class="px-3 leading-7">
+        @php
+            $searchSubType = strtolower(str_replace(' ', '-', $subType));
+        @endphp
+        <x-dropdown-item 
+            href="/?category={{ $searchSubType }}"
+            :active="request()->query('category') === $searchSubType"
+            class="px-3 leading-7"
+        >
             {{$subType}}
         </x-dropdown-item>
         @endforeach
