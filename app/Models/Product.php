@@ -9,12 +9,6 @@ class Product extends Model
 {
     use HasFactory;
 
-    // For Future References 
-    // https://laravel.com/docs/10.x/queries#logical-grouping
-    // https://laravel.com/docs/10.x/queries#advanced-where-clauses
-    // https://laravel.com/docs/10.x/eloquent-relationships#querying-relationship-existence
-    // https://laravel.com/docs/10.x/collections#method-when
-
     /**
      * Common query logic for searching products based on name, meta_type and description
      * 
@@ -23,7 +17,11 @@ class Product extends Model
      */
     public function scopeFilter($query, $terms)
     {
-        $terms = array_map(fn($term) => str_replace('-', '', $term), $terms);
+        // For Future References 
+        // https://laravel.com/docs/10.x/queries#logical-grouping
+        // https://laravel.com/docs/10.x/queries#advanced-where-clauses
+        // https://laravel.com/docs/10.x/eloquent-relationships#querying-relationship-existence
+        // https://laravel.com/docs/10.x/collections#method-when
 
         $query->when($terms['search'] ?? false, fn($query, $search) => $query
             ->where(fn($query) => $query
@@ -43,6 +41,8 @@ class Product extends Model
                 ->orWhere('sub_type', 'like', "%{$category}%")
             )
         );
+
+        return $query;
     }
     
     /** relations */

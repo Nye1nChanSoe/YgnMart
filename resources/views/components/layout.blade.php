@@ -3,6 +3,7 @@ use Illuminate\Support\Facades\DB;
 
 $types = DB::table('categories')->distinct('type')->pluck('type');
 // $subTypes = DB::table('categories')->distinct('type')->pluck('sub_type');
+$cartItemsCount = App\Models\Cart::where('user_id', auth()->id())->count();
 @endphp
 
 <!DOCTYPE html>
@@ -169,9 +170,9 @@ $types = DB::table('categories')->distinct('type')->pluck('type');
 <script>
     document.addEventListener('alpine:init', () => {
         Alpine.data('notification', () => ({
-            cartItemCounter: {{ App\Models\Cart::where('user_id', auth()->id())->count() }},
+            cartItemCounter: {{ $cartItemsCount }},
             addToCart() {
-                this.cartItemCounter = {{ App\Models\Cart::where('user_id', auth()->id())->count() }};
+                this.cartItemCounter = {{ $cartItemsCount }};
                 console.log(this.cartItemCounter);
             }
         }))

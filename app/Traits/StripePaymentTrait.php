@@ -10,9 +10,9 @@ use Stripe\Stripe;
 trait StripePaymentTrait
 {
     /**
-     * Create Stripe's PaymentIntent object with specified amount and currency
+     * Create Stripe's PaymentIntent object with specified options
      * 
-     * @param array $options
+     * @param array $options Associative array of attributes that are required to create PaymentIntent
      * @return PaymentIntent
      */
     public function createPayment(array $options)
@@ -28,9 +28,9 @@ trait StripePaymentTrait
     }
 
     /**
-     * Retrieve the specified PaymentIntent by ID
+     * Retrieve the specified PaymentIntent
      * 
-     * @param string $id
+     * @param string $id PaymentIntent's unique identifier
      * @return PaymentIntent
      */
     public function retrievePayment(string $id)
@@ -44,8 +44,8 @@ trait StripePaymentTrait
     /**
      * Update the specified PaymentIntent with the given data
      * 
-     * @param string $id
-     * @param array $data
+     * @param string $id PaymentIntent's unique identifier
+     * @param array $data Associative array of attributes to update the specified PaymentIntent's data
      * @return PaymentIntent
      */
     public function updatePayment(string $id, array $data)

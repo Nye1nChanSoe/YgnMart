@@ -4,15 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Models\Cart;
 use App\Models\Product;
+use App\Traits\parseTrait;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+    use parseTrait;
+
     public function index()
     {
-        $products = Product::oldest()
-            ->filter(request(['search', 'category']))
-            ->get();
+        $filteredQuery = Product::oldest()->filter($this->parseHyphens(request(['search', 'category'])));
+        
+        $products = $filteredQuery->paginate(5)->withQueryString();
 
         return view('products.index', compact('products'));
     }
