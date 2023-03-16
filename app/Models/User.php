@@ -49,7 +49,7 @@ class User extends Authenticatable
 
     /**
      * Accessors and Mutators 
-     * Encrpy the password 
+     * Encrypt the password at the last stage
      */
     public function setPasswordAttribute($password)
     {
@@ -76,5 +76,12 @@ class User extends Authenticatable
     public function orders()
     {
         return $this->hasMany(Order::class);
+    }
+
+    public function reviews()
+    {
+        return $this->belongsToMany(Product::class, 'reviews', 'user_id', 'product_id')
+            ->withPivot(['rating', 'comment'])
+            ->withTimestamps();
     }
 }

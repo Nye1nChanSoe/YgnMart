@@ -5,10 +5,13 @@
     {{-- TODO: divide sections and display related products for each section --}}
     <main>
         <x-container class="px-2 mb-10 md:px-6">
-            {{ $products->links('vendor.pagination.result') }}
+
+            <div class="mb-6">
+                {{ $products->links('vendor.pagination.result') }}
+            </div>
 
             @if (!$products->isEmpty())
-            <div class="grid grid-cols-2 gap-x-2 gap-y-4 py-2 my-4 md:grid-cols-3 lg:grid-cols-4 3xl:grid-cols-6">
+            <div class="grid grid-cols-2 gap-x-2 gap-y-4 md:grid-cols-3 lg:grid-cols-4 3xl:grid-cols-6">
                 @foreach ($products as $product)
                     <x-product-card>
                         <div class="self-center h-32 md:h-40">
@@ -54,7 +57,11 @@
                 </div>
             </div>
             @endif
-            {{ $products->links('vendor.pagination.simple-tailwind') }}
+            
+            <div class="mt-4">
+                {{ $products->links('vendor.pagination.links') }}
+            </div>
+
         </x-container>
     </main>
 </x-layout>

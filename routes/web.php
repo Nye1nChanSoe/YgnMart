@@ -5,6 +5,7 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SessionController;
 use Illuminate\Support\Facades\Route;
 
@@ -38,4 +39,6 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/orders/success', [OrderController::class, 'success'])->name('orders.success');
     Route::get('/orders/{order:order_code}', [OrderController::class, 'show'])->name('orders.show');
     Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
+
+    Route::post('/products/{product:slug}/review', [ProductController::class, 'review'])->name('products.review');
 });

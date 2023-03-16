@@ -30,7 +30,7 @@
                     <div class="grid grid-cols-6 items-center justify-items-center text-slate-700 py-3">
                         <div class="justify-self-start col-span-3 flex items-center">
                             <img src="{{$product->image ? asset($product->image) : asset('images/no-image.png')}}" alt="" width="80" style="object-fit:contain">
-                            <h4 class="text-xs ml-2">{{$product->name}}</h4>
+                            <h4 class="text-xs ml-2"><a href="{{route('products.show', ['product' => $product->slug])}}">{{$product->name}}</a></h4>
                         </div>
                         <div class="col-span-1 text-center">{{$product->pivot->quantity}}</div>
                         <div class="col-span-1">{{number_format($product->price, 0, '.', ',')}}</div>

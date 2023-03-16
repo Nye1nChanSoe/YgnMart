@@ -60,4 +60,11 @@ class Product extends Model
     {
         return $this->belongsToMany(Order::class)->withPivot('quantity')->withTimestamps();
     }
+
+    public function reviews()
+    {
+        return $this->belongsToMany(User::class, 'reviews', 'product_id', 'user_id')
+            ->withPivot(['rating', 'comment'])
+            ->withTimestamps();
+    }
 }

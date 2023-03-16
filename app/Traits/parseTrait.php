@@ -2,7 +2,7 @@
 
 namespace App\Traits;
 
-trait parseTrait
+trait ParseTrait
 {
     /**
      * Parse the hyphens into whitespaces characters
