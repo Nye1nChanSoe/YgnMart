@@ -18,7 +18,7 @@
             {{-- product info --}}
             <div class="basis-1/2 p-10 bg-slate-50 rounded-lg space-y-3">
                 <div class="flex items-center">
-                    @foreach ($product->categories as $category)
+                    @foreach ($product->load('categories')->categories as $category)
                         <div class="text-xs text-slate-600 px-3 py-1 border border-blue-400 rounded-full hover:text-black hover:border-blue-600">
                             {{$category->sub_type}}
                         </div>
@@ -192,17 +192,17 @@
                     <div class="flex-1 ml-4">
                         <div class="flex justify-between items-center">
                             <div class="flex flex-col">
-                                <div class="font-medium text-sm">{{$review->name}}</div>
+                                <div class="font-medium text-sm">{{$review->user->name}}</div>
                                 <div class="flex items-center mt-1">
-                                    <template x-for="star in {{$review->pivot->rating}}">
+                                    <template x-for="star in {{$review->rating}}">
                                         <x-icon name="star-solid" class="text-yellow-400"/>
                                     </template>
                                 </div>
                             </div>
                             <span class="text-sm text-gray-500"><time>{{$review->created_at->diffForHumans()}}</time></span>
                         </div>
-                        <p class="mt-3 text-gray-800 text-sm md:text-base">
-                            {{$review->pivot->comment}}
+                        <p class="mt-3 text-gray-800 text-sm md:text-base px-2 py-2 bg-slate-50 rounded-lg">
+                            {{$review->comment}}
                         </p>
                     </div>
                 </div>
@@ -349,6 +349,10 @@ function submitReview()
             console.error('There was a problem with the fetch operation:', error);
             errorDisplay.innerHTML = error.message;
 
+            /** 
+             * Laravel will redirect user if they are not authenticated, 
+             * this condition check whether the server response as intended or redirecting back the user 
+             */
             if(error.message.includes('Unexpected token'))
             {
                 window.location.href = "{{ route('login') }}";

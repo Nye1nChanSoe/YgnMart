@@ -63,8 +63,6 @@ class Product extends Model
 
     public function reviews()
     {
-        return $this->belongsToMany(User::class, 'reviews', 'product_id', 'user_id')
-            ->withPivot(['rating', 'comment'])
-            ->withTimestamps();
+        return $this->hasMany(Review::class);
     }
 }

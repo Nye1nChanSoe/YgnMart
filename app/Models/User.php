@@ -80,8 +80,6 @@ class User extends Authenticatable
 
     public function reviews()
     {
-        return $this->belongsToMany(Product::class, 'reviews', 'user_id', 'product_id')
-            ->withPivot(['rating', 'comment'])
-            ->withTimestamps();
+        return $this->hasMany(Review::class);
     }
 }

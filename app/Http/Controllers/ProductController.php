@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cart;
 use App\Models\Product;
+use App\Models\Review;
 use App\Traits\parseTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -65,10 +66,12 @@ class ProductController extends Controller
             ]);
         }
 
-        $product->reviews()->attach(auth()->id(), [
-            'rating' => $request->json('rating'),
-            'comment' => $request->json('comment'),
-        ]);
+        $review = new Review();
+        $review->user_id = auth()->id();
+        $review->product_id = $product->id;
+        $review->rating = $request->json('rating');
+        $review->comment = $request->json('comment');
+        $review->save();
 
         $ratings = DB::select(DB::raw('SELECT stars_table.stars, COALESCE(COUNT(reviews.rating), 0) AS count
             FROM (
