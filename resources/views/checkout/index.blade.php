@@ -3,6 +3,9 @@
 @endphp
 
 <x-layout>
+    <x-slot:title>
+        YangonMart.com Checkout 
+    </x-slot:title>
     <x-container>
         {{-- TODO: breadcrubs --}}
         <div class="my-10">
@@ -120,12 +123,13 @@
                             <button type="button" @@mouseenter="show=true">
                                 <x-icon name="info" class="text-black hover:text-blue-600" />
                             </button>
-                            <div x-show="show" class="absolute top-5 right-0 border p-2 bg-slate-100 rounded-lg">
-                                <div class="text-xs text-gray-700 w-60">
+                            <div x-show="show" class="absolute top-5 right-0 border p-2 bg-slate-100 rounded-lg" x-cloak x-transition>
+                                <div x-data="{copied: false}" class="text-xs text-gray-700 w-60">
                                     <h2 class="mb-2">You can test the payment</h2>
-                                    <div class="flex space-x-4">
-                                        <span class="text-sky-500">4242424242424242</span>
+                                    <div class="flex space-x-4 relative">
+                                        <input x-ref="testPaymentNumber" @@click="copyToClipboard" type="button" value="4242424242424242" class="text-sky-500 hover:text-sky-600 focus:outline-none" />
                                         <span class="text-gray-500">Succeessful payment</span>
+                                        <div x-show="copied" class="absolute -top-7 right-32 border rounded-lg bg-white shadow text-blue-500 py-1 px-2" x-cloak x-transition>Copied!</div>
                                     </div>
                                     {{-- <div class="flex space-x-4">
                                         <span class="text-sky-500">4000000000009995</span>
@@ -138,6 +142,16 @@
                                     {{-- <p class="mt-1.5 mr-2 text-gray-500">Check more <a href="https://stripe.com/docs/testing" target="_blank" class="underline hover:text-gray-700">https://stripe.com/docs/testing</a></p> --}}
                                 </div>
                             </div>
+                            <script>
+                                function copyToClipboard()
+                                {
+                                    const successPaymentElement = this.$refs.testPaymentNumber;
+                                    navigator.clipboard.writeText(successPaymentElement.value);
+                                    console.log(successPaymentElement.value);
+                                    this.copied = true;
+                                    setTimeout(() => this.copied = false, 1400);
+                                }
+                            </script>
                         </div>
                     </div>
                 </div>

@@ -22,8 +22,11 @@ class CartController extends Controller
     /** show a specifically added item here */
     public function show(Product $product)
     {
+        $relatedProducts = Product::with('reviews')->relatedProducts($product)->get();
+
         return view('carts.show', [
             'product' => $product,
+            'relatedProducts' => $relatedProducts,
         ]);
     }
 

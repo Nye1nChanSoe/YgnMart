@@ -53,18 +53,18 @@ class Product extends Model
      * get all the related products of the specified product except the product itself
      * 
      * @param Illuminate\Database\Query\Builder $query query builder instance to add additional constraints to the query
-     * @param Product $product the product you want to relate to
+     * @param Product $relateProduct the base product you want to relate with other products 
      * @param int $limit set the return result set limit
      * @param boolean $intRandomOrder the result set is returned in random order or not
      */
-    public function scopeRelatedProducts($query, $product, $limit = 10, $inRandomOrder = true)
+    public function scopeRelatedProducts($query, $relateProduct, $limit = 10, $inRandomOrder = true)
     {
-        $query = $query->whereHas('categories', function ($query) use ($product) {
-            $query->whereHas('products', function($query) use ($product) {
-                $query->where('id', '=', $product->id);
+        $query = $query->whereHas('categories', function ($query) use ($relateProduct) {
+            $query->whereHas('products', function($query) use ($relateProduct) {
+                $query->where('id', '=', $relateProduct->id);
             });
         })
-        ->where('id', '<>', $product->id);
+        ->where('id', '<>', $relateProduct->id);
 
         if($inRandomOrder) 
         {

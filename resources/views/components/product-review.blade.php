@@ -1,5 +1,5 @@
 @props(['product'])
-<div class="flex items-center">
+<div {{$attributes->merge(['class' => 'block sm:flex sm:items-center'])}}>
     <div class="flex">
         @for ($i = 1; $i <= 5; $i++)
             @if ($i <= round($product->rating_point))
@@ -9,5 +9,5 @@
             @endif
         @endfor
     </div>
-    <span class="text-xs text-gray-600 ml-1">({{$product->reviews->count()}} review)</span>
+    <span class="block text-center text-xs text-gray-600 ml-1">({{$product->reviews->count()}} review)</span>
 </div>

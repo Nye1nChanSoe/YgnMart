@@ -1,4 +1,7 @@
 <x-layout>
+    <x-slot:title>
+        YangonMart.com Order - {{$order->order_code}}
+    </x-slot:title>
     <x-container class="bg-slate-50 p-6 mt-10 mb-10 rounded-xl">
         <div class="flex justify-center">
             <div class="flex-1">
@@ -14,7 +17,7 @@
                     </p>
                     <div @@click="copyToClipboard" class="relative">
                         <x-icon name="clipboard" class="inline cursor-pointer hover:text-blue-700" />
-                        <div x-show="copied" class="absolute -top-10 right-0 border rounded-lg bg-blue-200 py-1 px-2" x-cloak x-transition>Copied!</div>
+                        <div x-show="copied" class="absolute -top-10 right-0 border rounded-lg bg-blue-400 text-white py-1 px-2" x-cloak x-transition>Copied!</div>
                     </div>
                 </div>
 

@@ -14,7 +14,7 @@ $cartItemsCount = App\Models\Cart::where('user_id', auth()->id())->count();
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <title>Home Page</title>
+    <title>{{ $title ?? 'YangonMart.com | Shop anytime, anywhere with us' }}</title>
 </head>
 <body class="antialiased ">
     <section x-data="notification" class="relative">
@@ -50,7 +50,7 @@ $cartItemsCount = App\Models\Cart::where('user_id', auth()->id())->count();
                 {{-- search --}}
                 <div class="w-full order-last md:w-80 lg:w-128 md:order-none">
                     <div class="relative border border-gray-400 rounded-xl">
-                        <form action="" method="GET">
+                        <form action="{{ route('home') }}" method="GET">
                             <div class="absolute top-2.5 left-3">
                                 <button type="submit" class="text-slate-500 hover:text-slate-800">
                                     <x-icon name="search"/>

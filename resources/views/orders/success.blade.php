@@ -1,4 +1,7 @@
 <x-layout>
+    <x-slot:title>
+        Thank you for purchasing from YangonMart.com
+    </x-slot:title>
     <div class="bg-forcefields md:p-20 xl:mx-40">
         <x-container>
             <div class="flex flex-col items-center p-10 md:p-20">

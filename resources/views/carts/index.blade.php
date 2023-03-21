@@ -1,4 +1,7 @@
 <x-layout>
+    <x-slot:title>
+        YangonMart.com Cart 
+    </x-slot:title>
     <x-container class="mt-14">
         <div class="rounded-lg py-5 px-10 shadow-sm border">
             <h4 class="text-xs text-gray-700">Shopping cart</h4>

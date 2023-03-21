@@ -3,14 +3,14 @@
 ])
 
 <x-layout>
+    <x-slot:title>
+        {{$product->name}}
+    </x-slot:title>
     <x-container x-data="charts">
         {{-- TODO: breadcrumbs --}}
-        <div class="my-5">
-            implement > breadcrumbs > links > here
-        </div>
 
         {{-- product view --}}
-        <div class="flex items-center justify-center space-x-2">
+        <div class="flex items-center justify-center space-x-2 my-10">
             <div class="basis-1/3">
                 <img src="{{$product->image ? asset($product->image) : asset('images/no-image.png')}}" alt="">
             </div>
@@ -18,7 +18,7 @@
             {{-- product info --}}
             <div class="basis-1/2 p-10 bg-slate-50 rounded-lg space-y-3">
                 <div class="flex items-center">
-                    @foreach ($product->load('categories')->categories as $category)
+                    @foreach ($product->categories as $category)
                         <div class="text-xs text-slate-600 px-3 py-1 border border-blue-400 rounded-full hover:text-black hover:border-blue-600">
                             {{$category->sub_type}}
                         </div>
@@ -104,71 +104,8 @@
             </div>
         </div>
 
-        {{-- Carousel displaying a list of related products --}}
-        <section id="related-products" class="my-20 flex items-center space-x-4 p-4 bg-slate-50">
-            @foreach ($relatedProducts as $relatedProduct)
-                <div class="self-stretch p-4 shadow bg-white">
-                    <div class="flex items-center justify-center w-40 h-32">
-                        <img src="{{$relatedProduct->image ? asset($relatedProduct->image) : asset('images/no-image.png')}}" alt="" class="max-w-full max-h-full object-cont">
-                    </div>
-                    <h2 class="text-sm text-center">{{$relatedProduct->name}}</h2>
-                </div>
-            @endforeach
-        </section>
-
-        <script>
-            function carousel()
-            {
-                return {
-                    currentSlide: 0, // keep track of the current slide index 
-                    slideWidth: 20, // width of each slide (in rem unit)
-                    numVisibleSlides: 5, // number of visible slides at a time
-
-                    init()
-                    {
-                        // set the width of the container to 500% means 5 times the number of slideWidth 
-                        const containerWidth = this.slideWidth * this.numVisibleSlides;
-                        this.$refs.slideContainer.style.width = `${containerWidth}rem`;
-
-                        // start automatic sliding 
-                        setInterval(() => {
-                           this.next(); 
-                        }, 1000);
-                        console.log('init is called');
-                    },
-
-                    prev()
-                    {
-                        this.currentSlide = Math.max(this.currentSlide - 1, 0);
-
-                        /*
-                         Element.scrollTo(options) - where options is a dictionary 
-                         top: specifies the number of pixels along the y axis
-                         left: specifies the number of pixels along the x axis
-                         behavior: specifies whether the scrolling should animate smoothly or not
-                        */
-                        this.$refs.slideContainer.scrollTo({
-                            left: (this.currentSlide * this.slideWidth) + 'rem',
-                            behavior: 'smooth',
-                        });
-                        console.log('prev is called');
-                    },
-
-                    next()
-                    {
-                        const maxSlide = this.$refs.slideContainer.children.length;
-                        console.log('Max slide: ', maxSlide);
-                        this.currentSlide = Math.min(this.currentSlide + 1, maxSlide);       
-                        console.log('Current Slide: ', this.currentSlide);
-                        this.$refs.slideContainer.scrollTo({
-                            left: `${this.currentSlide * this.slideWidth}rem`,
-                            behavior: 'smooth',
-                        });   
-                        console.log('next is called');
-                    }
-                }
-            }
-        </script>
+        {{-- TODO: Add Carousel effect --}}
+        <x-related-products :related-products="$relatedProducts" :product="$product" class="py-2 border-t" />
 
         {{-- Reviews --}}
         <div id="reviews" class="flex flex-col gap-y-10 px-4 border-t pt-10 md:flex-row md:gap-x-20">

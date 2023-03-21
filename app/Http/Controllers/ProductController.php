@@ -53,9 +53,7 @@ class ProductController extends Controller
                     AND reviews.product_id = '.$product->id.'
                     GROUP BY stars_table.stars'));
 
-        $relatedProducts = Product::relatedProducts($product)->get();
-        
-        // dd(json_encode($relatedProducts->toArray()));
+        $relatedProducts = Product::with('reviews')->relatedProducts($product)->get();
         
         return view('products.show',compact('product', 'ratings', 'relatedProducts'));
     }
@@ -141,6 +139,9 @@ class ProductController extends Controller
         return response()->json($relatedProducts);
     }
 
+    /**
+     * TODO: can use database triggers to calculate the rating_point for each product everytime a review table has been updated or deleted.
+     */
     public function update(Request $request, Product $product)
     {
         $product->update(['rating_point' => $request->json('point')]);

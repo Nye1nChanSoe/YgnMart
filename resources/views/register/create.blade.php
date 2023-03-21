@@ -1,4 +1,7 @@
 <x-layout>
+    <x-slot:title>
+        YangonMart.com Register
+    </x-slot:title>
     <div class="container mx-auto flex justify-between items-center my-10 px-8 space-x-6 md:px-16">
         <div class="hidden self-stretch basis-1/2 md:flex md:flex-col md:items-center md:justify-center">
             <img src="images/creative/shopmore_savemoney.png" alt="">
