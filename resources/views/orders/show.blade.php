@@ -3,13 +3,13 @@
         YangonMart.com Order - {{$order->order_code}}
     </x-slot:title>
     <x-container class="bg-slate-50 p-6 mt-10 mb-10 rounded-xl">
-        <div class="flex justify-center">
+        <div class="flex flex-col justify-center lg:flex-row">
             <div class="flex-1">
                 <div 
                     x-data="{
                         copied: false,
                     }" 
-                    class="flex items-center space-x-2"
+                    class="flex items-center justify-center space-x-2 md:justify-start"
                 >
                     <h1 class="font-bold text-lg">Order Number</h1>
                     <p class="text-lime-700">
@@ -22,29 +22,29 @@
                 </div>
 
                 <!-- Order Product Table -->
-                <div class="px-4 border rounded-lg bg-white text-sm mt-3 mr-6">
-                    <div class="grid grid-cols-6 items-center justify-items-center border-b border-gray-200 font-semibold text-slate-700 py-4">
-                        <div class="col-span-3 justify-self-start text">Item</div>
+                <div class="px-4 border rounded-lg bg-white text-sm mt-3 lg:mr-6">
+                    <div class="grid grid-cols-4 items-center justify-items-center border-b border-gray-200 font-semibold text-slate-700 py-2 md:py-4 md:grid-cols-6">
+                        <div class="col-span-2 justify-self-start md:col-span-3">Item</div>
                         <div class="col-span-1">Quantity</div>
-                        <div class="col-span-1">Price</div>
+                        <div class="hidden col-span-1 md:block">Price</div>
                         <div class="col-span-1">Total Price</div>
                     </div>
                     @foreach ($order->products as $product)
-                    <div class="grid grid-cols-6 items-center justify-items-center text-slate-700 py-3">
-                        <div class="justify-self-start col-span-3 flex items-center">
+                    <div class="grid grid-cols-4 items-center justify-items-center text-slate-700 py-2 md:py-3 md:grid-cols-6">
+                        <div class="justify-self-start col-span-2 flex flex-col items-start md:col-span-3 md:flex-row md:items-center">
                             <img src="{{$product->image ? asset($product->image) : asset('images/no-image.png')}}" alt="" width="80" style="object-fit:contain">
-                            <h4 class="text-sm ml-2"><a href="{{route('products.show', ['product' => $product->slug])}}">{{$product->name}}</a></h4>
+                            <h4 class="text-sm mt-2 md:mt-0 md:ml-2"><a href="{{route('products.show', ['product' => $product->slug])}}">{{$product->name}}</a></h4>
                         </div>
                         <div class="col-span-1 text-center">{{$product->pivot->quantity}}</div>
-                        <div class="col-span-1">{{number_format($product->price, 0, '.', ',')}}</div>
-                        <div class="col-span-1 font-semibold">{{number_format($product->pivot->quantity * $product->price, 0, '.', ',')}}<span class="ml-1 text-xs">Kyat</span></div>
+                        <div class="hidden col-span-1 md:block">{{number_format($product->price, 0, '.', ',')}}</div>
+                        <div class="col-span-1 px-2 py-1 bg-yellow-300 rounded-lg font-semibold text-sm sm:text-base sm:p-0 sm:bg-white sm:rounded-non">{{number_format($product->pivot->quantity * $product->price, 0, '.', ',')}}<span class="ml-1 text-xs">Kyat</span></div>
                     </div>
                     @endforeach
                 </div>
 
                 <!-- Customer and Order details -->
-                <div class="px-4 border rounded-lg bg-white text-sm mt-4 mr-6">
-                    <h1 class="border-b text-slate-700 py-4 font-semibold text-base">
+                <div class="px-4 border rounded-lg bg-white text-xs mt-4 md:text-sm lg:mr-6">
+                    <h1 class="border-b text-slate-700 py-2 font-semibold text-sm sm:text-base sm:py-4">
                         Customer and Order details
                     </h1>
                     <div class="flex justify-between py-2">
@@ -84,8 +84,8 @@
 
             <div class="basis-1/4">
                 <!-- Order Summary -->
-                <div class="px-4 border rounded-lg bg-white mt-4">
-                    <h1 class="text-slate-700 py-4 font-semibold text-lg">
+                <div class="px-4 border rounded-lg bg-white mt-4 text-xs md:text-sm">
+                    <h1 class="text-slate-700 py-2 font-semibold text-sm md:py-4 md:text-base">
                         Order Summary
                     </h1>
                     <div class="flex justify-between py-2">
@@ -102,7 +102,7 @@
                     </div>
                     <div class="flex justify-between py-2">
                         <div>Sub Total</div>
-                        <div class="font-semibold">{{number_format($order->total_price, 0, '.', ',')}}
+                        <div class="font-semibold text-base">{{number_format($order->total_price, 0, '.', ',')}}
                             <span class="ml-1 text-sm font-normal">Kyat</span>
                         </div>
                     </div>
@@ -113,9 +113,9 @@
                 </div>
 
                 <div class="px-4 border rounded-lg bg-white mt-4">
-                    <div class="flex justify-between py-2 text-lg">
+                    <div class="flex justify-between py-2 text-base md:text-lg">
                         <div>Total</div>
-                        <div class="font-semibold text-lime-700">{{number_format($order->total_price, 0, '.', ',')}}
+                        <div class="font-semibold text-lime-700 text-lg">{{number_format($order->total_price, 0, '.', ',')}}
                             <span class="ml-1 text-sm font-normal text-black">Kyat</span>
                         </div>
                     </div>

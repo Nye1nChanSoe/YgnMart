@@ -3,7 +3,7 @@
     <div class="flex">
         @for ($i = 1; $i <= 5; $i++)
             @if ($i <= round($product->rating_point))
-            <x-icon name="star-solid" class="text-yellow-400"/>
+            <x-icon name="star-solid" class="text-yellow-300"/>
             @else
             <x-icon name="star-solid" class="text-gray-300"/>
             @endif

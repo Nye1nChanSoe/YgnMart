@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Remove Chrome's autocomplete input color */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+}
+
 .scrollbar::-webkit-scrollbar {
     width: 10px;
   }

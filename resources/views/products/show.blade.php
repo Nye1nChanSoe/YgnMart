@@ -6,18 +6,18 @@
     <x-slot:title>
         {{$product->name}}
     </x-slot:title>
-    <x-container x-data="charts">
+    <x-container>
         {{-- TODO: breadcrumbs --}}
 
         {{-- product view --}}
-        <div class="flex items-center justify-center space-x-2 my-10">
-            <div class="basis-1/3">
-                <img src="{{$product->image ? asset($product->image) : asset('images/no-image.png')}}" alt="">
+        <div class="flex flex-col items-center justify-center md:space-x-2 md:flex-row">
+            <div class="w-60 my-8 md:basis-1/3 md:w-full md:my-0">
+                <img src="{{$product->image ? asset($product->image) : asset('images/no-image.png')}}" alt="" class="object-contain">
             </div>
 
             {{-- product info --}}
-            <div class="basis-1/2 p-10 bg-slate-50 rounded-lg space-y-3">
-                <div class="flex items-center">
+            <div class="px-2 py-6 bg-slate-50 rounded-lg space-y-3 md:p-10 md:basis-1/2">
+                <div class="flex items-center justify-center md:justify-start">
                     @foreach ($product->categories as $category)
                         <div class="text-xs text-slate-600 px-3 py-1 border border-blue-400 rounded-full hover:text-black hover:border-blue-600">
                             {{$category->sub_type}}
@@ -25,27 +25,24 @@
                     @endforeach
                 </div>
                 <div>
-                    <h3 class="font-semibold text-xl py-2">{{$product->name}}</h3>
+                    <h3 class="font-semibold text-xl text-center py-2 md:text-left">{{$product->name}}</h3>
                 </div>
-                <div class="flex justify-between items-center">
+                <div class="flex flex-col justify-between items-center space-y-4 md:flex-row md:space-y-0">
                     <div class="flex justify-center items-center">
-                        <template x-for="star in stars">
-                            <x-icon name="star-solid" x-bind:class="{'text-yellow-400' : star <= Math.round(point), 'text-slate-300': star > Math.round(point)}" />
-                        </template>
-                        <div class="text-xs text-gray-700 ml-1">(<span x-text="totalReviews"></span>)</div>
+                        <x-product-review :product="$product" />
                         <a href="#reviews" class="text-sm ml-2 py-1.5 px-2 bg-slate-100 rounded-lg text-blue-500 hover:bg-slate-200">Leave Review</a>
                     </div>
                     <div class="text-blue-500 hover:text-blue-700">
                         <a href="#">Visit the Vendor</a>
                     </div>
                 </div>
-                <div class="flex items-center pt-4">
+                <div class="flex flex-col items-center pt-4 space-y-2 md:flex-row md:space-y-0">
                     <h5 class="px-2.5 py-[3px] bg-yellow-300 text-black font-semibold rounded-xl w-32 text-xl text-center">{{number_format($product->price, 0, '.', ',')}} <span class="text-sm">MMK</span></h5>
                     <div class="ml-3">Save 10% for current promotion</div>
                 </div>
                 <div class="pt-4 text-zinc-800">
-                    <h3 class="font-semibold mb-2">Product Description</h3>
-                    <p class="indent-10 leading-7 text-sm">{{$product->description}}</p>
+                    <h3 class="font-semibold text-center mb-2 md:text-left">Product Description</h3>
+                    <p class="leading-7 text-center text-sm md:text-left md:indent-10">{{$product->description}}</p>
                 </div>
 
                 {{-- add to cart --}}
@@ -54,7 +51,7 @@
                         open: false,
                         quantity: 1,
                     }"
-                    class="flex items-center pt-4 space-x-4"
+                    class="flex items-center justify-center pt-4 space-x-4 md:justify-start"
                 >
                     <form action="{{ route('products.add') }}" method="POST">
                         @csrf
@@ -92,130 +89,136 @@
                 </div>
 
                 <div class="pt-4 space-y-1">
-                    <div class="flex text-sm items-center space-x-2 ">
+                    <div class="flex text-sm items-center justify-center space-x-2 md:justify-left">
                         <span>Delivery Available</span>
                         <x-icon name="check" />
                     </div>
-                    <div class="flex text-sm items-center space-x-2 ">
+                    <div class="flex text-sm items-center justify-center space-x-2 md:justify-left">
                         <span>Multipayment Available</span>
                         <x-icon name="check" />
                     </div>
                 </div>
             </div>
         </div>
+    </x-container>
 
-        {{-- TODO: Add Carousel effect --}}
-        <x-related-products :related-products="$relatedProducts" :product="$product" class="py-2 border-t" />
+    {{-- TODO: Add Carousel effect --}}
+    <div class="bg-white md:bg-blue-50">
+        <x-related-products :related-products="$relatedProducts" :product="$product" class="pb-10 container mx-auto" />
+    </div>
 
-        {{-- Reviews --}}
-        <div id="reviews" class="flex flex-col gap-y-10 px-4 border-t pt-10 md:flex-row md:gap-x-20">
-            <div class="basis-2/5 flex flex-col gap-y-6">
-                <section>
-                    <div id="review" class="text-center">
-                        <div class="text-md font-medium">Reviews</div>
-                        <div class="text-4xl font-semibold" x-text="point"></div>
-                        <div class="flex justify-center my-2">
-                            <template x-for="star in stars">
-                                <x-icon name="star-solid" x-bind:class="{'text-yellow-400' : star <= Math.round(point), 'text-slate-300': star > Math.round(point)}" />
+    <div class="bg-slate-50 py-20">
+        <div x-data="charts" class="container mx-auto">
+            {{-- Reviews --}}
+            <div id="reviews" class="flex flex-col gap-y-10 px-4 md:flex-row md:gap-x-20">
+                <div class="basis-2/5 flex flex-col gap-y-5">
+                    <section class="border rounded-lg bg-white px-2 py-4">
+                        <div id="review" class="text-center">
+                            <div class="text-md font-medium">Reviews</div>
+                            <div class="text-4xl font-semibold" x-text="point"></div>
+                            <div class="flex justify-center my-2">
+                                <template x-for="star in stars">
+                                    <x-icon name="star-solid" x-bind:class="{'text-yellow-400' : star <= Math.round(point), 'text-slate-300': star > Math.round(point)}" />
+                                </template>
+                            </div>
+                            <div class="text-sm">Based on <span x-text="totalReviews"></span> reviews</div>
+                        </div>
+        
+                        <!-- Horizontal Scoreboard -->
+                        <div class="space-y-2 mt-4 drop-shadow-sm">
+                            <template x-for="(count, index) in reviews.slice().reverse()">
+                                <div class="flex items-center justify-evenly space-x-2">
+                                    <span class="text-xs drop-shadow-none" x-text="([5,4,3,2,1][index]) + ' star'" x-bind:class="textColors[index]"></span>
+                                    <div class="flex justify-between bg-gray-200 h-5 w-[70%] rounded">
+                                        <div class="rounded" x-bind:class="bgColors[index]" x-bind:style="'width:' + (count / totalReviews * 100) + '%'">
+                                        </div>
+                                    </div>
+                                    <span class="text-xs drop-shadow-none w-10" x-text="(isNaN((count / totalReviews * 100)) ? Number(0) : (count / totalReviews * 100)).toFixed(1) + '%'" x-bind:class="textColors[index]"></span>
+                                </div>
                             </template>
                         </div>
-                        <div class="text-sm">Based on <span x-text="totalReviews"></span> reviews</div>
-                    </div>
+                    </section>
     
-                    <!-- Horizontal Scoreboard -->
-                    <div class="space-y-2 mt-4 drop-shadow-md">
-                        <template x-for="(count, index) in reviews.slice().reverse()">
-                            <div class="flex items-center justify-evenly space-x-2">
-                                <span class="text-xs drop-shadow-none" x-text="([5,4,3,2,1][index]) + ' star'" x-bind:class="textColors[index]"></span>
-                                <div class="flex justify-between bg-gray-300 h-5 w-[70%] rounded">
-                                    <div class="rounded" x-bind:class="bgColors[index]" x-bind:style="'width:' + (count / totalReviews * 100) + '%'">
+                    <!-- Review box -->
+                    <section x-data="rate">
+                        <div class="border border-yellow-400 rounded-lg p-3 bg-white text-sm">
+                            <h2 class="font-medium text-yellow-500">
+                                <x-icon name="warning" class="inline mr-1" /> Warning
+                            </h2>
+                            <p class="mt-1.5 indent-6 md:intent-8">
+                                Manipulating or misleading reviews is strictly prohibited. We value honest and authentic feedback from our users. Any user found to be manipulating reviews may face account suspension or termination. Please ensure that all reviews submitted are truthful and based on genuine experiences
+                            </p>
+                        </div>
+                        <div class="mt-4">
+                            <form id="review-form" action="{{route('products.review', ['product' => $product->slug])}}" method="POST" class="bg-white p-3 border rounded-lg space-y-4">
+                                @csrf
+                                <div>
+                                    <label for="" class="font-medium">Rate the product</label>
+                                    <div class="flex mt-1.5">
+                                        <template x-for="star in stars">
+                                            <x-icon name="star-solid" 
+                                            x-on:click="selected = star" 
+                                            x-on:mouseover="rating = star" 
+                                            x-on:mouseleave="rating = 0" 
+                                            x-bind:class="colorStar(star)" 
+                                            />
+                                        </template>
+                                    </div>
+                                    <input type="hidden" name="star_rating" id="star-rating" value="" x-model="selected">
+                                </div>
+                                <div>
+                                    <label class="font-medium">Write Your Review</label>
+                                    <textarea name="comment" id="comment" class="w-full resize-none border rounded-lg mt-1 p-2 h-24 focus:outline-blue-400" placeholder="Would you like to write anything about this product?"></textarea>
+                                </div>
+                                <button type="submit" id="review-submit" class="w-full px-3 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600" x-on:click.prevent="submitReview">Submit Review</button>
+                                <div id="review-loading" class="flex justify-center items-center w-full px-3 py-2 bg-blue-50 rounded-lg space-x-2">
+                                    <span class="text-gray-500">Submitting</span>
+                                    <div class="spinner"></div>
+                                </div>
+                                <span id="error" class="inline-block text-red-500"></span>
+                            </form>
+                        </div>
+                    </section>
+                </div>
+    
+                <!-- comments -->
+                <template x-if="totalReviews === 0">
+                    <div class="flex flex-col flex-1 self-center items-center space-y-4 border-none">
+                        <img src="{{asset('images/comment.png')}}" alt="" width="80">
+                        <p class="text-center text-gray-600">No comments on this product yet</p>
+                    </div>
+                </template>
+    
+                <section id="comments" class="flex-1 space-y-2" x-show="totalReviews > 0">
+                    @foreach ($product->reviews as $review)
+                    <div class="flex p-2 pt-3 bg-white rounded">
+                        <img src="{{asset('images/no-image.png')}}" alt="" width="40" height="40" class="self-start border border-slate-100 p-1 py-1.5 rounded-full">
+                        <div class="flex-1 ml-4">
+                            <div class="flex justify-between items-center">
+                                <div class="flex flex-col">
+                                    <div class="font-medium text-sm">{{$review->user->name}}</div>
+                                    <div class="flex items-center mt-1">
+                                        <template x-for="star in {{$review->rating ?? '0'}}">
+                                            <x-icon name="star-solid" class="text-yellow-400"/>
+                                        </template>
                                     </div>
                                 </div>
-                                <span class="text-xs drop-shadow-none w-10" x-text="(isNaN((count / totalReviews * 100)) ? Number(0) : (count / totalReviews * 100)).toFixed(1) + '%'" x-bind:class="textColors[index]"></span>
+                                <span class="text-sm text-gray-500"><time>{{$review->created_at->diffForHumans()}}</time></span>
                             </div>
-                        </template>
+                            <p class="mt-3 text-black text-sm md:text-base px-2 py-2 bg-stone-100 rounded-lg">
+                                {{$review->comment}}
+                            </p>
+                        </div>
                     </div>
-                </section>
-
-                <!-- Review box -->
-                <section x-data="rate" class="mt-8">
-                    <div class="border border-yellow-300 rounded-lg p-3 bg-slate-50 text-sm">
-                        <h2 class="font-medium text-yellow-500">
-                            <x-icon name="warning" class="inline mr-1" /> Warning
-                        </h2>
-                        <p class="mt-1">
-                            Manipulating or misleading reviews is strictly prohibited. We value honest and authentic feedback from our users. Any user found to be manipulating reviews may face account suspension or termination. Please ensure that all reviews submitted are truthful and based on genuine experiences
-                        </p>
-                    </div>
-                    <div class="mt-4">
-                        <form id="review-form" action="{{route('products.review', ['product' => $product->slug])}}" method="POST" class="bg-slate-50 p-3 border rounded-lg space-y-4">
-                            @csrf
-                            <div>
-                                <label for="" class="font-medium">Rate the product</label>
-                                <div class="flex mt-1.5">
-                                    <template x-for="star in stars">
-                                        <x-icon name="star-solid" 
-                                        x-on:click="selected = star" 
-                                        x-on:mouseover="rating = star" 
-                                        x-on:mouseleave="rating = 0" 
-                                        x-bind:class="colorStar(star)" 
-                                        />
-                                    </template>
-                                </div>
-                                <input type="hidden" name="star_rating" id="star-rating" value="" x-model="selected">
-                            </div>
-                            <div>
-                                <label class="font-medium">Write Your Review</label>
-                                <textarea name="comment" id="comment" class="w-full resize-none border rounded-lg mt-1 p-2 h-24 focus:outline-blue-400" placeholder="Would you like to write anything about this product?"></textarea>
-                            </div>
-                            <button type="submit" id="review-submit" class="w-full px-3 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600" x-on:click.prevent="submitReview">Submit Review</button>
-                            <div id="review-loading" class="flex justify-center items-center w-full px-3 py-2 bg-blue-50 rounded-lg space-x-2">
-                                <span class="text-gray-500">Submitting</span>
-                                <div class="spinner"></div>
-                            </div>
-                            <span id="error" class="inline-block text-red-500"></span>
-                        </form>
-                    </div>
+                    @endforeach
                 </section>
             </div>
-
-            <!-- comments -->
-            <template x-if="totalReviews === 0">
-                <div class="flex flex-col flex-1 self-center items-center space-y-4 border-none">
-                    <img src="{{asset('images/comment.png')}}" alt="" width="80">
-                    <p class="text-center text-gray-600">No comments on this product yet</p>
-                </div>
-            </template>
-
-            <section id="comments" class="flex-1 divide-y divide-slate-300 space-y-3" x-show="totalReviews > 0">
-                @foreach ($product->reviews as $review)
-                <div class="flex p-2 pt-3">
-                    <img src="{{asset('images/no-image.png')}}" alt="" width="40" height="40" class="self-start border border-slate-100 p-1 py-1.5 rounded-full">
-                    <div class="flex-1 ml-4">
-                        <div class="flex justify-between items-center">
-                            <div class="flex flex-col">
-                                <div class="font-medium text-sm">{{$review->user->name}}</div>
-                                <div class="flex items-center mt-1">
-                                    <template x-for="star in {{$review->rating ?? '0'}}">
-                                        <x-icon name="star-solid" class="text-yellow-400"/>
-                                    </template>
-                                </div>
-                            </div>
-                            <span class="text-sm text-gray-500"><time>{{$review->created_at->diffForHumans()}}</time></span>
-                        </div>
-                        <p class="mt-3 text-gray-800 text-sm md:text-base px-2 py-2 bg-slate-50 rounded-lg">
-                            {{$review->comment}}
-                        </p>
-                    </div>
-                </div>
-                @endforeach
-            </section>
+            <div id="success-message" class="hidden fixed top-4 left-1/2 -translate-x-1/2 bg-green-50 border border-green-200 px-4 py-2 rounded-lg">
+            </div>
+            <div id="error-message" class="hidden fixed top-4 left-1/2 -translate-x-1/2 bg-red-50 border border-red-200 px-4 py-2 rounded-lg">
+            </div>
         </div>
-        <div id="success-message" class="hidden fixed top-4 left-1/2 -translate-x-1/2 bg-green-50 border border-green-200 px-4 py-2 rounded-lg">
-        </div>
-        <div id="error-message" class="hidden fixed top-4 left-1/2 -translate-x-1/2 bg-red-50 border border-red-200 px-4 py-2 rounded-lg">
-        </div>
-    </x-container>
+    </div>
 </x-layout>
 
 
@@ -395,7 +398,7 @@ function submitReview()
 function createComment(data, stars)
 {
     const newComment = `
-      <div class="flex p-2 pt-3">
+      <div class="flex p-2 pt-3 bg-white rounded">
         <img src="{{asset('images/no-image.png')}}" alt="" width="40" height="40" class="self-start border border-slate-100 p-1 py-1.5 rounded-full">
         <div class="flex-1 ml-4">
           <div class="flex justify-between items-center">
@@ -407,7 +410,7 @@ function createComment(data, stars)
             </div>
             <span class="text-sm text-gray-500"><time>Now</time></span>
           </div>
-          <p class="mt-3 text-gray-800 text-sm md:text-base">
+          <p class="mt-3 text-gray-800 text-sm md:text-base px-2 py-2 bg-slate-100 rounded-lg">
             ${data.comment}
           </p>
         </div>

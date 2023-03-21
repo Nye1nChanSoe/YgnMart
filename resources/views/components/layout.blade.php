@@ -13,8 +13,12 @@ $cartItemsCount = App\Models\Cart::where('user_id', auth()->id())->count();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <!-- favicon -->
+    <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
+    
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <title>{{ $title ?? 'YangonMart.com | Shop anytime, anywhere with us' }}</title>
+    <title>{{ $title ?? 'YangonMart.com - Shop anytime, anywhere with us' }}</title>
 </head>
 <body class="antialiased ">
     <section x-data="notification" class="relative">
@@ -105,8 +109,8 @@ $cartItemsCount = App\Models\Cart::where('user_id', auth()->id())->count();
 
         {{$slot}}
 
-        <footer class="bg-slate-100">
-            <div class="container mx-auto flex flex-col px-8 py-6 text-slate-600 md:px-12">
+        <footer class="bg-neutral-800 text-slate-300">
+            <div class="container mx-auto flex flex-col px-8 py-6 md:px-12">
                 <section class="flex justify-center items-center md:justify-between">
                     <div class="space-y-4 text-center md:text-left">
                         <div class="text-center md:text-left">
@@ -124,37 +128,37 @@ $cartItemsCount = App\Models\Cart::where('user_id', auth()->id())->count();
                 <section class="flex flex-col items-center space-y-10 md:m-0 md:flex-row md:justify-between md:items-end md:space-y-0">
                     <div class="w-full space-y-3 order-1 mt-8 text-center md:w-auto md:text-left md:order-first md:mt-0">
                         <div>
-                            <img src="/images/logo/logo.svg" alt="" width="100" class="mx-auto md:mx-0">
+                            <img src="/images/logo/logo_w.svg" alt="" width="100" class="mx-auto md:mx-0">
                         </div>
                         <p class="italic tracking-wider font-semibold">Shop anytime, anywhere with us</p>
                         <div>
                             <div class="flex items-center justify-center space-x-2 md:justify-start">
                                 <x-icon name="telephone" />
-                                <a href="tel:+959771637812" class="hover:text-black">+95 9 771 637 812</a>
+                                <a href="tel:+959771637812" class="hover:text-slate-400">+95 9 771 637 812</a>
                             </div>
                             <div class="flex items-center justify-center space-x-2 md:justify-start">
                                 <x-icon name="mail" />
-                                <a href="mailto:enquiry@ygnmart.com" class="hover:text-black">enquiry@ygnmart.com</a>
+                                <a href="mailto:enquiry@ygnmart.com" class="hover:text-slate-400">enquiry@ygnmart.com</a>
                             </div>
                         </div>
                         <p class="text-sm">Copyright &copy; <time>2023</time> Yangon Mart</p>
                     </div>
                     <div class="flex w-full flex-col text-center md:w-auto md:text-left">
                         <h3 class="font-semibold mb-2">About</h3>
-                        <a href="" class="hover:text-black">Customer Service</a>
-                        <a href="" class="hover:text-black">Vendor Guidelines</a>
+                        <a href="" class="hover:text-slate-400">Customer Service</a>
+                        <a href="" class="hover:text-slate-400">Vendor Guidelines</a>
                     </div>
                     <div class="flex w-full flex-col text-center md:w-auto md:text-left">
                         <h3 class="font-semibold mb-2">Terms and Conditions</h3>
-                        <a href="" class="hover:text-black">Privacy Policy</a>
-                        <a href="" class="hover:text-black">Cookie Policy</a>
+                        <a href="" class="hover:text-slate-400">Privacy Policy</a>
+                        <a href="" class="hover:text-slate-400">Cookie Policy</a>
                     </div>
                     <div class="w-full text-center md:w-auto md:text-left">
                         <h3 class="font-semibold mb-2">Platforms</h3>
                         <div class="space-x-3 text-xl">
-                            <a href="#" class="hover:text-black"><i class="fa-brands fa-facebook-f"></i></a>
-                            <a href="#" class="hover:text-black"><i class="fa-brands fa-instagram"></i></a>
-                            <a href="#" class="hover:text-black"><i class="fa-brands fa-viber"></i></a>
+                            <a href="#" class="hover:text-slate-400"><i class="fa-brands fa-facebook-f"></i></a>
+                            <a href="#" class="hover:text-slate-400"><i class="fa-brands fa-instagram"></i></a>
+                            <a href="#" class="hover:text-slate-400"><i class="fa-brands fa-viber"></i></a>
                         </div>
                     </div>
                 </section>

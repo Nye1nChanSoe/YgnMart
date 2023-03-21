@@ -6,11 +6,8 @@
     <x-slot:title>
         YangonMart.com Checkout 
     </x-slot:title>
-    <x-container>
+    <x-container class="mt-4">
         {{-- TODO: breadcrubs --}}
-        <div class="my-10">
-            implement > breadcrumbs > links > here
-        </div>
 
         {{-- The form wrapping around the whole checkout process --}}
         <form 
@@ -33,16 +30,16 @@
             action="" 
             method="POST" 
             x-bind:id = "payment==='cash' ? 'cash-payment-form' : 'card-payment-form'" 
-            class="flex justify-between"
+            class="flex justify-between pt-6"
         >
             @csrf
-            <div class="flex-1 space-y-6 divide-y mr-6 p-4">
+            <div class="flex-1 space-y-6 divide-y p-4 md:mr-6">
                 <!-- Address -->
                 <div 
                     x-data="{
                         open: {{$addresses->isEmpty() ? 'true' : 'false'}},
                     }" 
-                    class="flex justify-between space-x-4 mr-8"
+                    class="flex justify-between space-x-4 md:mr-8"
                 >
                     <h1 class="text-sky-800 font-semibold">1</h1>
                     <div class="flex items-start flex-1">
@@ -215,7 +212,7 @@
             </div>
 
             {{-- quick purchase --}}
-            <div class="bg-slate-100 p-4">
+            <div class="hidden bg-slate-100 p-4 lg:block">
                 Order Summary
             </div>
         </form>
