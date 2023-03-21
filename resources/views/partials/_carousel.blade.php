@@ -1,7 +1,6 @@
 <section>
     <div x-data="{
             images: ['Promo 1', 'Promo 2', 'Event 1', 'Event 2'],
-            imagesSplide: ['images/grocery/apple.jpeg', 'images/grocery/banana.jpeg', 'images/grocery/orange.jpeg', 'images/grocery/watermelon.jpeg'],
             activeImage: null,
 
             prev() 

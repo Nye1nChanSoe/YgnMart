@@ -13,6 +13,6 @@ class Category extends Model
     /** relations */
     public function products()
     {
-        return $this->belongsToMany(Product::class)->withTimestamps();
+        return $this->belongsToMany(Product::class);
     }
 }

@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\Review;
 use App\Traits\parseTrait;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
@@ -15,15 +18,33 @@ class ProductController extends Controller
 
     public function index()
     {
-        $filteredQuery = Product::oldest()->filter($this->parseHyphens(request(['search', 'category'])));
+        /**
+         * Eager loaded Models: reviews
+         * Eager load or left join the model reviews
+         */
+        $filteredQuery = Product::with('reviews')->oldest()->filter($this->parseHyphens(request(['search', 'category'])));
         
-        $products = $filteredQuery->paginate(5)->withQueryString();
+        $products = $filteredQuery->paginate(20)->withQueryString();
 
         return view('products.index', compact('products'));
     }
 
     public function show(Product $product)
     {
+        /**
+         * to select reviews from the review table 
+         * even if there are no reviews it will return back a table like this
+         * 
+         * --------------------
+         * |  star  |  count  |
+         * --------------------
+         * |   1    |    0    |
+         * |   2    |    0    |
+         * |   3    |    0    |
+         * |   4    |    0    |
+         * |   5    |    0    |
+         * ---------------------
+         */
         $ratings = DB::select(DB::raw('SELECT stars_table.stars, COALESCE(COUNT(reviews.rating), 0) AS count
                     FROM (
                         SELECT 1 AS stars UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5
@@ -32,7 +53,11 @@ class ProductController extends Controller
                     AND reviews.product_id = '.$product->id.'
                     GROUP BY stars_table.stars'));
 
-        return view('products.show',compact('product', 'ratings'));
+        $relatedProducts = Product::relatedProducts($product)->get();
+        
+        // dd(json_encode($relatedProducts->toArray()));
+        
+        return view('products.show',compact('product', 'ratings', 'relatedProducts'));
     }
 
     public function addToCart(Request $request)
@@ -59,7 +84,8 @@ class ProductController extends Controller
 
     public function review(Request $request, Product $product)
     {
-        if($product->reviews()->wherePivot('user_id', auth()->id())->exists())
+        /** user cannot review a single product twice, validate on the client side */
+        if($product->reviews()->where('user_id', auth()->id())->where('product_id', $product->id)->exists())
         {
             return response()->json([
                 'message' => 'error'
@@ -90,5 +116,34 @@ class ProductController extends Controller
             ],
             'comment' => request()->json('comment'),
         ]);
+    }
+
+    public function suggestions(Request $request)
+    {
+        /** query 10 new products per request */
+        $count = 10;
+        $page = $request->query('page');
+
+        /** query amount */
+        $total = $count * $page;
+
+        try 
+        {
+            $product = Product::find($request->query('product'));
+            $relatedProducts = Product::relatedProducts($product, $total)->get();
+        } 
+        catch (ModelNotFoundException $e) 
+        {
+            Log::error('Product Not Found: ' . $e->getMessage());
+            return response()->json(['message' => $e->getMessage()]);
+        }
+
+        return response()->json($relatedProducts);
+    }
+
+    public function update(Request $request, Product $product)
+    {
+        $product->update(['rating_point' => $request->json('point')]);
+        return response()->json(['message' => 'success']);
     }
 }

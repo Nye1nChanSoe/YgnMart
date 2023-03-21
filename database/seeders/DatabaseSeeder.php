@@ -21,8 +21,8 @@ class DatabaseSeeder extends Seeder
 
     /** products */
     private array $fruits = ['banana', 'apple', 'watermelon', 'orange', 'tangerine', 'onion'];
-    private array $alcohols = ['wine', 'beer', 'cocktails', 'vodka', 'rum', 'gin', 'whisky'];
-    private array $soft_drinks = ['coke', 'energy drinks', 'milk shake'];
+    private array $alcohols = ['wine', 'beer', 'cocktails', 'vodka', 'rum', 'gin', 'whisky', 'tonic', 'soda', 'gold', 'black', 'white', 'blue', 'fire', 'ice'];
+    private array $soft_drinks = ['coke', 'energy drinks', 'milk shake', 'orange juice', 'apple juice', 'vanilla cider', 'apple cide', 'pepsi', '100 plus', 'red bull', 'monster', 'coffee'];
     
 
     public function run()

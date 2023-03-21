@@ -3,9 +3,9 @@
 ])
 
 <x-layout>
-    <x-container>
+    <x-container x-data="charts">
         {{-- TODO: breadcrumbs --}}
-        <div class="my-10">
+        <div class="my-5">
             implement > breadcrumbs > links > here
         </div>
 
@@ -28,9 +28,13 @@
                     <h3 class="font-semibold text-xl py-2">{{$product->name}}</h3>
                 </div>
                 <div class="flex justify-between items-center">
-                    <x-product-review>
+                    <div class="flex justify-center items-center">
+                        <template x-for="star in stars">
+                            <x-icon name="star-solid" x-bind:class="{'text-yellow-400' : star <= Math.round(point), 'text-slate-300': star > Math.round(point)}" />
+                        </template>
+                        <div class="text-xs text-gray-700 ml-1">(<span x-text="totalReviews"></span>)</div>
                         <a href="#reviews" class="text-sm ml-2 py-1.5 px-2 bg-slate-100 rounded-lg text-blue-500 hover:bg-slate-200">Leave Review</a>
-                    </x-product-review>
+                    </div>
                     <div class="text-blue-500 hover:text-blue-700">
                         <a href="#">Visit the Vendor</a>
                     </div>
@@ -100,13 +104,74 @@
             </div>
         </div>
 
-        {{-- related products --}}
-        <div class="bg-slate-200 mt-10">
-            <p>List of related products here</p>
-        </div>
+        {{-- Carousel displaying a list of related products --}}
+        <section id="related-products" class="my-20 flex items-center space-x-4 p-4 bg-slate-50">
+            @foreach ($relatedProducts as $relatedProduct)
+                <div class="self-stretch p-4 shadow bg-white">
+                    <div class="flex items-center justify-center w-40 h-32">
+                        <img src="{{$relatedProduct->image ? asset($relatedProduct->image) : asset('images/no-image.png')}}" alt="" class="max-w-full max-h-full object-cont">
+                    </div>
+                    <h2 class="text-sm text-center">{{$relatedProduct->name}}</h2>
+                </div>
+            @endforeach
+        </section>
+
+        <script>
+            function carousel()
+            {
+                return {
+                    currentSlide: 0, // keep track of the current slide index 
+                    slideWidth: 20, // width of each slide (in rem unit)
+                    numVisibleSlides: 5, // number of visible slides at a time
+
+                    init()
+                    {
+                        // set the width of the container to 500% means 5 times the number of slideWidth 
+                        const containerWidth = this.slideWidth * this.numVisibleSlides;
+                        this.$refs.slideContainer.style.width = `${containerWidth}rem`;
+
+                        // start automatic sliding 
+                        setInterval(() => {
+                           this.next(); 
+                        }, 1000);
+                        console.log('init is called');
+                    },
+
+                    prev()
+                    {
+                        this.currentSlide = Math.max(this.currentSlide - 1, 0);
+
+                        /*
+                         Element.scrollTo(options) - where options is a dictionary 
+                         top: specifies the number of pixels along the y axis
+                         left: specifies the number of pixels along the x axis
+                         behavior: specifies whether the scrolling should animate smoothly or not
+                        */
+                        this.$refs.slideContainer.scrollTo({
+                            left: (this.currentSlide * this.slideWidth) + 'rem',
+                            behavior: 'smooth',
+                        });
+                        console.log('prev is called');
+                    },
+
+                    next()
+                    {
+                        const maxSlide = this.$refs.slideContainer.children.length;
+                        console.log('Max slide: ', maxSlide);
+                        this.currentSlide = Math.min(this.currentSlide + 1, maxSlide);       
+                        console.log('Current Slide: ', this.currentSlide);
+                        this.$refs.slideContainer.scrollTo({
+                            left: `${this.currentSlide * this.slideWidth}rem`,
+                            behavior: 'smooth',
+                        });   
+                        console.log('next is called');
+                    }
+                }
+            }
+        </script>
 
         {{-- Reviews --}}
-        <div id="reviews" x-data="charts" class="flex flex-col gap-y-10 px-4 mt-8 md:flex-row md:gap-x-20">
+        <div id="reviews" class="flex flex-col gap-y-10 px-4 border-t pt-10 md:flex-row md:gap-x-20">
             <div class="basis-2/5 flex flex-col gap-y-6">
                 <section>
                     <div id="review" class="text-center">
@@ -164,7 +229,7 @@
                             </div>
                             <div>
                                 <label class="font-medium">Write Your Review</label>
-                                <textarea name="comment" id="comment" class="w-full border rounded-lg mt-1 p-2 h-24 focus:outline-slate-400" placeholder="Would you like to write anything about this product?"></textarea>
+                                <textarea name="comment" id="comment" class="w-full resize-none border rounded-lg mt-1 p-2 h-24 focus:outline-blue-400" placeholder="Would you like to write anything about this product?"></textarea>
                             </div>
                             <button type="submit" id="review-submit" class="w-full px-3 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600" x-on:click.prevent="submitReview">Submit Review</button>
                             <div id="review-loading" class="flex justify-center items-center w-full px-3 py-2 bg-blue-50 rounded-lg space-x-2">
@@ -194,7 +259,7 @@
                             <div class="flex flex-col">
                                 <div class="font-medium text-sm">{{$review->user->name}}</div>
                                 <div class="flex items-center mt-1">
-                                    <template x-for="star in {{$review->rating}}">
+                                    <template x-for="star in {{$review->rating ?? '0'}}">
                                         <x-icon name="star-solid" class="text-yellow-400"/>
                                     </template>
                                 </div>
@@ -221,11 +286,11 @@
 document.addEventListener('alpine:init', () => {
     Alpine.data('charts', () => ({
         stars: [1, 2, 3, 4, 5],             // value for each star
-        reviews: [],                        // number of user reviews in ordered sequence
+        reviews: [],                        // number of user reviews in ordered sequence as above stars
         totalReviews: 0,
         bgColors:['bg-green-500', 'bg-lime-500', 'bg-yellow-500', 'bg-orange-500', 'bg-red-500'],
         textColors:['text-green-600', 'text-lime-600', 'text-yellow-600', 'text-orange-600', 'text-red-600'],
-        point: 0,
+        point: 0,           // total ratings point [0.0 to 5.0]
 
         avgStarPoint() {
             this.totalReviews = this.reviews.reduce((total, count) => total + count);
@@ -294,7 +359,7 @@ function submitReview()
     reviewSubmit.style.display = 'none';
     reviewLoading.style.display = 'flex';
 
-    if(rating.value == 0 || comment.value == '')
+    if(rating.value == 0 || comment.value.trim() == '')
     {
         showAlert('error', 'Rating and comment are required in order to submit a review');
 
@@ -303,18 +368,18 @@ function submitReview()
     }
     else 
     {
-        fetch('/products/{{ $product->slug }}/review', {
+        fetch('/products/{{ $product->id }}/review', {
             method: 'POST', 
             headers: {
                 'Content-Type': 'application/json',
                         
-                // To resolve the issue, you need to include a CSRF token in your AJAX request:
                 // The CSRF TOKEN is embedded in the meta tag 
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
             },
             body: JSON.stringify({
                 rating: rating.value,
                 comment: comment.value,
+                point: this.avgStarPoint(),
             }),
         })
         .then(response => {
@@ -329,13 +394,38 @@ function submitReview()
             console.log('Data object: ', data);
             if(data.message === 'success')
             {
+                // get all the reviews count for start 1, 2, 3, 4, 5 in order
                 this.reviews = data.ratings.map(obj => obj.count);
                 this.totalReviews = this.reviews.reduce((accumulator, value) => accumulator + value, 0);
                 this.point = this.avgStarPoint();
+                
+                createComment(data, this.selected);
                 this.selected = 0;
 
-                createComment(data, this.selected);
                 showAlert(data.message, 'Thank you for your valuable feedback');
+
+                fetch('/products/{{ $product->id }}/review', {
+                    method: 'PATCH', 
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: JSON.stringify({
+                        point: this.point,
+                    }),
+                })
+                .then(function(response) {
+                    if(!response.ok) {
+                        throw new Error('Interal Server Error: Failed to update the products table');
+                    }
+                    return response.json();
+                })
+                .then(function(data) {
+                    console.log(data.message);
+                })
+                .catch(function(error) {
+                    console.error(error.message);
+                });
             }
             else 
             {
@@ -364,6 +454,7 @@ function submitReview()
     }
 }
 
+/* create comment dynamically and append them in start of the comment section */
 function createComment(data, stars)
 {
     const newComment = `
@@ -410,6 +501,5 @@ function showAlert(message, info = '')
         }, 5000);
     }
 }
-
 </script>
 

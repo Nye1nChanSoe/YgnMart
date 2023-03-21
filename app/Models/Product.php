@@ -9,6 +9,9 @@ class Product extends Model
 {
     use HasFactory;
 
+    /** mass assignable */
+    protected $guarded = [];
+
     /**
      * Common query logic for searching products based on name, meta_type and description
      * 
@@ -44,11 +47,37 @@ class Product extends Model
 
         return $query;
     }
+
+
+    /**
+     * get all the related products of the specified product except the product itself
+     * 
+     * @param Illuminate\Database\Query\Builder $query query builder instance to add additional constraints to the query
+     * @param Product $product the product you want to relate to
+     * @param int $limit set the return result set limit
+     * @param boolean $intRandomOrder the result set is returned in random order or not
+     */
+    public function scopeRelatedProducts($query, $product, $limit = 10, $inRandomOrder = true)
+    {
+        $query = $query->whereHas('categories', function ($query) use ($product) {
+            $query->whereHas('products', function($query) use ($product) {
+                $query->where('id', '=', $product->id);
+            });
+        })
+        ->where('id', '<>', $product->id);
+
+        if($inRandomOrder) 
+        {
+            $query = $query->inRandomOrder();
+        }
+
+        return $query->take($limit);
+    }
     
     /** relations */
     public function categories()
     {
-        return $this->belongsToMany(Category::class)->withTimestamps();
+        return $this->belongsToMany(Category::class);
     }
 
     public function carts()

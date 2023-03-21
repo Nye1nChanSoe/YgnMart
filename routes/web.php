@@ -5,13 +5,14 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RegisterController;
-use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SessionController;
 use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', [ProductController::class, 'index'])->name('home');
+Route::get('/products/suggestions', [ProductController::class, 'suggestions'])->name('products.suggestions');
 Route::get('/products/{product:slug}', [ProductController::class, 'show'])->name('products.show');
+
 
 Route::middleware(['guest'])->group(function() {
     Route::get('/register', [RegisterController::class, 'create'])->name('register');
@@ -40,5 +41,6 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/orders/{order:order_code}', [OrderController::class, 'show'])->name('orders.show');
     Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
 
-    Route::post('/products/{product:slug}/review', [ProductController::class, 'review'])->name('products.review');
+    Route::post('/products/{product:id}/review', [ProductController::class, 'review'])->name('products.review');
+    Route::patch('/products/{product:id}/review', [ProductController::class, 'update'])->name('products.review.update');
 });

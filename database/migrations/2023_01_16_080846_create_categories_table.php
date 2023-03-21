@@ -20,6 +20,9 @@ return new class extends Migration
             $table->text('description');
             $table->string('image')->nullable();
             $table->timestamps();
+
+            /** constraints */
+            $table->index(['type', 'sub_type']);
         });
     }
 
