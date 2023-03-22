@@ -19,7 +19,7 @@ class RegisterController extends Controller
     public function store(Request $request)
     {
         $userCredentials = $request->validate([
-            'name' => ['required'],
+            'name' => ['required', 'max:32'],
             'email' => ['required', 'email', Rule::unique('users', 'email')],
             'password' => ['required', 'confirmed', 'min:8'],
             'phone_number' => ['required', Rule::unique('users', 'phone_number'), 'regex:/^0\d{8,12}$/'],   // validate phone numbers that can contain leading 0, followed by 8 or 12 digits
@@ -32,11 +32,6 @@ class RegisterController extends Controller
         $user = User::create($userCredentials);
 
         auth()->login($user);
-        return redirect()->route('register.create.address');
-    }
-
-    public function createAddress()
-    {
         return view('register.create-address');
     }
 
@@ -44,9 +39,9 @@ class RegisterController extends Controller
     {
         /** sometimes | required -> if the field is present, then validation rules are applied */
         $address = $request->validate([
-            'street' => 'sometimes | required',   
-            'ward' => 'sometimes | required | numeric',
-            'township' => 'sometimes | required | alpha',
+            'street' => 'sometimes | required | max:32 ',   
+            'ward' => 'sometimes | required | numeric | max:10',
+            'township' => 'sometimes | required | alpha | max:20',
         ]);
 
         $address['user_id'] = auth()->id();

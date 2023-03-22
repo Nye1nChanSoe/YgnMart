@@ -21,9 +21,10 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('phone_number')->unique();
             $table->string('password');
-            $table->string('user_status');
+            $table->string('user_status')->default('inactive');
             $table->string('image')->nullable();
             $table->rememberToken();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -14,25 +14,25 @@
                     <h3 class="text-lg text-stone-600 font-semibold mb-2">Personal Information</h3>
                     <div>
                         <label for="name" class="block mb-1">Name <span class="text-red-400">*</span></label>
-                        <input type="text" id="name" name="name" class="w-full border-2 border-blue-200 border-2 border-blue-200 p-1.5 rounded-lg outline-1 outline-blue-400" value="{{old('name')}}" placeholder="Full name...">
-                        <x-input-error field="name"></x-input-error>
+                        <input type="text" id="name" name="name" class="w-full border-2 border-blue-200 p-1.5 rounded-lg outline-1 outline-blue-400" value="{{old('name')}}" placeholder="Full name...">
+                        <x-input-error field="name" />
                     </div>
                     <div>
                         <label for="email" class="block mb-1">Email <span class="text-red-400">*</span></label>
                         <input type="email" id="email" name="email" class="w-full border-2 border-blue-200 p-1.5 rounded-lg outline-1 outline-blue-400" value="{{old('email')}}" placeholder="Email address...">
-                        <x-input-error field="email"></x-input-error>
+                        <x-input-error field="email" />
                     </div>
                     <div>
                         <label for="phone_number" class="block mb-1">Mobile Number <span class="text-red-400">*</span></label>
                         <input type="text" id="phone_number" name="phone_number" class="w-full border-2 border-blue-200 p-1.5 rounded-lg outline-1 outline-blue-400" value="{{old('phone_number')}}" placeholder="Mobile number...">
-                        <x-input-error field="phone_number"></x-input-error>
+                        <x-input-error field="phone_number" />
                     </div>
                 </div>
                 <div class="space-y-3 mt-10">
                     <div>
                         <label for="password" class="block mb-1">Password <span class="text-red-400">*</span></label>
                         <input type="password" id="password" name="password" class="w-full border-2 border-blue-200 p-1.5 rounded-lg outline-1 outline-blue-400" placeholder="Password...">
-                        <x-input-error field="password"></x-input-error>
+                        <x-input-error field="password" />
                     </div>
                     <div>
                         <label for="password_confirmation" class="block mb-1">Confirm Password</label>

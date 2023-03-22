@@ -11,6 +11,11 @@ class Address extends Model
 
     protected $guarded = [];
 
+    public function getFullAddressAttribute()
+    {
+        return "{$this->street}, {$this->ward}, {$this->township}";
+    }
+
     /** relations */
     public function user()
     {

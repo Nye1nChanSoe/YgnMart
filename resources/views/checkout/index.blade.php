@@ -50,7 +50,7 @@
                                     @foreach ($addresses as $address)
                                         @if ($address->is_default)
                                         <p>{{$address->user->name}}</p>
-                                        <p>{{$address->street}}, {{$address->ward}}, {{$address->township}}</p>
+                                        <p>{{$address->full_address}}</p>
                                         @endif
                                     @endforeach
                                 @else
@@ -60,14 +60,14 @@
                             <div 
                                 x-show="open" 
                                 class="border rounded-lg mt-6" 
-                                x-transition
+                                x-transition x-cloak
                             >
                                 <div class="p-3">
                                     <h2 class="font-semibold mb-3">Your addresses</h2>
                                     @foreach ($addresses as $address)
                                         <div class="text-sm mb-1.5">
                                             <input type="radio" name="defaultAddress" value="{{$address->id}}">
-                                            {{$address->street}}, {{$address->ward}}, {{$address->township}}
+                                            {{$address->full_address}}
                                         </div>
                                     @endforeach
                                     {{-- modal to add new address --}}
@@ -186,10 +186,10 @@
                     x-data="{
                         open: true,
                     }"
-                    class="flex justify-between space-x-4 pt-5 md:mr-8"
+                    class="flex justify-between pt-5 md:space-x-4 md:mr-8"
                 >
                     <h1 class="text-sky-800 font-semibold">3</h1>
-                    <div class="flex-1 items-start">
+                    <div class="flex-1 items-start ml-4 md:ml-0">
                         <div class="flex flex-1 justify-between">
                             <h2 class="font-semibold w-48">Product Review</h2>
                             <button type="button" @@click="open=!open" class="hidden md:block">
@@ -198,9 +198,9 @@
                         </div>
 
                         {{-- products display --}}
-                        <div x-show="open" class="mt-4 p-2 border rounded-lg divide-y space-y-3 w-72 md:p-3 sm:w-full md:mr-10">
+                        <div x-show="open" class="mt-4 px-4 py-2 border rounded-lg divide-y space-y-3 w-fit md:p-3 md:mr-10">
                             @foreach ($cartItems as $cart)
-                            <div class="flex flex-col items-center sm:flex-row">
+                            <div class="flex flex-col items-center sm:flex-row md:h-28">
                                 <img src="{{$cart->product->image ? asset($cart->product->image) : asset('images/no-image.png')}}" alt="" width="120" style="object-fit:contain">
                                 <div class="text-sm text-center mt-2 sm:mt-0 sm:text-left sm:ml-8">
                                     <p class="text-gray-900">{{$cart->product->name}}</p>

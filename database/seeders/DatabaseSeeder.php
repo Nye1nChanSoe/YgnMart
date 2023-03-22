@@ -52,7 +52,15 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@email.com',
             'phone_number' => '091231233',
             'password' => 'password',
-            'user_status' => 'active',
+        ]);
+
+        User::create([
+            'name' => 'John Doe',
+            'username' => 'jogndoe_213',
+            'role' => 'user',
+            'email' => 'johndoe@gmail.com',
+            'phone_number' => '09124124525',
+            'password' => 'password',
         ]);
 
         /** seeding categories */

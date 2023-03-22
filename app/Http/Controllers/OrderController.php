@@ -15,7 +15,15 @@ class OrderController extends Controller
 
     public function show(Order $order)
     {
-        return view('orders.show', compact('order'));
+        try 
+        {
+            $order = Order::where('user_id', auth()->id())->where('order_code', $order->order_code)->firstOrFail();
+            return view('orders.show', compact('order'));
+        } 
+        catch (ModelNotFoundException $e) 
+        {
+            return redirect()->back()->with('error', 'Invalid URL');
+        }
     }
 
     /** 

@@ -6,6 +6,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -23,7 +24,6 @@ Route::middleware(['guest'])->group(function() {
 });
 
 Route::middleware(['auth'])->group(function() {
-    Route::get('/register/address', [RegisterController::class, 'createAddress'])->name('register.create.address');
     Route::get('/register/address/skip', [RegisterController::class, 'skipAddress'])->name('register.address.skip');
     Route::post('/register/address', [RegisterController::class, 'storeAddress']);
 
@@ -47,4 +47,15 @@ Route::middleware(['auth'])->group(function() {
 
     Route::post('/products/{product:id}/review', [ProductController::class, 'review'])->name('products.review');
     Route::patch('/products/{product:id}/review', [ProductController::class, 'update'])->name('products.review.update');
+
+
+    Route::patch('/user/password', [UserController::class, 'update'])->name('user.update.password');
+    Route::patch('/user', [UserController::class, 'update'])->name('user.update.info');
+    Route::post('/user/address', [UserController::class, 'storeAddress'])->name('user.store.address');
+    Route::delete('/user', [UserController::class, 'destroy'])->name('user.destroy');
+
+    Route::get('/{user:username}', [UserController::class, 'profile'])->name('profile');
+    Route::get('/{user:username}/settings', [UserController::class, 'edit'])->name('profile.settings');
+    Route::get('/{user:username}/help', [UserController::class, 'profile'])->name('profile.help');
+    Route::get('/{user:username}/privacy', [UserController::class, 'profile'])->name('profile.privacy');
 });

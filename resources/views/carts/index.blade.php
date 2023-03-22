@@ -44,7 +44,7 @@
                             <div class="hidden mr-6 sm:block">
                                 <input type="checkbox" class="w-3.5 h-3.5" checked>
                             </div>
-                            <div class="w-20 rounded-full sm:mr-8 sm:w-32">
+                            <div class="w-20 self-start rounded-full sm:self-center sm:mr-8 sm:w-32">
                                 <a href="/products/{{$cart->product->slug}}"><img src="{{$cart->product->image ? asset($cart->product->image) : asset('images/no-image.png')}}" alt=""></a>
                             </div>
                             <div class="sm:basis-2/3">

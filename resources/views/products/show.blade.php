@@ -141,14 +141,9 @@
     
                     <!-- Review box -->
                     <section x-data="rate">
-                        <div class="border border-yellow-400 rounded-lg p-3 bg-white text-sm">
-                            <h2 class="font-medium text-yellow-500">
-                                <x-icon name="warning" class="inline mr-1" /> Warning
-                            </h2>
-                            <p class="mt-1.5 indent-6 md:intent-8">
-                                Manipulating or misleading reviews is strictly prohibited. We value honest and authentic feedback from our users. Any user found to be manipulating reviews may face account suspension or termination. Please ensure that all reviews submitted are truthful and based on genuine experiences
-                            </p>
-                        </div>
+                        <x-warning>
+                            Manipulating or misleading reviews is strictly prohibited. We value honest and authentic feedback from our users. Any user found to be manipulating reviews may face account suspension or termination. Please ensure that all reviews submitted are truthful and based on genuine experiences
+                        </x-warning>
                         <div class="mt-4">
                             <form id="review-form" action="{{route('products.review', ['product' => $product->slug])}}" method="POST" class="bg-white p-3 border rounded-lg space-y-4">
                                 @csrf
