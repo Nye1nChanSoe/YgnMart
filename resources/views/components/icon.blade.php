@@ -141,6 +141,12 @@
     </svg>
 @endif
 
+@if($name == 'arrow-right')
+    <svg {{$attributes->merge(['class' => 'w-4.5 h-4.5'])}} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+    </svg>
+@endif 
+
 @if($name == 'card-solid')
     <svg {{$attributes->merge(['class' => 'w-4 h-4'])}} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
         <path d="M4.5 3.75a3 3 0 00-3 3v.75h21v-.75a3 3 0 00-3-3h-15z" />

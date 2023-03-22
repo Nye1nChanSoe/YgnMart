@@ -1,6 +1,6 @@
 <x-layout>
     <x-slot:title>
-        YangonMart.com Order - {{$order->order_code}}
+        Order - YangonMart.com | {{$order->order_code}}
     </x-slot:title>
     <x-container class="bg-slate-50 p-6 mt-10 mb-10 rounded-xl">
         <div class="flex flex-col justify-center lg:flex-row">

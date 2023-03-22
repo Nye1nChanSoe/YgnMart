@@ -4,7 +4,7 @@
 
 <x-layout>
     <x-slot:title>
-        YangonMart.com Checkout 
+        Checkout  - YangonMart.com
     </x-slot:title>
     <x-container class="mt-4">
         {{-- TODO: breadcrubs --}}
@@ -30,10 +30,10 @@
             action="" 
             method="POST" 
             x-bind:id = "payment==='cash' ? 'cash-payment-form' : 'card-payment-form'" 
-            class="flex justify-between pt-6"
+            class="block justify-between pt-6 md:flex"
         >
             @csrf
-            <div class="flex-1 space-y-6 divide-y p-4 md:mr-6">
+            <div class="space-y-6 divide-y p-4 md:flex-1 md:mr-6">
                 <!-- Address -->
                 <div 
                     x-data="{
@@ -42,9 +42,9 @@
                     class="flex justify-between space-x-4 md:mr-8"
                 >
                     <h1 class="text-sky-800 font-semibold">1</h1>
-                    <div class="flex items-start flex-1">
-                        <h2 class="font-semibold w-48">Delivery Address</h2>
-                        <div class="flex flex-col flex-1 text-sm mr-6">
+                    <div class="flex flex-col items-start flex-1 md:flex-row">
+                        <h2 class="font-semibold md:w-48">Delivery Address</h2>
+                        <div class="flex flex-col flex-1 text-sm mt-2 md:mt-0 md:mr-6">
                             <div>
                                 @if(!$addresses->isEmpty())
                                     @foreach ($addresses as $address)
@@ -78,10 +78,13 @@
                                 </div>
                             </div>
                         </div>
-                        <button type="button" @@click="open=!open">
+                        <button type="button" @@click="open=!open" class="hidden md:block">
                             <x-icon name="chevron-down" class="hover:text-blue-600 rounded-full" x-bind:class="{ '-rotate-180 duration-400':open }" />
                         </button>
                     </div>
+                    <button type="button" @@click="open=!open" class="self-start block md:hidden">
+                        <x-icon name="chevron-down" class="hover:text-blue-600 rounded-full" x-bind:class="{ '-rotate-180 duration-400':open }" />
+                    </button>
                 </div>
                 <!-- End Address -->
 
@@ -90,15 +93,15 @@
                     x-data="{
                         open: false,
                     }"
-                    class="flex justify-between space-x-4 pt-5 mr-8"
+                    class="flex justify-between space-x-4 pt-5 md:mr-8"
                 >
                     <h1 class="text-sky-800 font-semibold">2</h1>
-                    <div class="flex items-start flex-1">
+                    <div class="flex flex-col items-start flex-1 md:flex-row">
                         <h2 class="font-semibold w-48">Payment Method</h2>
-                        <div class="flex flex-col flex-1 text-sm mr-6">
+                        <div class="flex flex-col flex-1 text-sm mt-4 md:mt-0 md:mr-6">
                             {{-- radio buttons --}}
                             <div>
-                                <div class="flex items-center mb-3">
+                                <div class="flex items-center mb-2 md:mb-3">
                                     <input id="payment-cash" type="radio" name="payment_method" value="cash" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300" x-model="payment" checked>
                                     <label for="payment-cash" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Pay with cash</label>
                                 </div>
@@ -109,14 +112,14 @@
                                 </div>
                             </div>
 
-                            <div x-show="payment==='card'" class="mt-6" x-transition>
+                            <div x-show="payment==='card'" class="mt-4 md:mt-6" x-transition>
                                 <input type="hidden" id="client-secret-key" name="client_secret_key" value="{{$clientSecret}}">
                                 <input type="hidden" id="checkout-id" name="checkout_id" value="{{$checkout->id}}">
-                                <div id="card" class="appearance-none border border-black/25 rounded-lg w-80 py-2 px-3"></div>
+                                <div id="card" class="appearance-none border border-black/25 rounded-lg w-64 py-2 px-3 md:w-80"></div>
                                 <div id="card-errors" role="alert" class="text-red-500 mt-2"></div>
                             </div>
                         </div>
-                        <div x-data="{ show:false }" class="relative" @@mouseleave="show=false">
+                        <div x-data="{ show:false }" class="relative hidden md:block" @@mouseleave="show=false">
                             <button type="button" @@mouseenter="show=true">
                                 <x-icon name="info" class="text-black hover:text-blue-600" />
                             </button>
@@ -139,16 +142,40 @@
                                     {{-- <p class="mt-1.5 mr-2 text-gray-500">Check more <a href="https://stripe.com/docs/testing" target="_blank" class="underline hover:text-gray-700">https://stripe.com/docs/testing</a></p> --}}
                                 </div>
                             </div>
-                            <script>
-                                function copyToClipboard()
-                                {
-                                    const successPaymentElement = this.$refs.testPaymentNumber;
-                                    navigator.clipboard.writeText(successPaymentElement.value);
-                                    console.log(successPaymentElement.value);
-                                    this.copied = true;
-                                    setTimeout(() => this.copied = false, 1400);
-                                }
-                            </script>
+                        </div>
+                        <script>
+                            function copyToClipboard()
+                            {
+                                const successPaymentElement = this.$refs.testPaymentNumber;
+                                navigator.clipboard.writeText(successPaymentElement.value);
+                                console.log(successPaymentElement.value);
+                                this.copied = true;
+                                setTimeout(() => this.copied = false, 1400);
+                            }
+                        </script>
+                    </div>
+                    <div x-data="{ show:false }" class="self-start relative block md:hidden" @@mouseleave="show=false">
+                        <button type="button" @@mouseenter="show=true">
+                            <x-icon name="info" class="text-black hover:text-blue-600" />
+                        </button>
+                        <div x-show="show" class="absolute top-5 right-0 border p-2 bg-slate-100 rounded-lg" x-cloak x-transition>
+                            <div x-data="{copied: false}" class="text-xs text-gray-700 w-60">
+                                <h2 class="mb-2">You can test the payment</h2>
+                                <div class="flex space-x-4 relative">
+                                    <input x-ref="testPaymentNumber" @@click="copyToClipboard" type="button" value="4242424242424242" class="text-sky-500 hover:text-sky-600 focus:outline-none" />
+                                    <span class="text-gray-500">Succeessful payment</span>
+                                    <div x-show="copied" class="absolute -top-7 right-32 border rounded-lg bg-white shadow text-blue-500 py-1 px-2" x-cloak x-transition>Copied!</div>
+                                </div>
+                                {{-- <div class="flex space-x-4">
+                                    <span class="text-sky-500">4000000000009995</span>
+                                    <span class="text-gray-500">Always declined</span>
+                                </div>
+                                <div class="flex space-x-4">
+                                    <span class="text-sky-500">4000002500003155</span>
+                                    <span class="text-gray-500">Requires authentication</span>
+                                </div> --}}
+                                {{-- <p class="mt-1.5 mr-2 text-gray-500">Check more <a href="https://stripe.com/docs/testing" target="_blank" class="underline hover:text-gray-700">https://stripe.com/docs/testing</a></p> --}}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -159,25 +186,25 @@
                     x-data="{
                         open: true,
                     }"
-                    class="flex justify-between space-x-4 pt-5 mr-8"
+                    class="flex justify-between space-x-4 pt-5 md:mr-8"
                 >
                     <h1 class="text-sky-800 font-semibold">3</h1>
                     <div class="flex-1 items-start">
                         <div class="flex flex-1 justify-between">
                             <h2 class="font-semibold w-48">Product Review</h2>
-                            <button type="button" @@click="open=!open">
+                            <button type="button" @@click="open=!open" class="hidden md:block">
                                 <x-icon name="chevron-down" class="hover:text-blue-600 rounded-full" x-bind:class="{ '-rotate-180 duration-400':open }" />
                             </button>
                         </div>
 
                         {{-- products display --}}
-                        <div x-show="open" class="mt-4 mr-10 p-3 border rounded-lg divide-y space-y-3">
+                        <div x-show="open" class="mt-4 p-2 border rounded-lg divide-y space-y-3 w-72 md:p-3 sm:w-full md:mr-10">
                             @foreach ($cartItems as $cart)
-                            <div class="flex items-center">
+                            <div class="flex flex-col items-center sm:flex-row">
                                 <img src="{{$cart->product->image ? asset($cart->product->image) : asset('images/no-image.png')}}" alt="" width="120" style="object-fit:contain">
-                                <div class="text-sm ml-8">
+                                <div class="text-sm text-center mt-2 sm:mt-0 sm:text-left sm:ml-8">
                                     <p class="text-gray-900">{{$cart->product->name}}</p>
-                                    <div class="bg-slate-50 rounded-lg mt-2 p-2 w-36">
+                                    <div class="bg-slate-50 rounded-lg mt-2 p-2 w-36 mx-auto sm:mx-0">
                                         <p>Quantity: <span class="font-semibold ml-1">{{$cart->quantity}}</span></p>
                                         <p>Price: <span class="font-semibold text-lime-700 ml-1">{{number_format($cart->product->price * $cart->quantity, 0, '.', ',')}}</span> Kyat</p>
                                     </div>
@@ -187,15 +214,15 @@
                         </div>
 
                         {{-- final order --}}
-                        <div class="flex justify-between items-center border rounded-lg p-4 mt-4 mr-10">
+                        <div class="flex flex-col justify-between items-center border rounded-lg p-4 mt-3 md:flex-row md:mt-4 md:mr-10">
 
-                            <button id="payment-submit" type="submit" x-on:click="processOrder" class="w-40 px-4 py-2 bg-blue-500 text-white rounded-lg text-lg hover:bg-blue-600">Order Now</button>
-                            <div id="payment-loading" class="flex justify-center items-center w-40 px-4 py-2 bg-blue-50 rounded-lg text-lg space-x-2">
+                            <button id="payment-submit" type="submit" x-on:click="processOrder" class="w-40 mt-3 order-2 px-4 py-2 bg-blue-500 text-white rounded-lg text-lg hover:bg-blue-600 sm:mt-0 sm:order-none">Order Now</button>
+                            <div id="payment-loading" class="flex justify-center items-center w-40 mt-3 order-2 px-4 py-2 bg-blue-50 rounded-lg text-lg space-x-2 sm:mt-0 sm:order-none">
                                 <span class="text-gray-500">Ordering</span>
                                 <div class="spinner"></div>
                             </div>
 
-                            <div class="flex flex-col items-center text-xl">
+                            <div class="flex order-1 flex-col items-center text-xl sm:order-none">
                                 <h1 class="text-lg">Total</h1>
                                 <div class="flex items-center">
                                     <p x-text="total.toLocaleString('en-US')" class="font-semibold text-lime-700 inline text-2xl"></p>
@@ -207,6 +234,9 @@
                         <input id="products" type="hidden" name="products" value="" x-model="products">
                         <input id="total-amount" type="hidden" name="total_amount" value="" x-model="total">
                     </div>
+                    <button type="button" @@click="open=!open" class="self-start block md:hidden">
+                        <x-icon name="chevron-down" class="hover:text-blue-600 rounded-full" x-bind:class="{ '-rotate-180 duration-400':open }" />
+                    </button>
                 </div>
                 <!-- End Review -->
             </div>

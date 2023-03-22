@@ -23,6 +23,10 @@ Route::middleware(['guest'])->group(function() {
 });
 
 Route::middleware(['auth'])->group(function() {
+    Route::get('/register/address', [RegisterController::class, 'createAddress'])->name('register.create.address');
+    Route::get('/register/address/skip', [RegisterController::class, 'skipAddress'])->name('register.address.skip');
+    Route::post('/register/address', [RegisterController::class, 'storeAddress']);
+
     Route::post('/logout', [SessionController::class, 'destroy']);
 
     Route::post('/add', [ProductController::class, 'addToCart'])->name('products.add');

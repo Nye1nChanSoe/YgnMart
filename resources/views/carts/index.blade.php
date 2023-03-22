@@ -1,6 +1,6 @@
 <x-layout>
     <x-slot:title>
-        YangonMart.com Cart 
+        Cart - YangonMart.com
     </x-slot:title>
     <x-container class="mt-14">
         <div class="rounded-lg px-4 py-5 shadow-sm border md:px-10">

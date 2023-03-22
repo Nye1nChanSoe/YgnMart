@@ -1,33 +1,33 @@
 <x-layout>
     <x-slot:title>
-        YangonMart.com Sign in
+        Sign in - YangonMart.com
     </x-slot:title>
-    <div class="container mx-auto flex justify-between items-center my-10 px-8 space-x-6 md:px-16">
-        <div class="hidden self-stretch basis-1/2 md:flex md:items-center md:justify-center">
-            <img src="images/creative/shopmore_savemoney.png" alt="">
+    <x-container class="flex flex-col justify-center md:flex-row md:justify-around">
+        <div class="hidden self-stretch md:basis-1/2 md:flex md:items-center md:justify-center">
+            <img src="images/creative/shopmore_savemoney.png" alt="" width="500">
         </div>
-        <x-card class="text-slate-700 p-10 basis-1/2">
+        <x-card class="self-center w-full text-slate-700 py-4 px-6 md:py-10 md:px-10 md:basis-2/5">
             {{-- TODO: Socialite for OAuth Sign in --}}
-            <h2 class="text-center text-2xl font-semibold mb-8">Sign in</h2>
-            <form action="/login" method="POST" class="space-y-8">
+            <h2 class="text-center text-2xl font-semibold mb-4 md:mb-8">Sign in</h2>
+            <form action="/login" method="POST" class="space-y-6 md:space-y-8">
                 @csrf
-                <div class="space-y-2">
+                <div class="space-y-3">
                     <div>
                         <label for="email" class="block mb-1.5">Email</label>
-                        <input type="email" id="email" name="email" class="w-full p-1.5 rounded outline-1 outline-slate-400" value="{{old('email')}}">
+                        <input type="email" id="email" name="email" class="w-full border-2 border-blue-200 p-1.5 rounded-lg outline-1 outline-blue-400" value="{{old('email')}}" placeholder="example@email.com">
                         <x-input-error field="email" />
                     </div>
                     <div>
                         <label for="password" class="block mb-1.5">Password</label>
-                        <input type="password" id="password" name="password" class="w-full p-1.5 rounded outline-1 outline-slate-400">
+                        <input type="password" id="password" name="password" class="w-full border-2 border-blue-200 p-1.5 rounded-lg outline-1 outline-blue-400" placeholder="Password...">
                         <x-input-error field="password" />
                     </div>
                 </div>
-                <div class="flex justify-between items-center">
-                    <x-button>Sign in</x-button>
-                    <p>Don't have an account? <a href="/register" class="text-blue-500 hover:text-blue-700">Register</a></p>
+                <div class="flex flex-col justify-center items-center md:flex-row md:justify-between">
+                    <x-button class="w-full mb-2 md:mb-0 md:w-fit">Sign in</x-button>
+                    <p class="mt-2 md:mt-0">Don't have an account? <a href="/register" class="text-blue-500 hover:text-blue-700">Register</a></p>
                 </div>
             </form>
         </x-card>
-    </div>
+    </x-container>
 </x-layout>

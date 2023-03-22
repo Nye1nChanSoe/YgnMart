@@ -4,7 +4,7 @@
 
 <x-layout>
     <x-slot:title>
-        {{$product->name}}
+        {{$product->name}} - YangonMart.com
     </x-slot:title>
     <x-container>
         {{-- TODO: breadcrumbs --}}

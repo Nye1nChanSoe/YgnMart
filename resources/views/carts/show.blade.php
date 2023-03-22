@@ -1,6 +1,6 @@
 <x-layout>
     <x-slot:title>
-        YangonMart.com Cart item added
+        Item Added - YangonMart.com | {{$product->name}}
     </x-slot:title>
     <x-container class="mt-8 mb-0">
         <div class="p-4 mt-6 border border-stone-200 rounded-lg w-full xl:w-1/2">
