@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Address;
 use App\Models\User;
+use App\Models\Vendor;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
@@ -61,5 +62,35 @@ class RegisterController extends Controller
     public function skipAddress()
     {
         return redirect()->route('home')->with('success', 'Welcome, ' . auth()->user()->name);
+    }
+
+    public function vcreate()
+    {
+        return view('register.vendors.create');
+    }
+
+    public function vstore(Request $request)
+    {
+        $vendorCredentials = $request->validate([
+            'name' => ['required', 'max:32'],
+            'brand' => ['max:32'],
+            'email' => ['required', 'email', Rule::unique('vendors', 'email')],
+            'phone_number' => ['required', Rule::unique('vendors', 'phone_number'), 'regex:/^0\d{8,12}$/'],   // validate phone numbers that can contain leading 0, followed by 8 or 12 digits
+            'password' => ['required', 'confirmed', 'min:8'],
+        ]);
+
+        if(empty($vendorCredentials['brand']))
+        {
+            $vendorCredentials['brand'] = 'Local brand';
+        }
+
+        /** verified in admin panel */
+        $vendorCredentials['is_verified'] = false;
+        $vendorCredentials['username'] = 'v_' . strtolower(str_replace([' ', '-'], '_', $vendorCredentials['name']) . '_' . Str::random(3));
+        
+        $vendor = Vendor::create($vendorCredentials);
+        auth()->guard('vendor')->login($vendor);
+
+        return redirect()->route('vendor.dashboard')->with('success', 'Welcome, ' . auth()->guard('vendor')->user()->name);
     }
 }

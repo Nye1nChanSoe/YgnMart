@@ -9,7 +9,7 @@
         <x-card class="self-center w-full text-slate-700 py-4 px-6 md:py-10 md:px-10 md:basis-2/5">
             {{-- TODO: Socialite for OAuth Sign in --}}
             <h2 class="text-center text-2xl font-semibold mb-4 md:mb-8">Sign in</h2>
-            <form action="/login" method="POST" class="space-y-6 md:space-y-8">
+            <form action="/vendor/login" method="POST" class="space-y-6 md:space-y-8">
                 @csrf
                 <div class="space-y-3">
                     <div>
@@ -25,7 +25,7 @@
                 </div>
                 <div class="flex flex-col justify-center items-center md:flex-row md:justify-between">
                     <x-button class="w-full mb-2 md:mb-0 md:w-fit">Sign in</x-button>
-                    <p class="mt-2 md:mt-0">Don't have an account? <a href="/register" class="text-blue-500 hover:text-blue-700">Register</a></p>
+                    <p class="mt-2 md:mt-0">Sell your products on Yangon Mart? <a href="{{ route('vendor.register') }}" class="text-blue-500 hover:text-blue-700">Register</a></p>
                 </div>
             </form>
         </x-card>

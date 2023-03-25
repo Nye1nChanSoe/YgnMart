@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AddressController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\OrderController;
@@ -7,6 +8,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VendorController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -23,9 +25,16 @@ Route::middleware(['guest'])->group(function() {
     Route::post('/login', [SessionController::class, 'store']);
 });
 
+Route::prefix('vendor')->middleware(['guest'])->group(function() {
+    Route::get('/register', [RegisterController::class, 'vcreate'])->name('vendor.register');
+    Route::post('/register', [RegisterController::class, 'vstore']);
+    Route::get('/login', [SessionController::class, 'vcreate'])->name('vendor.login');
+    Route::post('/login', [SessionController::class, 'vstore']);
+});
+
 Route::middleware(['auth'])->group(function() {
     Route::get('/register/address/skip', [RegisterController::class, 'skipAddress'])->name('register.address.skip');
-    Route::post('/register/address', [RegisterController::class, 'storeAddress']);
+    Route::post('/register/address', [RegisterController::class, 'storeAddress'])->name('register.store.address');
 
     Route::post('/logout', [SessionController::class, 'destroy']);
 
@@ -48,6 +57,9 @@ Route::middleware(['auth'])->group(function() {
     Route::post('/products/{product:id}/review', [ProductController::class, 'review'])->name('products.review');
     Route::patch('/products/{product:id}/review', [ProductController::class, 'update'])->name('products.review.update');
 
+    Route::post('/address', [AddressController::class, 'store'])->name('address.store');
+    Route::patch('/address', [AddressController::class, 'update'])->name('address.update');
+    Route::delete('/address', [AddressController::class, 'destroy'])->name('address.destroy');
 
     Route::patch('/user/password', [UserController::class, 'update'])->name('user.update.password');
     Route::patch('/user', [UserController::class, 'update'])->name('user.update.info');
@@ -58,4 +70,8 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/{user:username}/settings', [UserController::class, 'edit'])->name('profile.settings');
     Route::get('/{user:username}/help', [UserController::class, 'profile'])->name('profile.help');
     Route::get('/{user:username}/privacy', [UserController::class, 'profile'])->name('profile.privacy');
+});
+
+Route::prefix('vendor')->middleware(['auth:vendor'])->group(function() {
+    Route::get('/dashboard', [VendorController::class, 'index'])->name('vendor.dashboard');
 });

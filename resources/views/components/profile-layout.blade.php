@@ -17,7 +17,7 @@
 
         {{-- Logos and navigation --}}
         <header class="container mx-auto space-y-3 mb-4 px-3 py-1 lg:px-8">
-            <div class="flex flex-col justify-between items-center space-y-5 py-2 md:flex-row md:space-y-0">
+            <nav class="flex flex-col justify-between items-center space-y-5 py-2 md:flex-row md:space-y-0">
 
                 <div>
                     <a href="/"><img src="/images/logo/logo.svg" alt="" width="100" height="16"></a>
@@ -69,7 +69,7 @@
                     <a href="/login" class="text-sm font-semibold hover:text-blue-600 lg:text-base">Sign in</a>
                     @endauth
                 </div>
-            </div>
+            </nav>
         </header>
 
         {{$slot}}

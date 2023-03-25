@@ -1,12 +1,12 @@
 <x-layout>
     <x-container>
-        <form action="/register/address" method="POST" class="flex items-center justify-center p-2 md:p-10">
+        <form action="{{ route('register.store.address') }}" method="POST" class="flex items-center justify-center p-2 md:p-10">
             @csrf
             <div class="bg-white rounded-lg shadow-lg px-4 py-4 w-80 md:px-10 md:w-128">
                 <h3 class="text-lg font-bold text-center">Address</h3>
                 <div class="px-3 py-2 border rounded-lg my-3 md:my-5">
                     <x-icon name="info" class="text-blue-500 inline-block"/>
-                    <span class="text-gray-500 text-xs md:text-sm">You can skip this for now and fill them out later when you're ready to make a purchase</span></p>
+                    <span class="text-gray-600 text-xs md:text-sm">You can skip this for now and fill them out later when you're ready to make a purchase</span></p>
                 </div>
                 <div>
                     <div class="space-y-1.5 md:space-y-2.5">

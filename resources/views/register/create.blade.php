@@ -1,10 +1,18 @@
-<x-layout>
+<x-auth-layout>
     <x-slot:title>
         Register - YangonMart.com
     </x-slot:title>
     <x-container class="flex flex-col justify-center md:flex-row md:justify-around">
         <div class="hidden self-stretch basis-1/2 md:flex md:flex-col md:items-center md:justify-center">
-            <img src="images/creative/shopmore_savemoney.png" alt="">
+            <div class="px-6 py-4 rounded-lg mb-4 md:px-20">
+                <p class="text-center text-lg text-gray-700">
+                    Are you a <span class="underline decoration-sky-500 decoration-2 font-medium"><a href="{{ route('vendor.register') }}">vendor / supplier</a></span> looking for a platform to reach a wider audience and increase sales? 
+                </p>
+                <p class="text-center text-gray-600 mt-2">
+                    <a href="{{ route('vendor.register') }}" class="text-blue-500 hover:text-blue-700">Join us </a> today and take advantage of our user-friendly interface and extensive customer base.
+                </p>
+            </div>
+            <img src="{{ asset('/images/vendor.png') }}" alt="">
         </div>
         <x-card class="text-slate-700 w-full p-6 md:p-10 md:basis-2/5">
             <h2 class="text-center text-2xl font-semibold mb-8">Create an Account</h2>
@@ -46,4 +54,4 @@
             </form>
         </x-card>
     </x-container>
-</x-layout>
+</x-auth-layout>

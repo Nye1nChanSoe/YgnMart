@@ -1,11 +1,3 @@
-@php
-use Illuminate\Support\Facades\DB;
-
-$types = DB::table('categories')->distinct('type')->pluck('type');
-// $subTypes = DB::table('categories')->distinct('type')->pluck('sub_type');
-$cartItemsCount = App\Models\Cart::where('user_id', auth()->id())->count();
-@endphp
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,30 +13,10 @@ $cartItemsCount = App\Models\Cart::where('user_id', auth()->id())->count();
     <title>{{ $title ?? 'YangonMart.com - Shop anytime, anywhere with us' }}</title>
 </head>
 <body class="antialiased ">
-    <section x-data="notification" class="relative">
-
-        {{-- hamburger menu for small screen sizes --}}
-        <div class="block absolute top-6 w-full px-2 z-30 sm:hidden">
-            <div 
-                x-data="{ open:false }" 
-                class="relative"
-                @@click.outside="open=false"
-            >
-                <button type="button" @@click="open=!open" class="absolute right-3">
-                    <x-icon name="hamburger" x-show="!open" />
-                    <x-icon name="close" x-show="open" />
-                </button>
-                <div x-show="open" class="absolute top-6 w-full rounded drop-shadow-xl bg-white" x-cloak x-transition>
-                    @foreach ($types as $type)
-                    <x-category-menu :type="$type" />
-                    @endforeach
-                </div>
-            </div>
-        </div>
-        
+    <section class="relative">
 
         {{-- Logos and navigation --}}
-        <header class="container mx-auto space-y-3 mb-4 px-3 py-1 lg:px-12">
+        <header class="container mx-auto space-y-3 mb-4 px-3 py-1 lg:px-8">
             <nav class="flex flex-col justify-between items-center space-y-5 py-2 md:flex-row md:space-y-0">
 
                 <div>
@@ -80,15 +52,6 @@ $cartItemsCount = App\Models\Cart::where('user_id', auth()->id())->count();
                             <a href="" class="block w-full text-sm leading-6 hover:bg-blue-500 hover:text-white pl-1">MM</a>
                         </div>
                     </div>
-                    <div class="relative">
-                        <a href="{{ route('carts.index') }}" class="hover:text-blue-600" id="cart">
-                            <x-icon name="cart" />
-
-                            {{-- notification --}}
-                            <div x-show="cartItemCounter" x-text="cartItemCounter" class="absolute -top-3.5 -right-3 inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-sky-400 border-2 border-white rounded-full md:-top-3 md:-right-3" x-cloak x-transition>
-                            </div>
-                        </a>
-                    </div>
                     @auth
                     {{-- profile --}}
                     <x-profile-dropdown />
@@ -97,13 +60,6 @@ $cartItemsCount = App\Models\Cart::where('user_id', auth()->id())->count();
                     <a href="/login" class="text-sm font-semibold hover:text-blue-600 lg:text-base">Sign in</a>
                     @endauth
                 </div>
-            </nav>
-
-            {{-- Navigation --}}
-            <nav class="hidden container mx-auto flex-row justify-between items-center sm:flex">
-                @foreach ($types as $type)
-                <x-category-dropdown :type="$type" />
-                @endforeach
             </nav>
         </header>
 
@@ -168,16 +124,3 @@ $cartItemsCount = App\Models\Cart::where('user_id', auth()->id())->count();
 
     <x-flash />
 </body>
-</html>
-
-<script>
-    document.addEventListener('alpine:init', () => {
-        Alpine.data('notification', () => ({
-            cartItemCounter: {{ $cartItemsCount }},
-            addToCart() {
-                this.cartItemCounter = {{ $cartItemsCount }};
-                console.log(this.cartItemCounter);
-            }
-        }))
-    });
-</script>

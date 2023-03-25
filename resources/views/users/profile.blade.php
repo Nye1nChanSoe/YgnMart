@@ -11,14 +11,14 @@
           <div class="w-full md:w-3/4 md:px-4">
             <!-- Profile Information -->
             <div class="bg-white rounded-lg shadow-md py-4 px-4 md:px-6">
-                <div class="flex items-center justify-center md:justify-start">
+                <div class="flex items-center justify-around md:justify-start">
                     <div class="flex flex-col items-center">
                         <div class="py-2 border rounded-full w-20 overflow-hidden object-cover md:w-32 md:py-4 md:px-18">
                             <img src="{{$user->image ? asset($user->image) : asset('images/no-image.png')}}" alt="" style="max-width: 100%; max-height:100%; object-fit:contain">
                         </div>
                         <button id="edit" class="mt-4 px-3 py-1.5 rounded-lg text-sm text-white bg-blue-500 hover:bg-blue-700">Edit profile</button>
                     </div>
-                    <div class="text-left ml-6 text-sm md:ml-12">
+                    <div class="text-left text-sm md:ml-12">
                         <h2 class="text-lg mb-1 font-medium md:text-xl md:mb-2">{{ $user->name }}</h2>
                         <p class="text-gray-500"><span class="mr-1">@</span>{{ $user->username }}</p>
                         <div class="space-y-1 mt-3 md:mt-8 md:space-y-2">
@@ -41,7 +41,7 @@
                                 </p>
                             </div>
                             @else
-                            <button type="button" class="flex items-center gap-x-1.5">
+                            <button id="btn-add-new-address" type="button" class="flex items-center gap-x-1.5">
                                 <x-icon name="plus" class="inline" />
                                 <span class="text-lime-600 hover:text-lime-700">Add new address</span>
                             </button>
@@ -74,7 +74,7 @@
                 </a>
                 @endforeach
                 @else
-                <p class="text-gray-500">You have no orders yet!</p>
+                <p class="text-gray-500 text-center md:text-left">You have no orders yet!</p>
                 @endif
             </div>
           </div>
@@ -82,8 +82,15 @@
 </x-profile-layout>
 
 <script>
-    const edit = document.getElementById('edit');
-    edit.addEventListener('click', function(event) {
-        window.location.href = '{{ route("profile.settings", ["user" => $user]) }}';
-    });
+const edit = document.getElementById('edit');
+edit.addEventListener('click', function(event) {
+    window.location.href = '{{ route("profile.settings", ["user" => $user]) }}';
+});
+    
+const addAddress = document.getElementById('btn-add-new-address');
+if(addAddress) {
+    addAddress.addEventListener('click', function(event) {
+    window.location.href = `{{ route('profile.settings', ['user' => $user->username]) . '#address' }}`;
+})
+}
 </script>

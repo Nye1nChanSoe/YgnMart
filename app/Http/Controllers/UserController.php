@@ -49,7 +49,8 @@ class UserController extends Controller
         /** remove all the data from current session */
         session()->flush();
 
-        return redirect()->route('login')->with('delete', 'Sad to see you go :(');
+        return redirect()->route('login')
+            ->with('delete', 'Sad to see you go :(');
     }
 
     protected function updateInfo(Request $request, User $user)
@@ -63,7 +64,8 @@ class UserController extends Controller
 
         $user->update($newUserInfo);
 
-        return redirect()->route('profile', ['user' => $user->username])->with('success', 'Your profile has been updated successfully');
+        return redirect()->route('profile', ['user' => $user->username])
+            ->with('success', 'Your profile has been updated successfully');
     }
 
     protected function updatePassword(Request $request, User $user)
@@ -81,6 +83,7 @@ class UserController extends Controller
         $user->password = $newPassword['password'];
         $user->save();
         
-        return redirect()->route('profile', ['user' => $user->username])->with('success', 'Password updated successfully');
+        return redirect()->route('profile', ['user' => $user->username])
+            ->with('success', 'Password updated successfully');
     }
 }

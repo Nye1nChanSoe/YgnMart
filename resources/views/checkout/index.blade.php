@@ -6,7 +6,7 @@
     <x-slot:title>
         Checkout  - YangonMart.com
     </x-slot:title>
-    <x-container class="mt-4">
+    <x-container x-data="{ openModal: false }" class="mt-4">
         {{-- TODO: breadcrubs --}}
 
         {{-- The form wrapping around the whole checkout process --}}
@@ -16,6 +16,7 @@
                 total: 0,
                 quantities: [],
                 products: [],
+                address: '{{$addresses->where('is_default', true)->where('user_id', auth()->id())->first()->full_address}}',
 
                 init()
                 {
@@ -33,7 +34,7 @@
             class="block justify-between pt-6 md:flex"
         >
             @csrf
-            <div class="space-y-6 divide-y p-4 md:flex-1 md:mr-6">
+            <div class="space-y-6 divide-y p-4 md:flex-1 md:mr-96">
                 <!-- Address -->
                 <div 
                     x-data="{
@@ -50,31 +51,30 @@
                                     @foreach ($addresses as $address)
                                         @if ($address->is_default)
                                         <p>{{$address->user->name}}</p>
-                                        <p>{{$address->full_address}}</p>
+                                        <p x-text="address">{{$address->full_address}}</p>
                                         @endif
                                     @endforeach
                                 @else
                                 <p class="text-gray-400 text-sm cursor-pointer">Please add the address for delivery</p>
                                 @endif
                             </div>
-                            <div 
-                                x-show="open" 
-                                class="border rounded-lg mt-6" 
-                                x-transition x-cloak
-                            >
+                            <div class="border rounded-lg mt-6">
                                 <div class="p-3">
                                     <h2 class="font-semibold mb-3">Your addresses</h2>
                                     @foreach ($addresses as $address)
-                                        <div class="text-sm mb-1.5">
-                                            <input type="radio" name="defaultAddress" value="{{$address->id}}">
-                                            {{$address->full_address}}
-                                        </div>
+                                    <div class="flex items-center gap-x-1.5 mb-2 md:mb-2.5">
+                                        <input x-on:click="address = '{{$address->full_address}}'" type="radio" name="default_address" value="{{ $address->id }}" {{ $address->is_default ? 'checked' : '' }} class="self-start mt-1 md:mt-0 md:self-auto">
+                                        <span class="hidden text-xs text-gray-600 self-start md:self-auto md:block md:w-10">{{ $address->label }}</span>
+                                        <p class="text-gray-700">{{$address->full_address}}</p>
+                                    </div>
                                     @endforeach
-                                    {{-- modal to add new address --}}
-                                    <button type="button" class="mt-3">+ <span class="text-sm text-lime-600 hover:text-lime-700">Add new address</span></button>
+                                    <button @@click="openModal=true" type="button" class="flex items-center mt-3">
+                                        <x-icon name="plus" />
+                                        <span class="text-sm text-lime-600 hover:text-lime-700">Add new address</span>
+                                    </button>
                                 </div>
                                 <div class="p-3 bg-slate-100">
-                                    <button type="button" class="bg-blue-500 text-white py-1 px-2 text-sm rounded-lg hover:bg-blue-600">Use this address</button>
+                                    <button type="button" class="bg-blue-500 text-white py-1.5 px-2.5 text-sm rounded-lg hover:bg-blue-600">Use this address</button>
                                 </div>
                             </div>
                         </div>
@@ -242,11 +242,51 @@
             </div>
 
             {{-- quick purchase --}}
-            <div class="hidden bg-slate-100 p-4 lg:block">
-                Order Summary
+            <div class="hidden p-4 lg:block">
+                {{-- Order Summary --}}
             </div>
         </form>
+        <!-- Blur Background -->
+        <div x-show="openModal" class="fixed inset-0 bg-gray-300 bg-opacity-50" x-cloak></div>
 
+        <!-- Model -->
+        <div x-show="openModal" class="fixed z-10 inset-0 overflow-y-auto" x-cloak x-transition>
+            <div class="flex items-center justify-center min-h-screen">
+                <div class="relative bg-white w-full max-w-md mx-auto rounded shadow-lg px-4 py-3 md:px-8 md:py-5">
+                    <div class="relative">
+                        <h1 class="text-center text-gray-700 font-medium md:text-lg">Add New Address</h1>
+                        <button x-on:click="openModal = false" class="absolute top-1.5 right-1.5"><x-icon name="close" class="text-gray-600 hover:text-blue-600" /></button>
+                    </div>
+                    <form action="{{ route('address.store') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="default_update" value="1">
+                        <div class="mb-4">
+                            <label class="block text-gray-700 font-medium mb-2" for="label">Label</label>
+                            <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300" name="label" id="label" type="text" value="" placeholder="Home, Work, School...">
+                            <x-input-error field="label" />
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 font-medium mb-2" for="street">Street</label>
+                            <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300" name="street" id="street" type="text" value="" placeholder="The name of your street">
+                            <x-input-error field="street" />
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 font-medium mb-2" for="ward">Ward</label>
+                            <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300" name="ward" id="ward" type="text" value="" placeholder="Ward number">
+                            <x-input-error field="ward" />
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 font-medium mb-2" for="township">Township</label>
+                            <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300" name="township" id="township" type="text" value="" placeholder="The name of your township">
+                            <x-input-error field="township" />
+                        </div>
+                        <button type="submit" class="bg-blue-500 text-white py-2 px-3 rounded-lg hover:bg-blue-600">
+                            Add Address
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </x-container>
 </x-layout>
 
