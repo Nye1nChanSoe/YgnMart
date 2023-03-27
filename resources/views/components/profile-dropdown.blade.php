@@ -35,6 +35,7 @@
         </x-dropdown-item>
         <form action="/logout" method="post">
             @csrf
+            @method('DELETE')
             <button type="submit" class="block w-full text-left px-3 text-sm leading-8 hover:bg-blue-500 hover:text-white focus:bg-blue-500 focus:text-white">
                 <div class="flex items-center">
                     <div class="w-5 mr-2"><x-icon name="profile" /></div>

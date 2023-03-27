@@ -9,6 +9,7 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VendorController;
+use App\Http\Controllers\VendorProductController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -36,7 +37,7 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/register/address/skip', [RegisterController::class, 'skipAddress'])->name('register.address.skip');
     Route::post('/register/address', [RegisterController::class, 'storeAddress'])->name('register.store.address');
 
-    Route::post('/logout', [SessionController::class, 'destroy']);
+    Route::delete('/logout', [SessionController::class, 'destroy']);
 
     Route::post('/add', [ProductController::class, 'addToCart'])->name('products.add');
 
@@ -73,5 +74,14 @@ Route::middleware(['auth'])->group(function() {
 });
 
 Route::prefix('vendor')->middleware(['auth:vendor'])->group(function() {
+    Route::delete('/logout', [SessionController::class, 'vdestroy'])->name('vendor.logout');
+
     Route::get('/dashboard', [VendorController::class, 'index'])->name('vendor.dashboard');
+    Route::get('/products', [VendorProductController::class, 'index'])->name('vendor.products');
+    Route::get('/products/{product}', [VendorProductController::class, 'show'])->name('vendor.products.show');
+    
+    Route::get('/transactions', [VendorController::class, 'transactions'])->name('vendor.transactions');
+    Route::get('/discounts', [VendorController::class, 'discounts'])->name('vendor.discounts');
+    Route::get('/{vendor:username}', [VendorController::class, 'show'])->name('vendor.show');
+    Route::get('/settings', [VendorController::class, 'edit'])->name('vendor.settings');
 });

@@ -1,4 +1,4 @@
-<x-auth-layout>
+<x-layout>
     <x-slot:title>
         Sign in - YangonMart.com
     </x-slot:title>
@@ -24,10 +24,12 @@
                     </div>
                 </div>
                 <div class="flex flex-col justify-center items-center md:flex-row md:justify-between">
-                    <x-button class="w-full mb-2 md:mb-0 md:w-fit">Sign in</x-button>
+                    <div class="md:basis-1/2 mb-2 md:mb-0">
+                        <x-button class="w-full md:w-fit">Sign in</x-button>
+                    </div>
                     <p class="mt-2 md:mt-0">Sell your products on Yangon Mart? <a href="{{ route('vendor.register') }}" class="text-blue-500 hover:text-blue-700">Register</a></p>
                 </div>
             </form>
         </x-card>
     </x-container>
-</x-auth-layout>
+</x-layout>

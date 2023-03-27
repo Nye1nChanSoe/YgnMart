@@ -1,4 +1,4 @@
-<x-auth-layout>
+<x-layout>
     <x-slot:title>
         Sign in - YangonMart.com
     </x-slot:title>
@@ -30,4 +30,4 @@
             </form>
         </x-card>
     </x-container>
-</x-auth-layout>
+</x-layout>

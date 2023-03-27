@@ -1,10 +1,9 @@
+@if (!request()->routeIs(['login', 'register', 'vendor.*']))
 @php
-use Illuminate\Support\Facades\DB;
-
-$types = DB::table('categories')->distinct('type')->pluck('type');
-// $subTypes = DB::table('categories')->distinct('type')->pluck('sub_type');
-$cartItemsCount = App\Models\Cart::where('user_id', auth()->id())->count();
+    $types = Illuminate\Support\Facades\DB::table('categories')->distinct('type')->pluck('type');
+    $cartItemsCount = App\Models\Cart::where('user_id', auth()->id())->count();
 @endphp
+@endif
 
 <!DOCTYPE html>
 <html lang="en">
@@ -24,6 +23,7 @@ $cartItemsCount = App\Models\Cart::where('user_id', auth()->id())->count();
     <section x-data="notification" class="relative">
 
         {{-- hamburger menu for small screen sizes --}}
+        @if (!request()->routeIs(['login', 'register', 'vendor.*']))
         <div class="block absolute top-6 w-full px-2 z-30 sm:hidden">
             <div 
                 x-data="{ open:false }" 
@@ -41,6 +41,7 @@ $cartItemsCount = App\Models\Cart::where('user_id', auth()->id())->count();
                 </div>
             </div>
         </div>
+        @endif
         
 
         {{-- Logos and navigation --}}
@@ -100,14 +101,18 @@ $cartItemsCount = App\Models\Cart::where('user_id', auth()->id())->count();
             </nav>
 
             {{-- Navigation --}}
+            @if (!request()->routeIs(['login', 'register', 'vendor.*']))
             <nav class="hidden container mx-auto flex-row justify-between items-center sm:flex">
                 @foreach ($types as $type)
                 <x-category-dropdown :type="$type" />
                 @endforeach
             </nav>
+            @endif
         </header>
 
-        {{$slot}}
+        <main>
+            {{$slot}}
+        </main>
 
         <footer class="bg-neutral-800 text-slate-300">
             <div class="container mx-auto flex flex-col px-8 py-6 md:px-12">
@@ -170,6 +175,7 @@ $cartItemsCount = App\Models\Cart::where('user_id', auth()->id())->count();
 </body>
 </html>
 
+@if (!request()->routeIs(['login', 'register', 'vendor.*']))
 <script>
     document.addEventListener('alpine:init', () => {
         Alpine.data('notification', () => ({
@@ -181,3 +187,4 @@ $cartItemsCount = App\Models\Cart::where('user_id', auth()->id())->count();
         }))
     });
 </script>
+@endif

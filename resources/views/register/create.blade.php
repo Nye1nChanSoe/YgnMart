@@ -1,4 +1,4 @@
-<x-auth-layout>
+<x-layout>
     <x-slot:title>
         Register - YangonMart.com
     </x-slot:title>
@@ -12,7 +12,7 @@
                     <a href="{{ route('vendor.register') }}" class="text-blue-500 hover:text-blue-700">Join us </a> today and take advantage of our user-friendly interface and extensive customer base.
                 </p>
             </div>
-            <img src="{{ asset('/images/vendor.png') }}" alt="">
+            <img src="images/creative/shopmore_savemoney.png" alt="" width="500">
         </div>
         <x-card class="text-slate-700 w-full p-6 md:p-10 md:basis-2/5">
             <h2 class="text-center text-2xl font-semibold mb-8">Create an Account</h2>
@@ -54,4 +54,4 @@
             </form>
         </x-card>
     </x-container>
-</x-auth-layout>
+</x-layout>
