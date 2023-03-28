@@ -13,13 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('addresses', function (Blueprint $table) {
+        Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->string('address_name')->nullable();         // home, work given by the user
-            $table->string('street');
-            $table->string('ward');
-            $table->string('township');
+            $table->foreignId('product_id');
+            $table->foreignId('vendor_id');
+            $table->string('transaction_type');
+            $table->float('amount');
+            $table->string('status');
             $table->timestamps();
+
         });
     }
 
@@ -30,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('addresses');
+        Schema::dropIfExists('transactions');
     }
 };

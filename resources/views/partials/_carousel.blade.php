@@ -1,7 +1,6 @@
 <section>
     <div x-data="{
             images: ['Promo 1', 'Promo 2', 'Event 1', 'Event 2'],
-            imagesSplide: ['images/grocery/apple.jpeg', 'images/grocery/banana.jpeg', 'images/grocery/orange.jpeg', 'images/grocery/watermelon.jpeg'],
             activeImage: null,
 
             prev() 
@@ -35,13 +34,13 @@
                 }, 5000);
             },
         }" 
-        class="relative h-96 bg-slate-100 mb-10"
+        class="relative h-72 bg-slate-100 mb-10 md:h-96"
     >
         <template x-for="image in images">
             {{-- TODO: add carousel images that are wide enough --}}
             <div x-show="activeImage === image" class="flex h-full items-center justify-center slide">
                 {{-- <img x-bind:src="image" alt="" style="width: 100%; height:100%; object-fit:fit"> --}}
-                <p x-text=image class="text-6xl font-bold tracking-widest"></p>
+                <p x-text=image class="text-4xl tracking-wide font-bold md:text-6xl md:tracking-widest"></p>
             </div>
         </template>
 

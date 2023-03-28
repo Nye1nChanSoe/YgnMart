@@ -18,7 +18,6 @@ class CategoryFactory extends Factory
     {
         $name = fake()->unique()->word();
         return [
-            'name' => $name,
             'description' => fake()->paragraph(),
         ];
     }

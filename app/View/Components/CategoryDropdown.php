@@ -2,26 +2,31 @@
 
 namespace App\View\Components;
 
-use App\Models\Category;
-use App\Models\CategoryType;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\Component;
 
-class CategoryDropdown extends Component
+class CategoryDropDown extends Component
 {
     /**
-     * ID of the category_types table
+     * Main category type
      */
-    public $id;
+    public $type;
 
-    public function __construct($id)
+    public function __construct($type)
     {
-        $this->id = $id;
+        $this->type = $type;
     }
 
+    /**
+     * Get the view / contents that represent the component.
+     *
+     * @return \Illuminate\Contracts\View\View|\Closure|string
+     */
     public function render()
     {
-        return view('components.category-dropdown', [
-            'categories' => Category::where('category_type_id', $this->id)->get(),
-        ]);
+        $subTypes = DB::table('categories')
+            ->where('type', $this->type)
+            ->pluck('sub_type');
+        return view('components.category-dropdown', compact('subTypes'));
     }
 }

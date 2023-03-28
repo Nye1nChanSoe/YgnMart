@@ -5,13 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class CategoryType extends Model
+class Checkout extends Model
 {
     use HasFactory;
 
+    /** allows mass assignable */
+    protected $guarded = [];
+
     /** relations */
-    public function categories()
+    public function user()
     {
-        return $this->hasMany(Category::class);
+        return $this->belongsTo(User::class);
     }
 }

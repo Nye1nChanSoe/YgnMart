@@ -21,7 +21,7 @@ class ProductFactory extends Factory
             'name' => $name,
             'slug' => strtolower(str_replace(' ', '-', $name)),
             'meta_type' => fake()->word(),
-            'price' => rand(1000, 25000),
+            'price' => rand(1000, 1500),
             'description' => fake()->paragraphs(3, true),
         ];
     }

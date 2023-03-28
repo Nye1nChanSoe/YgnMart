@@ -13,10 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('category_types', function (Blueprint $table) {
+        Schema::create('checkouts', function (Blueprint $table) {
             $table->id();
-            $table->string('type')->unique();       // food, beverages, households, etc..
+            $table->foreignId('user_id');
+            $table->integer('total_price');
+            $table->string('payment_intent_id')->nullable();
             $table->timestamps();
+
+            /** constraints */
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
@@ -27,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('category_types');
+        Schema::dropIfExists('checkouts');
     }
 };

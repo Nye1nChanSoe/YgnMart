@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('meta_type');            // watermelon
             $table->integer('price');
             $table->foreignId('measurement_id')->nullable();
+            $table->float('rating_point')->default(0.0);
             $table->text('description');
             $table->string('image')->nullable();   // will provide the default image at first 
             $table->timestamps();
