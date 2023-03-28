@@ -21,7 +21,13 @@ return new class extends Migration
             $table->integer('minimum_quantity');
             $table->integer('available_quantity');
             $table->boolean('is_in_stock');
+            $table->string('status');       // sell, close
             $table->timestamps();
+
+            /** constraints */
+            $table->unique(['vendor_id', 'product_id']);
+            $table->foreign('vendor_id')->references('id')->on('vendors')->onDelete('cascade');
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
         });
     }
 

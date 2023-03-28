@@ -31,8 +31,10 @@
                     </div>
                     @foreach ($order->products as $product)
                     <div class="grid grid-cols-4 items-center justify-items-center text-slate-700 py-2 md:py-3 md:grid-cols-6">
-                        <div class="justify-self-start col-span-2 flex flex-col items-start md:col-span-3 md:flex-row md:items-center">
-                            <img src="{{$product->image ? asset($product->image) : asset('images/no-image.png')}}" alt="" width="80" style="object-fit:contain">
+                        <div class="justify-self-start col-span-2 flex flex-col gap-x-1.5 items-start md:col-span-3 md:flex-row md:items-center">
+                            <div class="flex items-center w-14 h-14 rounded-full flex-shrink-0">
+                                <img src="{{$product->image ? asset($product->image) : asset('images/no-image.png')}}" alt="" class="w-full h-full object-contain">
+                            </div>
                             <h4 class="text-sm mt-2 md:mt-0 md:ml-2"><a href="{{route('products.show', ['product' => $product->slug])}}">{{$product->name}}</a></h4>
                         </div>
                         <div class="col-span-1 text-center">{{$product->pivot->quantity}}</div>

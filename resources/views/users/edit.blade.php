@@ -171,7 +171,7 @@
             </div>
 
             <!-- Blur Background -->
-            <div x-show="open || open_edit || open_delete" class="fixed inset-0 bg-gray-300 bg-opacity-50" x-cloak></div>
+            <div x-show="open || open_edit || open_delete" class="fixed inset-0 bg-gray-700 bg-opacity-50" x-cloak></div>
             
             <!-- Models -->
             <div x-show="open" class="fixed z-10 inset-0 overflow-y-auto" x-cloak x-transition>
@@ -254,7 +254,7 @@
                 <div class="flex items-center justify-center min-h-screen">
                     <div class="relative bg-white w-full max-w-sm mx-auto rounded-lg shadow-lg px-2 py-3">
                         <div class="relative pb-6">
-                            <h1 class="text-center text-gray-700 font-medium md:text-lg">Are you sure you want to delete this?</h1>
+                            <h1 class="text-center text-gray-700 font-medium md:text-lg">Are you sure?</h1>
                             <button x-on:click="open_delete = false" class="absolute top-1 right-1.5"><x-icon name="close" class="text-gray-600 hover:text-blue-600" /></button>
                         </div>
                         <form action="{{ route('address.destroy') }}" method="POST">

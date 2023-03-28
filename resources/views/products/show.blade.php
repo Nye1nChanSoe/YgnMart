@@ -17,7 +17,7 @@
 
             {{-- product info --}}
             <div class="px-2 py-6 bg-slate-50 rounded-lg space-y-3 md:p-10 md:basis-1/2">
-                <div class="flex items-center justify-center md:justify-start">
+                <div class="flex items-center justify-center gap-x-2 md:justify-start">
                     @foreach ($product->categories as $category)
                         <div class="text-xs text-slate-600 px-3 py-1 border border-blue-400 rounded-full hover:text-black hover:border-blue-600">
                             {{$category->sub_type}}
@@ -64,7 +64,7 @@
                     </form>
                     
                     <div class="relative">
-                        <button @@click="open = !open" class="flex items-center bg-gray-200 text-xs px-2 py-1 rounded-full ring-1 ring-slate-200 focus:ring-2 focus:ring-blue-400">
+                        <button @@click="open = !open" type="button" class="flex items-center bg-gray-200 text-xs px-2 py-1 rounded-full ring-1 ring-slate-200 focus:ring-2 focus:ring-blue-400">
                             <div class="font-medium mr-1.5">
                                 Qty: <span x-text="quantity"></span>
                             </div>

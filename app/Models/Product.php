@@ -25,11 +25,15 @@ class Product extends Model
         // https://laravel.com/docs/10.x/queries#advanced-where-clauses
         // https://laravel.com/docs/10.x/eloquent-relationships#querying-relationship-existence
         // https://laravel.com/docs/10.x/collections#method-when
-
+        // ctype_digit($value) - Returns true if every character in the string text is a decimal digit
+        
         $query->when($terms['search'] ?? false, fn($query, $search) => $query
             ->where(fn($query) => $query
                 ->where('name', 'like', "%{$search}%")
                 ->orWhere('meta_type', 'like', "%{$search}%")
+                ->when(ctype_digit($search), fn($query) => $query
+                    ->orwhereBetween('price', [$search, $search + 100])
+                )
                 ->orWhere('description', 'like', "%{$search}%")
                 ->orWhereHas('categories', fn($query) => $query          /** categories is the name of the relationship defined */
                     ->where('type', 'like', "%{$search}%")
@@ -93,5 +97,15 @@ class Product extends Model
     public function reviews()
     {
         return $this->hasMany(Review::class);
+    }
+
+    public function inventories()
+    {
+        return $this->hasMany(Inventory::class);
+    }
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
     }
 }

@@ -9,6 +9,24 @@ class Inventory extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
+    public function getInStockAttribute()
+    {
+        return $this->available_quantity > 200;
+    }
+
+    public function getLowStockAttribute()
+    {
+        return $this->available_quantity > 0 && $this->available_quantity <= 200;
+    }
+
+    public function getOutOfStockAttribute()
+    {
+        return $this->available_quantity <= 0;
+    }
+
+
     /** relatins */
     public function vendor()
     {

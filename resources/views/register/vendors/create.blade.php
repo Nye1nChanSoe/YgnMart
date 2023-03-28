@@ -44,7 +44,7 @@
                                 <p class="text-gray-700 text-sm">If you omitted the brand name, it will display as <span class="font-medium">"Local brand"</span></p>
                             </div>
                         </div>
-                        <input type="brand" id="brand" name="brand" class="w-full border-2 border-blue-200 p-1.5 rounded-lg outline-1 outline-blue-400" value="{{old('brand')}}" placeholder="Brand name...">
+                        <input type="text" id="brand" name="brand" class="w-full border-2 border-blue-200 p-1.5 rounded-lg outline-1 outline-blue-400" value="{{old('brand')}}" placeholder="Brand name...">
                         <x-input-error field="brand" />
                     </div>
                     <div>

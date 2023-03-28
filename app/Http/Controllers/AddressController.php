@@ -28,6 +28,13 @@ class AddressController extends Controller
         }
 
         Address::create($address);
+
+        /** if the request comes from the checkout page redirect back to checkout */
+        if($request->headers->get('referer') == route('checkout.index'))
+        {
+            return back()->with('success', 'Address successfully added!');
+        }
+
         return redirect()->route('profile', ['user' => $user->username])
             ->with('success', 'Your address has been added successfully');
     }

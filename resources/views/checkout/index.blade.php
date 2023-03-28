@@ -16,7 +16,9 @@
                 total: 0,
                 quantities: [],
                 products: [],
+                @if(!$addresses->isEmpty())
                 address: '{{$addresses->where('is_default', true)->where('user_id', auth()->id())->first()->full_address}}',
+                @endif
 
                 init()
                 {
@@ -58,7 +60,7 @@
                                 <p class="text-gray-400 text-sm cursor-pointer">Please add the address for delivery</p>
                                 @endif
                             </div>
-                            <div class="border rounded-lg mt-6">
+                            <div x-show="open" class="border rounded-lg mt-6">
                                 <div class="p-3">
                                     <h2 class="font-semibold mb-3">Your addresses</h2>
                                     @foreach ($addresses as $address)
@@ -247,7 +249,7 @@
             </div>
         </form>
         <!-- Blur Background -->
-        <div x-show="openModal" class="fixed inset-0 bg-gray-300 bg-opacity-50" x-cloak></div>
+        <div x-show="openModal" class="fixed inset-0 bg-gray-700 bg-opacity-50" x-cloak></div>
 
         <!-- Model -->
         <div x-show="openModal" class="fixed z-10 inset-0 overflow-y-auto" x-cloak x-transition>

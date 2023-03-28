@@ -18,7 +18,10 @@ return new class extends Migration
             $table->foreignId('product_id');
             $table->foreignId('vendor_id');
             $table->string('transaction_type');
+            $table->float('amount');
+            $table->string('status');
             $table->timestamps();
+
         });
     }
 

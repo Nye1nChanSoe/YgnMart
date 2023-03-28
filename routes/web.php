@@ -9,6 +9,7 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VendorController;
+use App\Http\Controllers\VendorInventoryController;
 use App\Http\Controllers\VendorProductController;
 use Illuminate\Support\Facades\Route;
 
@@ -76,10 +77,14 @@ Route::middleware(['auth'])->group(function() {
 Route::prefix('vendor')->middleware(['auth:vendor'])->group(function() {
     Route::delete('/logout', [SessionController::class, 'vdestroy'])->name('vendor.logout');
 
-    Route::get('/dashboard', [VendorController::class, 'index'])->name('vendor.dashboard');
     Route::get('/products', [VendorProductController::class, 'index'])->name('vendor.products');
+    Route::post('/products', [VendorProductController::class, 'store'])->name('vendor.products.store');
+    Route::get('/products/create', [VendorProductController::class, 'create'])->name('vendor.products.create');
     Route::get('/products/{product}', [VendorProductController::class, 'show'])->name('vendor.products.show');
     
+    Route::get('/inventories', [VendorInventoryController::class, 'index'])->name('vendor.inventories');
+
+    Route::get('/dashboard', [VendorController::class, 'index'])->name('vendor.dashboard');
     Route::get('/transactions', [VendorController::class, 'transactions'])->name('vendor.transactions');
     Route::get('/discounts', [VendorController::class, 'discounts'])->name('vendor.discounts');
     Route::get('/{vendor:username}', [VendorController::class, 'show'])->name('vendor.show');

@@ -16,4 +16,15 @@ class Vendor extends Authenticable
     {
         $this->attributes['password'] = bcrypt($password);
     }
+
+    /** relations */
+    public function inventories()
+    {
+        return $this->hasMany(Inventory::class);
+    }
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
 }
