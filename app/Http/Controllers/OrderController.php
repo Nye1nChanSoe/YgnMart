@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\Product;
+use App\Traits\ProductAnalyticTrait;
 use App\Traits\StripePaymentTrait;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
@@ -11,7 +13,7 @@ use Illuminate\Support\Str;
 
 class OrderController extends Controller
 {
-    use StripePaymentTrait;
+    use StripePaymentTrait, ProductAnalyticTrait;
 
     public function show(Order $order)
     {
@@ -93,6 +95,21 @@ class OrderController extends Controller
         /** create order_product records */
         $order->products()->attach($records);
 
+        /** add product analytics */
+        $this->processOrderAnalytics($productIdArray);
+
         return $order;
+    }
+
+    /**
+     * @param array $ids - array of product id
+     */
+    protected function processOrderAnalytics($ids)
+    {
+        $products = Product::whereIn('id', $ids)->get();
+        foreach($products as $product)
+        {
+            $this->dailyProductStats($product, 'order');
+        }
     }
 }

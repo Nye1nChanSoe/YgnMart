@@ -1,4 +1,7 @@
 <x-vendor-layout>
+    <x-slot:title>
+        Add new product - YangonMart.com
+    </x-slot:title>
     <ul class="flex items-center my-3 px-3 py-3 text-sm">
         <li class="flex items-center ml-2 gap-x-1">
             <a href="{{ route('vendor.dashboard') }}" class="{{ request()->routeIs('vendor.dashboard') ? 'text-blue-600' : 'text-gray-700' }} hover:text-blue-600">Dashboard</a><x-icon name="chevron-right" />
@@ -10,7 +13,6 @@
             <a href="{{ route('vendor.products.create') }}" class="{{ request()->routeIs('vendor.products.*') ? 'text-blue-600' : 'text-gray-700' }} hover:text-blue-600">Upload New Product</a>
         </li>
     </ul>
-    {{-- Name, Meta Type, Price, Description, Image, Stock Amount, Minimum Stock Threshold, Status --}}
     <section 
         x-data="{
             openCategory: true,
@@ -46,7 +48,7 @@
                 x-transition 
                 x-cloak
             >
-                <h1 for="">1. Select the Category you want to sell</h1>
+                <h1 class="font-medium">1. Select the Category you want to sell</h1>
                 <div class="text-gray-700 flex gap-x-16 mt-10">
                     <div x-data="{open:false}">
                         <div class="flex items-center hover:text-blue-600 mb-3">
@@ -149,7 +151,7 @@
             </section>
     
             <section class="px-6 py-6" x-show="openProduct" x-transition x-cloak>
-                <h1>2. Fill Product Information</h1>
+                <h1 class="font-medium">2. Fill Product Information</h1>
                 <div class="text-gray-700 mt-10">
                     <div class="grid grid-cols-3 gap-x-10">
                         <div>
@@ -196,7 +198,7 @@
             </section>
     
             <section class="px-6 py-6" x-show="openInventory" x-transition x-cloak>
-                <h1>3. Fill Stock Amount</h1>
+                <h1 class="font-medium">3. Fill Stock Amount</h1>
                 <div x-data="{amount: 100}" class="text-gray-700 mt-10">
                     <div>
                         <label for="in_stock_quantity" class="block mb-1.5">Stock Amount</label>

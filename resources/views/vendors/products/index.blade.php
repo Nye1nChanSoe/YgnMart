@@ -1,4 +1,7 @@
 <x-vendor-layout>
+    <x-slot:title>
+        Manage products - YangonMart.com
+    </x-slot:title>
     <ul class="flex items-center my-3 px-3 py-3 text-sm">
         <li class="flex items-center ml-2 gap-x-1">
             <a href="{{ route('vendor.dashboard') }}" class="{{ request()->routeIs('vendor.dashboard') ? 'text-blue-700' : 'text-gray-700' }} hover:text-blue-600">Dashboard</a><x-icon name="chevron-right" />
@@ -26,7 +29,7 @@
             <h1 class="col-span-2">Date</h1>
         </header>
         @foreach ($inventories as $index => $inventory)
-        <a href="" class="grid grid-cols-9 even:bg-gray-100 items-center text-sm justify-items-center rounded py-1 text-gray-700 hover:bg-gray-200 md:grid-cols-9">
+        <a href="{{ route('vendor.products.show', $inventory->product->slug) }}" class="grid grid-cols-9 even:bg-gray-100 items-center text-sm justify-items-center rounded py-1 text-gray-700 hover:bg-gray-200 md:grid-cols-9">
             <div class="col-span-1">{{ $index + 1 }}</div>
             <div class="col-span-2">
                 <div class="flex items-center gap-x-4">

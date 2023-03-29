@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
-use App\Models\Category;
 use App\Models\Product;
 use App\Models\Review;
-use App\Traits\parseTrait;
+use App\Traits\ParseTrait;
+use App\Traits\ProductAnalyticTrait;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
-    use parseTrait;
+    use ParseTrait, ProductAnalyticTrait;
 
     public function index()
     {
@@ -55,6 +55,8 @@ class ProductController extends Controller
 
         $relatedProducts = Product::with('reviews')->relatedProducts($product)->get();
         
+        $this->dailyProductStats($product, 'view');
+
         return view('products.show',compact('product', 'ratings', 'relatedProducts'));
     }
 
@@ -76,6 +78,8 @@ class ProductController extends Controller
                 'quantity' => $request->quantity,
             ]);
         }
+
+        $this->dailyProductStats($product, 'cart');
 
         return redirect()->route('carts.show', ['product' => $product]);
     }
@@ -104,6 +108,8 @@ class ProductController extends Controller
             LEFT OUTER JOIN reviews ON stars_table.stars = reviews.rating 
             AND reviews.product_id = '.$product->id.'
             GROUP BY stars_table.stars'));
+
+        $this->dailyProductStats($product, 'review');
 
         return response()->json([
             'message' => 'success',

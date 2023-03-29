@@ -35,7 +35,7 @@
                             <div class="flex items-center w-14 h-14 rounded-full flex-shrink-0">
                                 <img src="{{$product->image ? asset($product->image) : asset('images/no-image.png')}}" alt="" class="w-full h-full object-contain">
                             </div>
-                            <h4 class="text-sm mt-2 md:mt-0 md:ml-2"><a href="{{route('products.show', ['product' => $product->slug])}}">{{$product->name}}</a></h4>
+                            <h4 class="text-sm mt-2 hover:text-blue-600 md:mt-0 md:ml-2"><a href="{{route('products.show', ['product' => $product->slug])}}">{{$product->name}}</a></h4>
                         </div>
                         <div class="col-span-1 text-center">{{$product->pivot->quantity}}</div>
                         <div class="hidden col-span-1 md:block">{{number_format($product->price, 0, '.', ',')}}</div>

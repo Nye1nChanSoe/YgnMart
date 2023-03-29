@@ -80,7 +80,7 @@ Route::prefix('vendor')->middleware(['auth:vendor'])->group(function() {
     Route::get('/products', [VendorProductController::class, 'index'])->name('vendor.products');
     Route::post('/products', [VendorProductController::class, 'store'])->name('vendor.products.store');
     Route::get('/products/create', [VendorProductController::class, 'create'])->name('vendor.products.create');
-    Route::get('/products/{product}', [VendorProductController::class, 'show'])->name('vendor.products.show');
+    Route::get('/products/{product:slug}', [VendorProductController::class, 'show'])->name('vendor.products.show');
     
     Route::get('/inventories', [VendorInventoryController::class, 'index'])->name('vendor.inventories');
 

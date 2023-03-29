@@ -22,6 +22,9 @@ return new class extends Migration
             $table->string('status');
             $table->timestamps();
 
+            /** constraints */
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->foreign('vendor_id')->references('id')->on('vendors')->onDelete('cascade');
         });
     }
 

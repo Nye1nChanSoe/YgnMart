@@ -1,6 +1,6 @@
 <x-layout>
     <x-slot:title>
-        Register - YangonMart.com
+        Vendor Register - YangonMart.com
     </x-slot:title>
     <x-container class="flex flex-col justify-center md:flex-row md:justify-around">
         <div class="hidden self-stretch basis-1/2 md:flex md:flex-col md:items-center md:justify-center">

@@ -5,12 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Cart;
 use App\Models\Checkout;
 use App\Models\Product;
+use App\Traits\ProductAnalyticTrait;
 use App\Traits\StripePaymentTrait;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
-    use StripePaymentTrait;
+    use StripePaymentTrait, ProductAnalyticTrait;
 
     public function index()
     {
@@ -84,6 +85,15 @@ class CartController extends Controller
         else 
         {
             $paymentIntent = $this->updatePayment($checkout->payment_intent_id, $paymentOptions);
+        }
+
+        /** load all the carts related to the user and their associated products in a single query */
+        $carts = auth()->user()->carts->load('product');
+        
+        /** increment the checkout value of all the products in the cart */
+        foreach($carts as $cart)
+        {
+            $this->dailyProductStats($cart->product, 'checkout');
         }
 
         return redirect()->route('checkout.index');
