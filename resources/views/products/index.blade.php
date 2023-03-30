@@ -23,7 +23,13 @@
                             <h3 class="inline font-semibold hover:text-blue-600">
                                 <a href="/products/{{$product->slug}}">{{$product->name}}</a>
                             </h3>
-                            <span class="text-xs ml-2">{{ $product->inventory->available_quantity }} in stock</span>
+                            @if ($product->inventory->available_quantity < 100)
+                                <span class="text-xs ml-2">{{ $product->inventory->available_quantity }} in stock</span>
+                                <span class="px-1.5 py-1 rounded-lg bg-red-400 text-white ml-1.5 text-xs">Low stock</span>
+                                @else
+                                <span class="text-xs ml-2">{{ $product->inventory->available_quantity }} in stock</span>
+                                <span class="px-1.5 py-1 rounded-lg bg-blue-400 text-white ml-1.5 text-xs">In stock</span>
+                            @endif
                         </div>
                         
                         <div>

@@ -62,6 +62,9 @@ class ProductController extends Controller
         
         $this->dailyProductStats($product, 'view');
 
+        /** load related models on a specific instance */
+        $product->load(['inventory.vendor']);
+
         return view('products.show',compact('product', 'ratings', 'relatedProducts'));
     }
 

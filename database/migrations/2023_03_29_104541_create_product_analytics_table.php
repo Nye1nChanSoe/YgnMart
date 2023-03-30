@@ -17,6 +17,8 @@ return new class extends Migration
             $table->smallInteger('checkout')->unsiged()->default(0);
             $table->smallInteger('order')->unsiged()->default(0);
             $table->smallInteger('review')->unsiged()->default(0);
+            $table->smallInteger('quantity')->unsigned()->default(0);
+            $table->float('revenue')->unsigned()->default(0);
             $table->date('date')->default(now()->format('Y-m-d'));
             $table->timestamps();
 

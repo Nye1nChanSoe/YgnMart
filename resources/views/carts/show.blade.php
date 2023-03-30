@@ -13,7 +13,7 @@
         </div>
         <div class="flex flex-col items-center justify-center mt-6 md:items-start">
             <div class="flex items-center">
-                <p class="mr-2 md:text-lg">Items added</p>
+                <p class="mr-2 md:text-lg">{{ $cart->quantity }} Items added</p>
                 <x-icon name="check" class="inline" />
             </div>
             <a href="{{ route('carts.index') }}" class="block px-3 py-2 mt-2 bg-blue-500 text-white w-fit rounded-lg hover:bg-blue-700">Go to cart</a>

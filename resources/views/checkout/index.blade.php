@@ -363,25 +363,9 @@ function processOrder()
                 payment_method: 'cash'
             };
             console.log('Purchase Data: ', formData);
-
+            
             // send AJAX request to remove checkout record and create new order record
-            fetch('/checkout/' + id.value, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                    // include CSRF TOKEN in the request so the server can verify it
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                }
-            })
-            .then(function(response) {
-                if(!response.ok) {
-                    throw new Error('Internal server error. Response was not OK');
-                }
-                return response.json();
-            })
-            .then(function(data) {
-                console.log(data.message);
-                fetch('/orders', {
+            fetch('/orders', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -391,23 +375,50 @@ function processOrder()
                         payment_intent_id: "{{$checkout->payment_intent_id}}",
                         form_data: formData     // send form data in the json payload to create order record
                     })
-                })
-                .then(function(response) {
-                    if(!response.ok) {
-                        throw new Error('Internal server error. Response was not OK');
-                    }
-                    return response.json();
-                })
-                .then(function(data) {
-                    console.log(data.message);
+            })
+            .then(function(response) {
+                if(!response.ok) {
+                    throw new Error('Internal server error. Response was not OK');
+                }
+                return response.json();
+            })
+            .then(function(data) {
+                console.log(data.message);
+                var order_code = data.order_code;
 
-                    window.location.href = '/orders/success?order=' + encodeURIComponent(data.order_code);
+                if(data.status !== 'fail') {
+                    fetch('/checkout/' + id.value, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
 
-                })
-                .catch(function(error) {
-                    console.error('Error: ', error);
-                    alert('There was an error processing your request. Please try again later.');
-                });
+                            // include CSRF TOKEN in the request so the server can verify it
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        }
+                    })
+                    .then(function(response) {
+                        if(!response.ok) {
+                            throw new Error('Internal server error. Response was not OK');
+                        }
+                        return response.json();
+                    })
+                    .then(function(data) {
+                        console.log(data.message);
+
+                        window.location.href = '/orders/success?order=' + encodeURIComponent(order_code);
+                    })
+                    .catch(function(error) {
+                        console.error('Error: ', error);
+                        alert('There was an error processing your request. Please try again later.');
+                    });
+                } else {
+                    console.log('Order fail: Amount exceeded the stock limit');
+
+                    alert('We are very sorry for your inconvenience. Please update your order to proceed. You will be redirected to cart in shortly');
+                    setTimeout(() => {
+                        window.location.href="/carts";
+                    }, 3200);
+                }
             })
             .catch(function(error) {
                 console.error('Error: ', error);

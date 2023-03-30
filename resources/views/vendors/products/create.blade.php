@@ -207,7 +207,7 @@
                     </div>
                     <div class="mt-6">
                         <label for="minimum_quantity" class="block mb-1.5">Minimum In Stock Amount</label>
-                        <input id="minimum_quantity" type="number" name="minimum_quantity" x-bind:min="amount - 50" x-bind:max="amount" class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300" placeholder="Minimum number of products in stock...">
+                        <input id="minimum_quantity" type="number" name="minimum_quantity" x-bind:min="50" x-bind:max="amount" class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300" placeholder="Minimum number of products in stock...">
                         <x-input-error field="minimum_quantity" />
                     </div>
                     <div class="mt-6 flex flex-col">

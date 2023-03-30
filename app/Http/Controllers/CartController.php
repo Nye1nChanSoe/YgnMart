@@ -16,7 +16,7 @@ class CartController extends Controller
     public function index()
     {
         return view('carts.index', [
-            'carts' => Cart::with('product')->where('user_id', auth()->id())->orderBy('created_at', 'asc')->get(),
+            'carts' => Cart::with('product.inventory')->where('user_id', auth()->id())->orderBy('created_at', 'asc')->get(),
         ]);
     }
 
@@ -24,10 +24,28 @@ class CartController extends Controller
     public function show(Product $product)
     {
         $relatedProducts = Product::with('reviews')->relatedProducts($product)->get();
+        $cart = Cart::where('product_id', $product->id)->first();
 
         return view('carts.show', [
+            'cart' => $cart,
             'product' => $product,
             'relatedProducts' => $relatedProducts,
+        ]);
+    }
+
+    public function update(Request $request, Cart $cart)
+    {
+        $quantity = $request->json('quantity');
+
+        $cart->update(['quantity' => $quantity]);
+        
+        $quantity = $cart->quantity;
+        $totalPrice = $cart->product->price * $quantity;
+        
+        return response()->json([
+            'message' => 'Item updated from the cart',
+            'totalPrice' => $totalPrice,
+            'quantity' => $quantity,
         ]);
     }
 
@@ -42,7 +60,7 @@ class CartController extends Controller
         $totalPrice = $cart->product->price * $quantity;
         $count = Cart::where('user_id', auth()->id())->count();
 
-        /** AJAX request so send JSON respond back to the client */
+        /** AJAX request: send JSON respond back to the client */
         return response()->json([
             'message' => 'Item removed from the cart', 
             'totalPrice' => $totalPrice, 

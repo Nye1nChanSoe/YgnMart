@@ -33,12 +33,16 @@
                         <a href="#reviews" class="text-sm ml-2 py-1.5 px-2 bg-slate-100 rounded-lg text-blue-500 hover:bg-slate-200">Leave Review</a>
                     </div>
                     <div class="text-blue-500 hover:text-blue-700">
-                        <a href="#">Visit the Vendor</a>
+                        <a href="products/vendor/{{ strtolower(str_replace([' ', '_'], '-', $product->inventory->vendor->username)) }}"><span class="text-zinc-800">Supplier</span> {{ $product->inventory->vendor->brand }}</a>
                     </div>
                 </div>
                 <div class="flex flex-col items-center pt-4 space-y-2 md:flex-row md:space-y-0">
                     <h5 class="px-2.5 py-[3px] bg-yellow-300 text-black font-semibold rounded-xl w-32 text-xl text-center">{{number_format($product->price, 0, '.', ',')}} <span class="text-sm">MMK</span></h5>
-                    <div class="ml-3">Save 10% for current promotion</div>
+                    @if ($product->inventory->available_quantity < 100)
+                        <div class="ml-3 bg-red-400 px-2.5 py-1 rounded-lg text-white text-sm">Only {{ $product->inventory->available_quantity }} items left in stock</div>
+                    @else
+                        <div class="ml-3 bg-blue-500 px-2.5 py-1 rounded-lg text-white text-sm">{{ $product->inventory->available_quantity }} in stock</div>
+                    @endif
                 </div>
                 <div class="pt-4 text-zinc-800">
                     <h3 class="font-semibold text-center mb-2 md:text-left">Product Description</h3>
@@ -73,7 +77,7 @@
                     
                         <div x-show="open" @@click.outside="open = false" class="absolute py-2 mt-1 bg-white shadow-lg w-20 max-h-56 overflow-auto scrollbar rounded-xl border border-slate-200 z-10" x-cloak x-transition>
                             <ul>
-                                @for ($i = 0; $i < 100; $i++)
+                                @for ($i = 1; $i <= $product->inventory->available_quantity; $i++)
                                 <li>
                                     <x-dropdown-item 
                                         class="leading-6" 
@@ -89,11 +93,11 @@
                 </div>
 
                 <div class="pt-4 space-y-1">
-                    <div class="flex text-sm items-center justify-center space-x-2 md:justify-left">
+                    <div class="flex text-sm items-center justify-center space-x-2 md:justify-start">
                         <span>Delivery Available</span>
                         <x-icon name="check" />
                     </div>
-                    <div class="flex text-sm items-center justify-center space-x-2 md:justify-left">
+                    <div class="flex text-sm items-center justify-center space-x-2 md:justify-start">
                         <span>Multipayment Available</span>
                         <x-icon name="check" />
                     </div>
