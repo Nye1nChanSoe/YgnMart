@@ -23,12 +23,24 @@
                             <h3 class="inline font-semibold hover:text-blue-600">
                                 <a href="/products/{{$product->slug}}">{{$product->name}}</a>
                             </h3>
-                            @if ($product->inventory->available_quantity < 100)
-                                <span class="text-xs ml-2">{{ $product->inventory->available_quantity }} in stock</span>
-                                <span class="px-1.5 py-1 rounded-lg bg-red-400 text-white ml-1.5 text-xs">Low stock</span>
-                                @else
+                            @if ($product->inventory->available_quantity >= 100)
+                            <div class="mt-1.5">
                                 <span class="text-xs ml-2">{{ $product->inventory->available_quantity }} in stock</span>
                                 <span class="px-1.5 py-1 rounded-lg bg-blue-400 text-white ml-1.5 text-xs">In stock</span>
+                            </div>
+                            @elseif($product->inventory->available_quantity == 0)
+                            <div x-data="{open:false}" class="mt-1.5 relative">
+                                <span class="text-xs ml-2">{{ $product->inventory->available_quantity }} in stock</span>
+                                <span x-on:mouseover="open=true" x-on:mouseleave="open=false" class="cursor-pointer px-1.5 py-1 rounded-lg bg-red-500 text-white ml-1.5 text-xs">Out of stock</span>
+                                <div x-show="open" class="absolute w-60 top-7 right-24 border bg-white shadow rounded px-1.5 py-1">
+                                    <p class="text-xs text-gray-700">We are sorry. The product is out of stock and temporarily unavailable</p>
+                                </div>
+                            </div>
+                            @else
+                            <div class="mt-1.5">
+                                <span class="text-xs ml-2">{{ $product->inventory->available_quantity }} in stock</span>
+                                <span class="px-1.5 py-1 rounded-lg bg-red-400 text-white ml-1.5 text-xs">Low stock</span>
+                            </div>
                             @endif
                         </div>
                         

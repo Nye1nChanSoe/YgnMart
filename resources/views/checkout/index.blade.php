@@ -36,7 +36,7 @@
             class="block justify-between pt-6 md:flex"
         >
             @csrf
-            <div class="space-y-6 divide-y p-4 md:flex-1 md:mr-96">
+            <div class="space-y-6 divide-y p-4 md:flex-1 md:mr-40">
                 <!-- Address -->
                 <div 
                     x-data="{

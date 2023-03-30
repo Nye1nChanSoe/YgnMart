@@ -52,9 +52,9 @@
 
                                 {{-- TODO: check product inventory and variants dynamically --}}
                                 @if ($cart->product->inventory->available_quantity >= $cart->quantity)
-                                    <p class="text-xs px-1.5 py-1 mt-2.5 rounded-lg bg-blue-500 text-white w-fit">In Stock</p>
+                                    <p class="text-xs px-1.5 py-1 mt-3 rounded-lg bg-green-600 text-white w-fit">Available</p>
                                 @else
-                                    <p class="ttext-xs px-1.5 py-1 mt-2.5 rounded-lg bg-red-400 text-white w-fit">Out of Stock</p>
+                                    <p class="ttext-xs px-1.5 py-1 mt-3 rounded-lg bg-red-400 text-white w-fit">Out of Stock</p>
                                 @endif
                                 <div class="flex text-xs py-1 space-x-3">
                                     <button type="button" x-on:click="removeItem, $refs.item_{{$cart->id}}.remove()" class="text-red-500 hover:text-red-700">Remove</button>
@@ -80,7 +80,7 @@
                             
                                 <div x-show="open" @@click.outside="open = false" class="absolute py-2 mt-1 bg-white shadow-lg w-20 max-h-56 overflow-auto scrollbar rounded-xl border border-slate-200 z-10" x-cloak x-transition>
                                     <ul>
-                                        @for ($i = 1; $i <= $cart->product->inventory->available_quantity; $i++)
+                                        @for ($i = 1; $i <= ($cart->product->inventory->available_quantity > 100 ? 100 : $cart->product->inventory->available_quantity); $i++)
                                         <li>
                                             <x-dropdown-item 
                                                 class="leading-6" 

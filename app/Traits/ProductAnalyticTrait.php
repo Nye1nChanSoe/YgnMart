@@ -11,8 +11,9 @@ trait ProductAnalyticTrait
      * @param Product $product
      * @param string $increment - The name of the column that should be incremented 
      *                            'view'  'cart'  'order'  'review'
+     * @param bool $isOrder - set this parameter to true, to update quantity and revenue per day
      */
-    public function dailyProductStats(Product $product, string $increment)
+    public function dailyProductStats(Product $product, string $increment, array $data = [])
     {
         /** get the latest record for the product */
         $latestRecord = ProductAnalytic::where('product_id', $product->id)
@@ -40,6 +41,11 @@ trait ProductAnalyticTrait
         else 
         {
             /** if the lastest record is from today, update the view count */
+            if(!empty($data)) 
+            {
+                $latestRecord->update($data);
+            } 
+
             $latestRecord->increment($increment);
         }
     }

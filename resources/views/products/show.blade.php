@@ -12,7 +12,7 @@
         {{-- product view --}}
         <div class="flex flex-col items-center justify-center md:space-x-2 md:flex-row">
             <div class="w-60 my-8 md:basis-1/3 md:w-full md:my-0">
-                <img src="{{$product->image ? asset($product->image) : asset('images/no-image.png')}}" alt="" class="object-contain">
+                <img src="{{$product->image ? asset($product->image) : asset('images/no-image.png')}}" alt="" class="w-full h-full object-contain">
             </div>
 
             {{-- product info --}}
@@ -38,10 +38,12 @@
                 </div>
                 <div class="flex flex-col items-center pt-4 space-y-2 md:flex-row md:space-y-0">
                     <h5 class="px-2.5 py-[3px] bg-yellow-300 text-black font-semibold rounded-xl w-32 text-xl text-center">{{number_format($product->price, 0, '.', ',')}} <span class="text-sm">MMK</span></h5>
-                    @if ($product->inventory->available_quantity < 100)
-                        <div class="ml-3 bg-red-400 px-2.5 py-1 rounded-lg text-white text-sm">Only {{ $product->inventory->available_quantity }} items left in stock</div>
+                    @if ($product->inventory->available_quantity >= 100)
+                    <div class="ml-3 bg-blue-500 px-2.5 py-1 rounded-lg text-white text-sm">{{ $product->inventory->available_quantity }} in stock</div>
+                    @elseif($product->inventory->available_quantity == 0)
+                    <div class="ml-3 bg-red-600 px-2.5 py-1 rounded-lg text-white text-sm">Out of stock</div>
                     @else
-                        <div class="ml-3 bg-blue-500 px-2.5 py-1 rounded-lg text-white text-sm">{{ $product->inventory->available_quantity }} in stock</div>
+                    <div class="ml-3 bg-red-400 px-2.5 py-1 rounded-lg text-white text-sm">Only {{ $product->inventory->available_quantity }} items left in stock</div>
                     @endif
                 </div>
                 <div class="pt-4 text-zinc-800">
@@ -77,7 +79,7 @@
                     
                         <div x-show="open" @@click.outside="open = false" class="absolute py-2 mt-1 bg-white shadow-lg w-20 max-h-56 overflow-auto scrollbar rounded-xl border border-slate-200 z-10" x-cloak x-transition>
                             <ul>
-                                @for ($i = 1; $i <= $product->inventory->available_quantity; $i++)
+                                @for ($i = 1; $i <= ($product->inventory->available_quantity > 100 ? 100 : $product->inventory->available_quantity); $i++)
                                 <li>
                                     <x-dropdown-item 
                                         class="leading-6" 
@@ -333,7 +335,7 @@ function submitReview()
             console.log('Data object: ', data);
             if(data.message === 'success')
             {
-                // get all the reviews count for start 1, 2, 3, 4, 5 in order
+                // get all the reviews count for star 1, 2, 3, 4, 5 in order
                 this.reviews = data.ratings.map(obj => obj.count);
                 this.totalReviews = this.reviews.reduce((accumulator, value) => accumulator + value, 0);
                 this.point = this.avgStarPoint();
@@ -441,4 +443,3 @@ function showAlert(message, info = '')
     }
 }
 </script>
-

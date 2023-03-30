@@ -111,7 +111,7 @@ class OrderController extends Controller
         $order->products()->attach($records);
 
         /** update analytics */
-        $this->productStats($productIdArray);
+        $this->productStats($productIdArray, $quantityArray);
 
         return $order;
     }
@@ -143,23 +143,18 @@ class OrderController extends Controller
     }
 
     /**
-     * return true or false based on the items left in the inventory
-     * 
-     * @param $ids array of product id
-     */
-    protected function checkStockAvailability($ids)
-    {
-    }
-
-    /**
      * @param array $ids - array of product id
+     * @param array $quantities - array of purchased quantities in same order as product ids
      */
-    protected function productStats($ids)
+    protected function productStats($ids, $quantities)
     {
         $products = Product::whereIn('id', $ids)->get();
-        foreach($products as $product)
+        foreach($products as $index => $product)
         {
-            $this->dailyProductStats($product, 'order');
+            $this->dailyProductStats($product, 'order', [
+                'quantity' => $quantities[$index], 
+                'revenue' => $quantities[$index] * $product->price,
+            ]);
         }
     }
 }

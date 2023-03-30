@@ -110,11 +110,12 @@ class DatabaseSeeder extends Seeder
             $available_stock = $in_stock - $minimum_stock;
 
             $inventory = Inventory::create([
+                'sku' => 'YM-' . strtoupper(uniqid()),
                 'vendor_id' => 1,
                 'in_stock_quantity' => $in_stock,
                 'minimum_quantity' => $minimum_stock,
                 'available_quantity' => $available_stock,
-                'is_in_stock' => $available_stock <= 0,
+                'is_in_stock' => $available_stock > 0,
                 'status' => ($available_stock >= 50) ? 'sell' : 'close',
             ]);
 
@@ -138,11 +139,12 @@ class DatabaseSeeder extends Seeder
             $available_stock = $in_stock - $minimum_stock;
             
             $inventory = Inventory::create([
+                'sku' => 'YM-' . strtoupper(uniqid()),
                 'vendor_id' => 1,
                 'in_stock_quantity' => $in_stock,
                 'minimum_quantity' => $minimum_stock,
                 'available_quantity' => $available_stock,
-                'is_in_stock' => $available_stock <= 0,
+                'is_in_stock' => $available_stock > 0,
                 'status' => ($available_stock >= 50) ? 'sell' : 'close',
             ]);
 
@@ -165,11 +167,12 @@ class DatabaseSeeder extends Seeder
             $available_stock = $in_stock - $minimum_stock;
             
             $inventory = Inventory::create([
+                'sku' => 'YM-' . strtoupper(uniqid()),
                 'vendor_id' => 1,
                 'in_stock_quantity' => $in_stock,
                 'minimum_quantity' => $minimum_stock,
                 'available_quantity' => $available_stock,
-                'is_in_stock' => $available_stock <= 0,
+                'is_in_stock' => $available_stock > 0,
                 'status' => ($available_stock >= 50) ? 'sell' : 'close',
             ]);
 

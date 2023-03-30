@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('inventories', function (Blueprint $table) {
             $table->id();
+            $table->string('sku')->unique();
             $table->foreignId('vendor_id');
             $table->integer('in_stock_quantity');
             $table->integer('minimum_quantity');

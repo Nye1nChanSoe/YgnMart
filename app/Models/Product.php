@@ -113,4 +113,9 @@ class Product extends Model
     {
         return $this->hasMany(Transaction::class);
     }
+
+    public function analytic()
+    {
+        return $this->hasMany(ProductAnalytic::class);
+    }
 }
