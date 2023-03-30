@@ -105,8 +105,22 @@ class DatabaseSeeder extends Seeder
         /** seeding products */
         foreach($this->fruits as $fruit)
         {
+            $in_stock = rand(785, 2421);
+            $minimum_stock = 250;
+            $available_stock = $in_stock - $minimum_stock;
+
+            $inventory = Inventory::create([
+                'vendor_id' => 1,
+                'in_stock_quantity' => $in_stock,
+                'minimum_quantity' => $minimum_stock,
+                'available_quantity' => $available_stock,
+                'is_in_stock' => $available_stock <= 0,
+                'status' => ($available_stock >= 50) ? 'sell' : 'close',
+            ]);
+
             $name = ucfirst('fresh '.$fruit.' '.rtrim(fake()->sentence(rand(4, 6)), '.'));
             $product = Product::factory()->create([
+                'inventory_id' => $inventory->id,
                 'name' => $name,
                 'slug' => strtolower(str_replace(' ', '-', $name)),
                 'meta_type' => strtolower($fruit),
@@ -115,27 +129,26 @@ class DatabaseSeeder extends Seeder
 
             $categories = Category::where('sub_type', 'fruits')->get();
             $product->categories()->sync($categories);
+        }
 
-
-            $in_stock = rand(785, 2421);
-            $minimum_stock = 250;
+        foreach($this->alcohols as $alcohol)
+        {
+            $in_stock = rand(150, 542);
+            $minimum_stock = 150;
             $available_stock = $in_stock - $minimum_stock;
-
-            Inventory::create([
+            
+            $inventory = Inventory::create([
                 'vendor_id' => 1,
-                'product_id' => $product->id,
                 'in_stock_quantity' => $in_stock,
                 'minimum_quantity' => $minimum_stock,
                 'available_quantity' => $available_stock,
                 'is_in_stock' => $available_stock <= 0,
                 'status' => ($available_stock >= 50) ? 'sell' : 'close',
             ]);
-        }
 
-        foreach($this->alcohols as $alcohol)
-        {
             $name = ucfirst('imported '.$alcohol.' '.rtrim(fake()->sentence(rand(4, 6)), '.'));
             $product = Product::factory()->create([
+                'inventory_id' => $inventory->id,
                 'name' => $name,
                 'slug' => strtolower(str_replace(' ', '-', $name)),
                 'meta_type' => strtolower($alcohol),
@@ -143,26 +156,26 @@ class DatabaseSeeder extends Seeder
             ]);
             $categories = Category::where('sub_type', 'alcohol')->get();
             $product->categories()->sync($categories);
+        }
 
-            $in_stock = rand(150, 542);
-            $minimum_stock = 150;
+        foreach($this->soft_drinks as $soft_drink)
+        {
+            $in_stock = rand(250, 2421);
+            $minimum_stock = 250;
             $available_stock = $in_stock - $minimum_stock;
             
-            Inventory::create([
+            $inventory = Inventory::create([
                 'vendor_id' => 1,
-                'product_id' => $product->id,
                 'in_stock_quantity' => $in_stock,
                 'minimum_quantity' => $minimum_stock,
                 'available_quantity' => $available_stock,
                 'is_in_stock' => $available_stock <= 0,
                 'status' => ($available_stock >= 50) ? 'sell' : 'close',
             ]);
-        }
 
-        foreach($this->soft_drinks as $soft_drink)
-        {
             $name = ucfirst($soft_drink.' '.rtrim(fake()->sentence(rand(4, 6)), '.'));
             $product = Product::factory()->create([
+                'inventory_id' => $inventory->id,
                 'name' => $name,
                 'slug' => strtolower(str_replace(' ', '-', $name)),
                 'meta_type' => strtolower($soft_drink),
@@ -170,20 +183,6 @@ class DatabaseSeeder extends Seeder
             ]);
             $categories = Category::where('sub_type', 'soft drinks')->get();
             $product->categories()->sync($categories);
-
-            $in_stock = rand(250, 2421);
-            $minimum_stock = 250;
-            $available_stock = $in_stock - $minimum_stock;
-            
-            Inventory::create([
-                'vendor_id' => 1,
-                'product_id' => $product->id,
-                'in_stock_quantity' => $in_stock,
-                'minimum_quantity' => $minimum_stock,
-                'available_quantity' => $available_stock,
-                'is_in_stock' => $available_stock <= 0,
-                'status' => ($available_stock >= 50) ? 'sell' : 'close',
-            ]);
         }
     }
 }

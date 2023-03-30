@@ -39,6 +39,6 @@ class Inventory extends Model
          * each product can relate with many inventory records since many vendors
          * can sell the same product with different variants such as price, color...`
          */
-        return $this->belongsTo(Product::class);    
+        return $this->hasOne(Product::class);    
     }
 }

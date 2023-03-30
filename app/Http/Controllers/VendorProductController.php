@@ -41,6 +41,12 @@ class VendorProductController extends Controller
             'status' => ['required'],
         ]);
 
+        $inventoryData = $request->validate([
+            'in_stock_quantity' => ['required', 'numeric', 'min:100'],
+            'minimum_quantity' => ['required', 'numeric', 'min:50'],
+            'status' => ['required'],
+        ]);
+
         $productData = $request->validate([
             'name' => ['required', 'max:255'],
             'meta_type' => ['required', 'max:50'],
@@ -55,27 +61,23 @@ class VendorProductController extends Controller
             'sub_type.*' => ['required'],
         ]);
 
-        $inventoryData = $request->validate([
-            'in_stock_quantity' => ['required', 'numeric', 'min:100'],
-            'minimum_quantity' => ['required', 'numeric', 'min:50'],
-            'status' => ['required'],
-        ]);
+        
+        /** create inventory record first */
+        $inventoryData['vendor_id'] = auth()->guard('vendor')->id();
+        $inventoryData['available_quantity'] = $inventoryData['in_stock_quantity'] - $inventoryData['minimum_quantity'];
+        $inventoryData['is_in_stock'] = $inventoryData['available_quantity'] <= 0;
+        $inventory = Inventory::create($inventoryData);
 
+        /** product data second */
         $productData['slug'] = strtolower(str_replace([' ', '_'], '-', $request->input('name')));
+        $productData['inventory_id'] = $inventory->id;
         $product = Product::create($productData);
 
+        /** categories third */
         $categories = Category::whereIn('sub_type', $request->input('sub_type'))->get();
 
         /** add one or more records to the intermediate table */
         $product->categories()->attach($categories);
-
-        /** create inventory record as well */
-        $inventoryData['vendor_id'] = auth()->guard('vendor')->id();
-        $inventoryData['product_id'] = $product->id;
-        $inventoryData['available_quantity'] = $inventoryData['in_stock_quantity'] - $inventoryData['minimum_quantity'];
-        $inventoryData['is_in_stock'] = $inventoryData['available_quantity'] <= 0;
-
-        Inventory::create($inventoryData);
 
         return redirect()->route('vendor.products')->with('success', 'New Product added!');
     }

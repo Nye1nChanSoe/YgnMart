@@ -15,8 +15,9 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', [ProductController::class, 'index'])->name('home');
-Route::get('/products/suggestions', [ProductController::class, 'suggestions'])->name('products.suggestions');
+Route::get('/products/suggestions', [ProductController::class, 'suggestions'])->name('products.suggestions');   /** AJAX route */
 Route::get('/products/{product:slug}', [ProductController::class, 'show'])->name('products.show');
+// Route::get('/products/vendor/{vendor:username}')
 
 
 Route::middleware(['guest'])->group(function() {

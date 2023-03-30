@@ -19,7 +19,7 @@ class OrderController extends Controller
     {
         try 
         {
-            $order = Order::where('user_id', auth()->id())->where('order_code', $order->order_code)->firstOrFail();
+            $order = Order::with('products')->where('user_id', auth()->id())->where('order_code', $order->order_code)->firstOrFail();
             return view('orders.show', compact('order'));
         } 
         catch (ModelNotFoundException $e) 

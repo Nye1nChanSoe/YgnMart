@@ -19,10 +19,15 @@ class ProductController extends Controller
     public function index()
     {
         /**
-         * Eager loaded Models: reviews
+         * Eager loaded Models: reviews, inventory.vendor
          * Eager load or left join the model reviews
+         * Dot notation to eager load the nested relationship like vendor
          */
-        $filteredQuery = Product::with('reviews')->oldest()->filter($this->parseHyphens(request(['search', 'category'])));
+        $filteredQuery = Product::with(['reviews', 'inventory.vendor'])
+            // ->whereHas('inventory', fn($query) => $query
+            //     ->where('status', 'sell'))
+            ->oldest()
+            ->filter($this->parseHyphens(request(['search', 'category'])));
         
         $products = $filteredQuery->paginate(20)->withQueryString();
 

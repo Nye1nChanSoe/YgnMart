@@ -39,6 +39,11 @@ class Product extends Model
                     ->where('type', 'like', "%{$search}%")
                     ->orWhere('sub_type', 'like', "%{$search}%")
                 )
+                ->orWhereHas('inventory.vendor', fn($query) => $query
+                    ->where('name', 'like', "%{$search}%")
+                    ->orWhere('brand', 'like', "%{$search}%")
+                    ->orWhere('username', 'like', "%{$search}%")
+                )
             )
         );
 
@@ -99,9 +104,9 @@ class Product extends Model
         return $this->hasMany(Review::class);
     }
 
-    public function inventories()
+    public function inventory()
     {
-        return $this->hasMany(Inventory::class);
+        return $this->belongsTo(Inventory::class);
     }
 
     public function transactions()

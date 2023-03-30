@@ -1,6 +1,6 @@
 @if (!request()->routeIs(['login', 'register', 'vendor.*']))
 @php
-    $types = Illuminate\Support\Facades\DB::table('categories')->distinct('type')->pluck('type');
+    $categories = App\Models\Category::all();
     $cartItemsCount = App\Models\Cart::where('user_id', auth()->id())->count();
 @endphp
 @endif
@@ -35,8 +35,8 @@
                     <x-icon name="close" x-show="open" />
                 </button>
                 <div x-show="open" class="absolute top-6 w-full rounded drop-shadow-xl bg-white" x-cloak x-transition>
-                    @foreach ($types as $type)
-                    <x-category-menu :type="$type" />
+                    @foreach ($categories->pluck('type')->unique() as $type)
+                    <x-category-menu :categories="$categories" :type="$type" />
                     @endforeach
                 </div>
             </div>
@@ -103,8 +103,8 @@
             {{-- Navigation --}}
             @if (!request()->routeIs(['login', 'register', 'vendor.*']))
             <nav class="hidden container mx-auto flex-row justify-between items-center sm:flex">
-                @foreach ($types as $type)
-                <x-category-dropdown :type="$type" />
+                @foreach ($categories->pluck('type')->unique() as $type)
+                <x-category-dropdown :categories="$categories" :type="$type" />
                 @endforeach
             </nav>
             @endif

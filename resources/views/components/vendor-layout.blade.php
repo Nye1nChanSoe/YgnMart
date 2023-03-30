@@ -129,7 +129,7 @@
                                 <x-icon name="search" class="text-gray-700"/>
                             </button>
                         </div>
-                        <input type="text" name="search" class="w-full border-2 border-gray-400 pl-10 pr-2.5 py-1 rounded-lg focus:ring-1 focus:ring-gray-800 focus:outline-none" placeholder="Search for products">
+                        <input type="text" name="search" class="w-full border-2 border-gray-400 pl-10 pr-2.5 py-1 rounded-lg focus:border-gray-600 focus:outline-none" placeholder="Search for products">
                     </div>
                     <form action="{{ route('vendor.logout') }}" method="POST">
                         @csrf

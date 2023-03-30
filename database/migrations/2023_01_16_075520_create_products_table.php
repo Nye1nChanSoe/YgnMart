@@ -23,7 +23,11 @@ return new class extends Migration
             $table->float('rating_point')->default(0.0);
             $table->text('description');
             $table->string('image')->nullable();   // will provide the default image at first 
+            $table->foreignId('inventory_id');
             $table->timestamps();
+
+            /** constraints */
+            $table->foreign('inventory_id')->references('id')->on('inventories')->onDelete('cascade');
         });
     }
 

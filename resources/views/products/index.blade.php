@@ -23,7 +23,7 @@
                             <h3 class="inline font-semibold hover:text-blue-600">
                                 <a href="/products/{{$product->slug}}">{{$product->name}}</a>
                             </h3>
-                            <span class="text-xs ml-2">{{rand(40, 230)}} in stock</span>
+                            <span class="text-xs ml-2">{{ $product->inventory->available_quantity }} in stock</span>
                         </div>
                         
                         <div>
@@ -41,7 +41,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                         </div>
-                        <div class="text-sm">By <a href="" class="hover:text-blue-700">Example Co.ltd</a></div>
+                        <div class="text-sm">Seller <a href="products/vendor/{{ strtolower(str_replace([' ', '_'], '-', $product->inventory->vendor->username)) }}" class="hover:text-blue-700">{{ $product->inventory->vendor->brand }}</a></div>
                     </x-product-card>
                 @endforeach
             </div>

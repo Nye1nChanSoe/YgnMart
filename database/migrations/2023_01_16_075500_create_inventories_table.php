@@ -6,17 +6,16 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
+    /** 
+     * This table currently have one to one relationship with the product table 
+     * might scale up to one to many relationship in future and allows different 
+     * vendors to have the same product with different stock amounts and price
      */
     public function up()
     {
         Schema::create('inventories', function (Blueprint $table) {
             $table->id();
             $table->foreignId('vendor_id');
-            $table->foreignId('product_id');
             $table->integer('in_stock_quantity');
             $table->integer('minimum_quantity');
             $table->integer('available_quantity');
@@ -25,9 +24,7 @@ return new class extends Migration
             $table->timestamps();
 
             /** constraints */
-            $table->unique(['vendor_id', 'product_id']);
             $table->foreign('vendor_id')->references('id')->on('vendors')->onDelete('cascade');
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
         });
     }
 
