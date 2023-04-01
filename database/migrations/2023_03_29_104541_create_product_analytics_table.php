@@ -12,13 +12,13 @@ return new class extends Migration
         Schema::create('product_analytics', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id');
-            $table->integer('view')->unsiged()->default(0);       
-            $table->smallInteger('cart')->unsiged()->default(0);   // can handle 2 ^ 16 = 65536 counts for each product a day
-            $table->smallInteger('checkout')->unsiged()->default(0);
-            $table->smallInteger('order')->unsiged()->default(0);
-            $table->smallInteger('review')->unsiged()->default(0);
-            $table->smallInteger('quantity')->unsigned()->default(0);
-            $table->float('revenue')->unsigned()->default(0);
+            $table->bigInteger('view')->unsiged()->default(0);       
+            $table->integer('cart')->unsiged()->default(0);   
+            $table->integer('checkout')->unsiged()->default(0);
+            $table->integer('order')->unsiged()->default(0);
+            $table->integer('review')->unsiged()->default(0);
+            $table->integer('quantity')->unsigned()->default(0);
+            $table->double('revenue')->unsigned()->default(0);
             $table->date('date')->default(now()->format('Y-m-d'));
             $table->timestamps();
 

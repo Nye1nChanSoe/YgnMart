@@ -22,17 +22,50 @@ class VendorProductController extends Controller
 
     public function show(Product $product)
     {
-        $ratings = DB::select(DB::raw('SELECT stars_table.stars, COALESCE(COUNT(reviews.rating), 0) AS count
-            FROM (
-            SELECT 1 AS stars UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5
-            ) AS stars_table
-            LEFT OUTER JOIN reviews ON stars_table.stars = reviews.rating 
-            AND reviews.product_id = '.$product->id.'
-            GROUP BY stars_table.stars')
-        );
+        $product = $product->load('inventory', 'analytics');
 
-        $product = $product->load('inventory');
-        return view('vendors.products.show', compact('product', 'ratings'));
+        $ratings = DB::table(DB::raw('(SELECT 1 AS stars UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5) AS stars_table'))
+            ->leftJoin('reviews', function($join) use ($product) {
+                $join->on('stars_table.stars', '=', 'reviews.rating')
+                    ->where('reviews.product_id', '=', $product->id);
+            })
+            ->select(DB::raw('stars_table.stars, COALESCE(COUNT(reviews.rating), 0) AS count'))
+            ->groupBy('stars_table.stars')
+            ->get();
+
+        /* daily report data */
+        $analytics = $product->analytics()
+            ->select(DB::raw('DATE_FORMAT(date, "%d %b") as day'),
+                DB::raw('SUM(view) as view'),
+                DB::raw('SUM(cart) as cart'),
+                DB::raw('SUM(checkout) as checkout'),
+                DB::raw('SUM(`order`) as `order`'),
+                DB::raw('SUM(review) as review'),
+                DB::raw('SUM(quantity) as quantity'),
+                DB::raw('SUM(revenue) as revenue'))
+            ->groupBy('day')
+            ->orderBy('day', 'asc')
+            ->get();
+        
+        $viewData = $analytics->pluck('view', 'day');              // day => view  key:value pair
+        $cartData = $analytics->pluck('cart', 'day');              
+        $checkoutData = $analytics->pluck('checkout', 'day');      
+        $orderData = $analytics->pluck('order', 'day');            
+        $reviewData = $analytics->pluck('review', 'day');        
+        $quantityData = $analytics->pluck('quantity', 'day');      
+        $revenueData = $analytics->pluck('revenue', 'day');
+        
+        return view('vendors.products.show', compact([
+            'product',
+            'ratings',
+            'viewData',
+            'cartData',
+            'checkoutData',
+            'orderData',
+            'reviewData',
+            'quantityData',
+            'revenueData',
+        ]));
     }
 
     public function create()

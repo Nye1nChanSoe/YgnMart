@@ -9,6 +9,7 @@ use App\Models\CategoryType;
 use App\Models\CategoryTypes;
 use App\Models\Inventory;
 use App\Models\Product;
+use App\Models\ProductAnalytic;
 use App\Models\User;
 use App\Models\Vendor;
 use Illuminate\Database\Seeder;
@@ -47,7 +48,7 @@ class DatabaseSeeder extends Seeder
         Product::truncate();
         Vendor::truncate();
         Inventory::truncate();
-
+        ProductAnalytic::truncate();
 
         /** TODO: delete later */
         User::create([
@@ -187,5 +188,9 @@ class DatabaseSeeder extends Seeder
             $categories = Category::where('sub_type', 'soft drinks')->get();
             $product->categories()->sync($categories);
         }
+
+        $this->call([
+            ProductAnalyticSeeder::class,
+        ]);
     }
 }
