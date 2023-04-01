@@ -11,6 +11,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\VendorInventoryController;
 use App\Http\Controllers\VendorProductController;
+use App\Http\Controllers\VendorTransactionController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -83,11 +84,14 @@ Route::prefix('vendor')->middleware(['auth:vendor'])->group(function() {
     Route::post('/products', [VendorProductController::class, 'store'])->name('vendor.products.store');
     Route::get('/products/create', [VendorProductController::class, 'create'])->name('vendor.products.create');
     Route::get('/products/{product:slug}', [VendorProductController::class, 'show'])->name('vendor.products.show');
+    Route::get('/products/{product:slug}/edit', [VendorProductController::class, 'edit'])->name('vendor.products.edit');
+    Route::put('/products/{product:slug}', [VendorProductController::class, 'update'])->name('vendor.products.update');
+    Route::delete('/products/{product:slug}', [VendorProductController::class, 'destroy'])->name('vendor.products.destroy');
     
     Route::get('/inventories', [VendorInventoryController::class, 'index'])->name('vendor.inventories');
 
     Route::get('/dashboard', [VendorController::class, 'index'])->name('vendor.dashboard');
-    Route::get('/transactions', [VendorController::class, 'transactions'])->name('vendor.transactions');
+    Route::get('/transactions', [VendorTransactionController::class, 'index'])->name('vendor.transactions');
     Route::get('/discounts', [VendorController::class, 'discounts'])->name('vendor.discounts');
     Route::get('/{vendor:username}', [VendorController::class, 'show'])->name('vendor.show');
     Route::get('/settings', [VendorController::class, 'edit'])->name('vendor.settings');

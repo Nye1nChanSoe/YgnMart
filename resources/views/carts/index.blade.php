@@ -3,6 +3,14 @@
         Cart - YangonMart.com
     </x-slot:title>
     <x-container class="mt-14">
+        <ul class="flex items-center my-3 px-3 py-3 text-sm">
+            <li class="flex items-center ml-2 gap-x-1">
+                <a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'text-blue-600' : 'text-gray-700' }} hover:text-blue-600">Home</a><x-icon name="chevron-right" />
+            </li>
+            <li class="flex items-center ml-2 gap-x-1">
+                <a href="{{ route('carts.index') }}" class="{{ request()->routeIs('carts.index') ? 'text-blue-600' : 'text-gray-700' }} hover:text-blue-600">Carts</a>
+            </li>
+        </ul>
         <div class="rounded-lg px-4 py-5 shadow-sm border md:px-10">
             <h4 class="text-xs text-gray-700">Shopping cart</h4>
 
@@ -48,7 +56,7 @@
                                 <a href="/products/{{$cart->product->slug}}"><img src="{{$cart->product->image ? asset($cart->product->image) : asset('images/no-image.png')}}" alt=""></a>
                             </div>
                             <div class="w-full mr-4 sm:self-start">
-                                <h4 class="text-sm sm:text-base"><a href="/products/{{$cart->product->slug}}">{{$cart->product->name}}</a></h4>
+                                <h4 class="text-sm sm:text-base"><a href="/products/{{$cart->product->slug}}" class="hover:text-blue-600">{{$cart->product->name}}</a></h4>
 
                                 {{-- TODO: check product inventory and variants dynamically --}}
                                 @if ($cart->product->inventory->available_quantity >= $cart->quantity)

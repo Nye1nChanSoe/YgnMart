@@ -7,7 +7,14 @@
         {{$product->name}} - YangonMart.com
     </x-slot:title>
     <x-container>
-        {{-- TODO: breadcrumbs --}}
+        <ul class="flex items-center my-3 px-3 py-3 text-sm">
+            <li class="flex items-center ml-2 gap-x-1">
+                <a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'text-blue-600' : 'text-gray-700' }} hover:text-blue-600">Home</a><x-icon name="chevron-right" />
+            </li>
+            <li class="flex items-center ml-2 gap-x-1">
+                <a href="{{ route('products.show', $product->slug) }}" class="{{ request()->routeIs('products.show') ? 'text-blue-600' : 'text-gray-700' }} hover:text-blue-600">Product</a>
+            </li>
+        </ul>
 
         {{-- product view --}}
         <div class="flex flex-col items-center justify-center md:space-x-2 md:flex-row">

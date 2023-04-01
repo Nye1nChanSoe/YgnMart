@@ -22,7 +22,7 @@
         }" 
         class="mx-10 mt-6 shadow rounded"
     >
-        <form action="{{ route('vendor.products.store') }}" method="POST">
+        <form action="{{ route('vendor.products.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="px-6 py-6 border-b">
                 <div class="flex items-center gap-x-10">
@@ -184,9 +184,9 @@
                                 <div class="flex flex-col items-center justify-center pt-5 pb-6">
                                     <x-icon name="cloud" class="w-16 h-16 text-gray-500" />
                                     <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">JPG, PNG, JPEG(MAX. 800x400px)</p>
                                 </div>
-                                <input id="image" type="file" name="image" class="hidden" />
+                                <input id="image" type="file" name="image" class="" />
                             </label>
                         </div> 
                         <x-input-error field="image" />

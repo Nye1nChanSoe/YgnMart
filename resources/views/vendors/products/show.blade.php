@@ -14,31 +14,35 @@
         </li>
     </ul>
 
-    <section class="px-5 py-5 mt-6 shadow rounded">
+    <div class="flex items-center justify-end gap-x-2 px-5 py-1.5 mt-6">
+        <a href="{{ route('vendor.products.edit', $product->slug) }}" class="text-sm text-gray-500 hover:text-blue-600">Edit</a>
+    </div>
+    <section class="px-5 py-5 mt-1 shadow rounded">
         <div class="text-gray-700">
             <div class="flex items-start justify-between mb-4">
                 <div>
                     <h1 class="text-lg">Daily Sales data of {{ $product->name }}</h1>
                     <div class="mt-1.5">
-                        <span class="text-2xl text-green-600 font-medium">{{ number_format($revenueData->reduce(fn($total, $item) => $total + $item) / $revenueData->count(), 0, '.', ',') }}</span>
+                        <span class="text-2xl text-green-600 font-medium">{{ number_format($revenueData->reduce(fn($total, $item) => $total + $item) / ($revenueData->count() ? $revenueData->count() : 1), 0, '.', ',') }}</span>
                         <span class="text-gray-500 font-normal text-sm">Kyat (daily average)</span>
                     </div>
                 </div>
-                <div>
+                <div class="flex flex-col gap-y-1.5 items-end">
                     <time class="text-gray-700 text-sm">{{ $product->inventory->created_at->format('d M Y') }}</time>
+                    <span class="text-gray-500 block text-xs">(last stocked date)</span>
                 </div>
             </div>
 
             <!-- Monthly Sales Chart -->
             <div>
-                <div class="bg-white px-3 py-5 rounded-lg">
+                <div class="bg-white px-3 py-5 h-[320px] rounded-lg md:h-[420px]">
                     <canvas id="product-revenue-chart"></canvas>
                 </div>
             </div>
 
             <!-- Product, Inventory details -->
             <div class="flex gap-x-4 mt-4">
-                <div class="w-1/2 shadow-md p-4">
+                <div class="w-1/2 shadow p-4">
                     <h1 class="text-lg font-medium">
                         Product Info
                         @if ($product->inventory->status == 'sell')
@@ -51,10 +55,13 @@
                         <p>Name: "<span class="text-green-600 font-medium text-sm">{{ $product->name }}</span>"</p>
                         <p>Price: <span class="text-amber-500 font-medium text-sm">{{ number_format($product->price, 0, '.', ',') }}</span></p>
                         <p>Metadata: "<span class="text-green-600 font-medium text-sm">{{ $product->meta_type }}</span>"</p>
-                        <p>Rating Point: <span class="text-amber-500 font-medium text-sm">{{ number_format($product->rating_point, 1) }}</span></p>
+                        <div class="flex items-center gap-x-2">
+                            <span>Ratings: </span>
+                            <x-product-review :product="$product"/>
+                        </div>
                     </div>
                 </div>
-                <div class="w-1/2 shadow-md p-4">
+                <div class="w-1/2 shadow p-4">
                     <h1 class="text-lg font-medium">
                         Stock Info
                         @if ($product->inventory->in_stock)
@@ -74,24 +81,56 @@
                 </div>
             </div>
 
-            <!--Daily View Chart -->
-            <div class="flex gap-x-4 mt-4">
-                <div class="w-full p-4 shadow">
+            @if ($product->analytics()->count() > 7)
+                <!--Daily Checkouts and Orders Chart -->
+            <div class="mt-4">
+                <div class="w-full h-72 p-4 shadow md:h-96">
                     <canvas id="product-checkout-order-chart"></canvas>
                 </div>
             </div>
 
-            <!--Daily View Chart -->
+            <!--Daily Views and Carts Chart -->
             <div class="flex gap-x-4 mt-4">
-                <div class="w-1/2 p-4 shadow">
+                <div class="w-1/2 h-60 p-4 shadow md:h-72">
                     <canvas id="product-view-chart"></canvas>
                 </div>
-                <div class="w-1/2 p-4 shadow">
+                <div class="w-1/2 h-60 p-4 shadow md:h-72">
                     <canvas id="product-cart-chart"></canvas>
                 </div>
             </div>
+            
+            <div class="flex gap-x-4 mt-4">
+                <div class="w-1/2 h-60 p-4 shadow md:h-72">
+                    <h1 class="text-lg font-medium">Product Description</h1>
+                    <div class="flex flex-col gap-y-1.5 mt-3 text-sm">
+                        <p>"<span class="text-green-600 font-medium text-sm">{{ $product->description }}</span>"</p>
+                    </div>
+                </div>
+                <div class="w-1/2 h-60 p-4 shadow md:h-72">
+                    <canvas id="product-rating-chart"></canvas>
+                </div>
+            </div>
+            @else
+            <div class="w-full p-4 shadow mt-2">
+                <h1 class="text-lg font-medium">Product Description</h1>
+                <div>
+                    <p>"<span class="text-green-600 font-medium text-sm">{{ $product->description }}</span>"</p>
+                </div>
+            </div>
+            <div class="w-full h-72 flex items-center justify-center mt-4">
+                <p class="text-gray-500">Insufficient product data to display</p>
+            </div>
+            @endif
         </div>
     </section>
+
+    {{-- <div class="text-white bg-red-500 rounded-lg px-2.5 py-1.5 mt-6 w-fit hover:bg-red-700">
+        <form action="{{ route('vendor.products.destroy', $product->slug) }}" method="POST">
+            @csrf
+            @method('DELETE')
+            <button type="submit">Request Delete</button>
+        </form>
+    </div> --}}
 </x-vendor-layout>
 
 <script type="module">
@@ -118,16 +157,16 @@
                     grid: {
                         display: true
                     },
-                    title: {
-                        display: true,
-                        text: 'Kyat',
-                        padding: {
-                            bottom: 15,
-                        },
-                        font: {
-                            size: 16
-                        }
-                    }
+                    // title: {
+                    //     display: true,
+                    //     text: 'Kyat',
+                    //     padding: {
+                    //         bottom: 15,
+                    //     },
+                    //     font: {
+                    //         size: 16
+                    //     }
+                    // }
                 },
                 x: {
                     grid: {
@@ -153,6 +192,8 @@
                     display: false,
                 }
             },
+            responsive: true,
+            maintainAspectRatio: false
         }
     });
 
@@ -239,7 +280,9 @@
                         },
                     },
                 }
-            }
+            },
+            responsive: true,
+            maintainAspectRatio: false
         }
     });
 
@@ -326,7 +369,9 @@
                         },
                     },
                 }
-            }
+            },
+            responsive: true,
+            maintainAspectRatio: false
         }
     });
 
@@ -410,32 +455,78 @@
                 },
                 legend: {
                     display: true,
+                    position: 'bottom',
                 },
-            }
+            },
+            responsive: true,
+            maintainAspectRatio: false
         }
     });
 
 
-    // const ratingsData = {!! json_encode($ratings) !!};
-    // const ctxRatings = document.getElementById('product-ratings-chart').getContext('2d');
-    // const ratingsChart = new Chart(ctxRatings, {
-    //     type: 'doughnut',
-    //     data: {
-    //         labels: ['1 star', '2 stars', '3 stars', '4 stars', '5 stars'],
-    //         datasets: [{
-    //             label: 'Daily Product Ratings',
-    //             data: Object.values(ratingsData).map((val) => val.count),
-    //             fill: false,
-    //             borderColor: '#2a9df4',
-    //             tension: 0.1
-    //         }],
-    //     },
-    //     options: {
-    //         scales: {
-    //             y: {
-    //                 beginAtZero: false
-    //             }
-    //         }
-    //     }
-    // });
+    const ratingsData = {!! json_encode($ratings) !!};
+    const ctxRatings = document.getElementById('product-rating-chart').getContext('2d');
+    const ratingsChart = new Chart(ctxRatings, {
+        type: 'doughnut',
+        data: {
+            labels: ['1 star', '2 stars', '3 stars', '4 stars', '5 stars'],
+            datasets: [{
+                label: 'Daily Product Ratings',
+                data: Object.values(ratingsData).map((val) => val.count),
+                fill: false,
+                borderColor: 'transparent',
+                tension: 0.1,
+                backgroundColor: [
+                    "rgb(239 68 68)",
+                    "rgb(249 115 22)",
+                    "rgb(234 179 8)",
+                    "rgb(132 204 22)",
+                    "rgb(34 197 94)",
+                ]
+            }],
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: false,
+                    grid: {
+                        display: false,
+                        drawBorder: false // hide y-axis ticks border
+                    },
+                    ticks: {
+                        display: false,
+                    },
+                }
+            },
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                datalabels: {
+                    color: '#fff',
+                    font: {
+                        size: '18'
+                    },
+                    formatter: function(value, context) {
+                        return value;
+                    }
+                },
+                title: {
+                    display: true,
+                    text: 'Ratings',
+                    font: {
+                        size: 16,
+                        weight: 'bold',
+                    },
+                    color: 'rgb(55 65 81)',
+                    padding: {
+                        bottom: 14,
+                    }
+                },
+                legend: {
+                    display: true,
+                    position: 'bottom',
+                },
+            },
+        }
+    });
 </script>

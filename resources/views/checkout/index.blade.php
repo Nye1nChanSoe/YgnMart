@@ -7,7 +7,17 @@
         Checkout  - YangonMart.com
     </x-slot:title>
     <x-container x-data="{ openModal: false }" class="mt-4">
-        {{-- TODO: breadcrubs --}}
+        <ul class="flex items-center my-3 px-3 py-3 text-sm">
+            <li class="flex items-center ml-2 gap-x-1">
+                <a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'text-blue-600' : 'text-gray-700' }} hover:text-blue-600">Home</a><x-icon name="chevron-right" />
+            </li>
+            <li class="flex items-center ml-2 gap-x-1">
+                <a href="{{ route('carts.index') }}" class="{{ request()->routeIs('carts.index') ? 'text-blue-600' : 'text-gray-700' }} hover:text-blue-600">Carts</a><x-icon name="chevron-right" />
+            </li>
+            <li class="flex items-center ml-2 gap-x-1">
+                <a href="{{ route('checkout.index') }}" class="{{ request()->routeIs('checkout.index') ? 'text-blue-600' : 'text-gray-700' }} hover:text-blue-600">Checkout</a>
+            </li>
+        </ul>
 
         {{-- The form wrapping around the whole checkout process --}}
         <form 

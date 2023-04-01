@@ -3,6 +3,17 @@
         Item Added - YangonMart.com | {{$product->name}}
     </x-slot:title>
     <x-container class="mt-8 mb-0">
+        <ul class="flex items-center my-3 px-3 py-3 text-sm">
+            <li class="flex items-center ml-2 gap-x-1">
+                <a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'text-blue-600' : 'text-gray-700' }} hover:text-blue-600">Home</a><x-icon name="chevron-right" />
+            </li>
+            <li class="flex items-center ml-2 gap-x-1">
+                <a href="{{ route('products.show', $product->slug) }}" class="{{ request()->routeIs('products.show') ? 'text-blue-600' : 'text-gray-700' }} hover:text-blue-600">Product</a><x-icon name="chevron-right" />
+            </li>
+            <li class="flex items-center ml-2 gap-x-1">
+                <a href="{{ route('carts.show', $product->slug) }}" class="{{ request()->routeIs('carts.show') ? 'text-blue-600' : 'text-gray-700' }} hover:text-blue-600">Cart Item</a>
+            </li>
+        </ul>
         <div class="p-4 mt-6 border border-stone-200 rounded-lg w-full xl:w-1/2">
             <div class="flex flex-col items-center md:flex-row md:justify-between md:space-x-4">
                 <div class="w-48">

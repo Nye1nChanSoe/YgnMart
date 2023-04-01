@@ -1,5 +1,5 @@
 @props(['product'])
-<div {{$attributes->merge(['class' => 'block sm:flex sm:items-center'])}}>
+<div {{$attributes->merge(['class' => 'sm:flex sm:items-center'])}}>
     <div class="flex">
         @for ($i = 1; $i <= 5; $i++)
             @if ($i <= round($product->rating_point))

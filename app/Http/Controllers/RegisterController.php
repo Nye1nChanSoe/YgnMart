@@ -5,12 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\Address;
 use App\Models\User;
 use App\Models\Vendor;
+use App\Traits\PhotoUploadTrait;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
 
 class RegisterController extends Controller
 {
+    use PhotoUploadTrait;
+
     public function create()
     {
         return view('register.create');
@@ -30,6 +33,7 @@ class RegisterController extends Controller
         $userCredentials['username'] = strtolower(str_replace([' ', '-'], '', $userCredentials['name'])) . '_' . strtolower(Str::random('3'));
         $userCredentials['role'] = 'user';
         $userCredentials['user_status'] = 'active';
+
         $user = User::create($userCredentials);
 
         auth()->login($user);
@@ -87,7 +91,7 @@ class RegisterController extends Controller
         /** verified in admin panel */
         $vendorCredentials['is_verified'] = false;
         $vendorCredentials['username'] = 'v_' . strtolower(str_replace([' ', '-'], '_', $vendorCredentials['name']) . '_' . Str::random(3));
-        
+
         $vendor = Vendor::create($vendorCredentials);
         auth()->guard('vendor')->login($vendor);
 

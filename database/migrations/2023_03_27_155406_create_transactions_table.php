@@ -15,15 +15,17 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id');
+            $table->foreignId('user_id');
             $table->foreignId('vendor_id');
             $table->string('transaction_type');
-            $table->float('amount');
+            $table->float('gross_amount');      // before tax
+            $table->float('tax');
+            $table->float('other_fees');
             $table->string('status');
             $table->timestamps();
 
             /** constraints */
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('vendor_id')->references('id')->on('vendors')->onDelete('cascade');
         });
     }

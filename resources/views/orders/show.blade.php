@@ -2,14 +2,25 @@
     <x-slot:title>
         Order - YangonMart.com | {{$order->order_code}}
     </x-slot:title>
-    <x-container class="bg-slate-50 p-6 mt-10 mb-10 rounded-xl">
-        <div class="flex flex-col justify-center lg:flex-row">
+    <x-container>
+        <ul class="flex items-center my-3 px-3 py-3 text-sm">
+            <li class="flex items-center ml-2 gap-x-1">
+                <a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'text-blue-600' : 'text-gray-700' }} hover:text-blue-600">Home</a><x-icon name="chevron-right" />
+            </li>
+            <li class="flex items-center ml-2 gap-x-1">
+                <a href="{{ route('profile', auth()->user()->username) }}" class="{{ request()->routeIs('profile') ? 'text-blue-600' : 'text-gray-700' }} hover:text-blue-600">Profile</a><x-icon name="chevron-right" />
+            </li>
+            <li class="flex items-center ml-2 gap-x-1">
+                <a href="{{ route('orders.show', $order->order_code) }}" class="{{ request()->routeIs('orders.show') ? 'text-blue-600' : 'text-gray-700' }} hover:text-blue-600">Order</a>
+            </li>
+        </ul>
+        <div class="flex flex-col bg-blue-100 p-6 rounded-lg justify-center mt-6 lg:flex-row">
             <div class="flex-1">
                 <div 
                     x-data="{
                         copied: false,
                     }" 
-                    class="flex items-center justify-center space-x-2 md:justify-start"
+                    class="flex items-center bg-white p-3 rounded-lg justify-center space-x-2 md:w-fit md:justify-start"
                 >
                     <h1 class="font-bold text-lg">Order Number</h1>
                     <p class="text-lime-700">
@@ -17,12 +28,12 @@
                     </p>
                     <div @@click="copyToClipboard" class="relative">
                         <x-icon name="clipboard" class="inline cursor-pointer hover:text-blue-700" />
-                        <div x-show="copied" class="absolute -top-10 right-0 border rounded-lg bg-blue-400 text-white py-1 px-2" x-cloak x-transition>Copied!</div>
+                        <div x-show="copied" class="absolute -top-10 right-0 border rounded-lg bg-white text-gray-700 py-1 px-2" x-cloak x-transition>Copied!</div>
                     </div>
                 </div>
 
                 <!-- Order Product Table -->
-                <div class="px-4 border rounded-lg bg-white text-sm mt-3 lg:mr-6">
+                <div class="px-4 rounded-lg bg-white shadow text-sm mt-3 lg:mr-6">
                     <div class="grid grid-cols-4 items-center justify-items-center border-b border-gray-200 font-semibold text-slate-700 py-2 md:py-4 md:grid-cols-6">
                         <div class="col-span-2 justify-self-start md:col-span-3">Item</div>
                         <div class="col-span-1">Quantity</div>
@@ -45,7 +56,7 @@
                 </div>
 
                 <!-- Customer and Order details -->
-                <div class="px-4 border rounded-lg bg-white text-xs mt-4 md:text-sm lg:mr-6">
+                <div class="px-4 rounded-lg bg-white shadow text-xs mt-4 md:text-sm lg:mr-6">
                     <h1 class="border-b text-slate-700 py-2 font-semibold text-sm sm:text-base sm:py-4">
                         Customer and Order details
                     </h1>
@@ -86,7 +97,7 @@
 
             <div class="basis-1/4">
                 <!-- Order Summary -->
-                <div class="px-4 border rounded-lg bg-white mt-4 text-xs md:text-sm">
+                <div class="px-4 rounded-lg bg-white shadow mt-4 text-xs md:text-sm">
                     <h1 class="text-slate-700 py-2 font-semibold text-sm md:py-4 md:text-base">
                         Order Summary
                     </h1>
@@ -114,7 +125,7 @@
                     </div> --}}
                 </div>
 
-                <div class="px-4 border rounded-lg bg-white mt-4">
+                <div class="px-4 rounded-lg bg-white shadow mt-4">
                     <div class="flex justify-between py-2 text-base md:text-lg">
                         <div>Total</div>
                         <div class="font-semibold text-lime-700 text-lg">{{number_format($order->total_price, 0, '.', ',')}}

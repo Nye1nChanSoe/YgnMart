@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Inventory;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\Transaction;
 use App\Traits\ProductAnalyticTrait;
 use App\Traits\StripePaymentTrait;
 use Exception;
@@ -59,7 +59,9 @@ class OrderController extends Controller
     {
         try 
         {
-            $order = Order::where('order_code', $request->input('order'))->firstOrFail();
+            $order = Order::where('order_code', $request->input('order'))
+                ->where('user_id', auth()->id())
+                ->firstOrFail();
             return view('orders.success', compact(['order']));
         } 
         catch (ModelNotFoundException $e) 
@@ -113,6 +115,9 @@ class OrderController extends Controller
         /** update analytics */
         $this->productStats($productIdArray, $quantityArray);
 
+        /** create transaction records */
+        $this->createTransaction($order);
+
         return $order;
     }
 
@@ -155,6 +160,26 @@ class OrderController extends Controller
                 'quantity' => $quantities[$index], 
                 'revenue' => $quantities[$index] * $product->price,
             ]);
+        }
+    }
+
+    // TODO: implement with queues and event listener in the future
+    protected function createTransaction($order)
+    {
+        try {
+            foreach ($order->products as $product) {
+                $transaction = new Transaction();
+                $transaction->user_id = $order->user_id;
+                $transaction->vendor_id = $product->inventory->vendor->id;
+                $transaction->transaction_type = $order->payment_intent_id ? 'card' : 'cash';
+                $transaction->gross_amount = $product->price;
+                $transaction->tax = $product->price * 0.1;
+                $transaction->other_fees = 0;
+                $transaction->status = 'succeed';   // pending, refund, succeed
+                $transaction->save();
+            }
+        } catch(Exception $e) {
+            Log::error($e->getMessage());
         }
     }
 }

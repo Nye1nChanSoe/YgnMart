@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Inventory;
 use App\Models\Product;
+use App\Traits\PhotoUploadTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class VendorProductController extends Controller
 {
+    use PhotoUploadTrait;
+
     public function index()
     {
         $inventories = Inventory::with('product')
@@ -81,7 +84,7 @@ class VendorProductController extends Controller
             'meta_type' => ['required', 'max:50'],
             'price' => ['required', 'numeric'],
             'description' => ['required'],
-            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg'],
+            'image' => ['required', 'image', 'mimes:jpeg,png,jpg'],
             'type' => ['required'],
             'sub_type' => ['required', 'array'],
             'sub_type.*' => ['required'],
@@ -101,7 +104,7 @@ class VendorProductController extends Controller
             'meta_type' => ['required', 'max:50'],
             'price' => ['required', 'numeric'],
             'description' => ['required'],
-            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg']
+            'image' => ['required', 'image', 'mimes:jpg,png,jpeg', 'max:2048']
         ]);
 
         $request->validate([
@@ -121,6 +124,7 @@ class VendorProductController extends Controller
         /** product data second */
         $productData['slug'] = strtolower(str_replace([' ', '_'], '-', $request->input('name')));
         $productData['inventory_id'] = $inventory->id;
+        $productData['image'] = $this->upload($productData['image']);
         $product = Product::create($productData);
 
         /** categories third */
@@ -134,6 +138,7 @@ class VendorProductController extends Controller
 
     public function edit(Product $product)
     {
+        $product = $product->load('inventory');
         return view('vendors.products.edit', compact('product'));
     }
 

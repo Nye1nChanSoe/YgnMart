@@ -24,9 +24,9 @@ class ProductController extends Controller
          * Dot notation to eager load the nested relationship like vendor
          */
         $filteredQuery = Product::with(['reviews', 'inventory.vendor'])
-            // ->whereHas('inventory', fn($query) => $query
-            //     ->where('status', 'sell'))
-            ->oldest()
+            ->whereHas('inventory', fn($query) => $query
+                ->where('status', 'sell'))
+            ->latest()
             ->filter($this->parseHyphens(request(['search', 'category'])));
         
         $products = $filteredQuery->paginate(20)->withQueryString();
@@ -50,14 +50,15 @@ class ProductController extends Controller
          * |   5    |    0    |
          * ---------------------
          */
-        $ratings = DB::select(DB::raw('SELECT stars_table.stars, COALESCE(COUNT(reviews.rating), 0) AS count
-                    FROM (
-                        SELECT 1 AS stars UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5
-                        ) AS stars_table
-                    LEFT OUTER JOIN reviews ON stars_table.stars = reviews.rating 
-                    AND reviews.product_id = '.$product->id.'
-                    GROUP BY stars_table.stars'));
-
+        $ratings = DB::table(DB::raw('(SELECT 1 AS stars UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5) AS stars_table'))
+            ->leftJoin('reviews', function($join) use ($product) {
+                $join->on('stars_table.stars', '=', 'reviews.rating')
+                    ->where('reviews.product_id', '=', $product->id);
+            })
+            ->select(DB::raw('stars_table.stars, COALESCE(COUNT(reviews.rating), 0) AS count'))
+            ->groupBy('stars_table.stars')
+            ->get();
+            
         $relatedProducts = Product::with('reviews')->relatedProducts($product)->get();
         
         $this->dailyProductStats($product, 'view');

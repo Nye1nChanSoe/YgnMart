@@ -9,6 +9,11 @@ class Transaction extends Model
 {
     use HasFactory;
 
+    public function getNetRevenueAttribute()
+    {
+        return $this->gross_amount - ($this->tax + $this->other_fees);
+    }
+
     /** relations */
     public function user()
     {
