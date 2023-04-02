@@ -41,7 +41,7 @@
             </div>
 
             <!-- Product, Inventory details -->
-            <div class="flex gap-x-4 mt-4">
+            <div class="flex gap-x-4 mt-8">
                 <div class="w-1/2 shadow p-4">
                     <h1 class="text-lg font-medium">
                         Product Info
@@ -83,14 +83,14 @@
 
             @if ($product->analytics()->count() > 7)
                 <!--Daily Checkouts and Orders Chart -->
-            <div class="mt-4">
+            <div class="mt-8">
                 <div class="w-full h-72 p-4 shadow md:h-96">
                     <canvas id="product-checkout-order-chart"></canvas>
                 </div>
             </div>
 
             <!--Daily Views and Carts Chart -->
-            <div class="flex gap-x-4 mt-4">
+            <div class="flex gap-x-4 mt-8">
                 <div class="w-1/2 h-60 p-4 shadow md:h-72">
                     <canvas id="product-view-chart"></canvas>
                 </div>
@@ -99,7 +99,7 @@
                 </div>
             </div>
             
-            <div class="flex gap-x-4 mt-4">
+            <div class="flex gap-x-4 mt-8">
                 <div class="w-1/2 h-60 p-4 shadow md:h-72">
                     <h1 class="text-lg font-medium">Product Description</h1>
                     <div class="flex flex-col gap-y-1.5 mt-3 text-sm">
@@ -111,7 +111,7 @@
                 </div>
             </div>
             @else
-            <div class="w-full p-4 shadow mt-2">
+            <div class="w-full p-4 shadow mt-4">
                 <h1 class="text-lg font-medium">Product Description</h1>
                 <div>
                     <p>"<span class="text-green-600 font-medium text-sm">{{ $product->description }}</span>"</p>

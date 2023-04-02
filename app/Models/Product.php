@@ -109,11 +109,6 @@ class Product extends Model
         return $this->belongsTo(Inventory::class);
     }
 
-    public function transactions()
-    {
-        return $this->hasMany(Transaction::class);
-    }
-
     public function analytics()
     {
         return $this->hasMany(ProductAnalytic::class);

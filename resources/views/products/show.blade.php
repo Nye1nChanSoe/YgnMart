@@ -39,8 +39,18 @@
                         <x-product-review :product="$product" />
                         <a href="#reviews" class="text-sm ml-2 py-1.5 px-2 bg-slate-100 rounded-lg text-blue-500 hover:bg-slate-200">Leave Review</a>
                     </div>
-                    <div class="text-blue-500 hover:text-blue-700">
-                        <a href="products/vendor/{{ strtolower(str_replace([' ', '_'], '-', $product->inventory->vendor->username)) }}"><span class="text-zinc-800">Supplier</span> {{ $product->inventory->vendor->brand }}</a>
+                    <div class="text-blue-500 hover:text-blue-700 flex items-center gap-x-1">
+                        <a href="products/vendor/{{ strtolower(str_replace([' ', '_'], '-', $product->inventory->vendor->username)) }}">
+                            <span class="text-zinc-800">Supplier</span> {{ $product->inventory->vendor->brand }}
+                        </a>
+                        @if ($product->inventory->vendor->is_verified)
+                        <div x-data="{open:false}" class="relative ml-2">
+                            <x-icon name="shield" class="text-green-700 inline relative" x-on:mouseover="open = true" x-on:mouseleave="open = false" />
+                            <div x-show="open" class="absolute top-6 bg-white rounded-lg shadow w-32 text-center p-2 right-0" x-cloak>
+                                <span class="text-gray-700">Verified seller</span>
+                            </div>
+                        </div>
+                        @endif
                     </div>
                 </div>
                 <div class="flex flex-col items-center pt-4 space-y-2 md:flex-row md:space-y-0">

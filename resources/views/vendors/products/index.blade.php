@@ -31,9 +31,9 @@
             <h1 class="col-span-1">Status</h1>
             <h1 class="col-span-2">Date</h1>
         </header>
-            @foreach ($inventories as $index => $inventory)
+            @foreach ($inventories as $inventory)
             <a href="{{ route('vendor.products.show', $inventory->product->slug) }}" class="grid grid-cols-9 even:bg-gray-100 items-center text-sm justify-items-center rounded py-1 text-gray-700 hover:bg-gray-200 md:grid-cols-9">
-                <div class="col-span-1">{{ $index + 1 }}</div>
+                <div class="col-span-1">{{ ($inventories->currentPage() - 1) * $inventories->perPage() + $loop->iteration }}</div>
                 <div class="col-span-2">
                     <div class="flex items-center gap-x-4">
                         <div class="flex flex-shrink-0 items-center w-10 h-10 rounded-full overflow-hidden">
@@ -45,7 +45,7 @@
                     </div>
                 </div>
                 <div class="col-span-1">{{ number_format($inventory->product->price, 0, '.', ',') }}<span class="ml-1.5 text-xs text-gray-400">Kyat</span></div>
-                <div class="col-span-1"><span class="">{{ $inventory->product->meta_type }}</span></div>
+                <div class="col-span-1"><span class="text-gray-600">{{ $inventory->product->meta_type }}</span></div>
 
                 @if ($inventory->product->rating_point >= 3)
                 <div class="col-span-1 text-lime-600">{{ number_format($inventory->product->rating_point, 1) }}</div>
@@ -69,6 +69,9 @@
                 </div>
             </a>
             @endforeach
+            <div class="text-sm mt-4">
+                {{ $inventories->links('vendor.pagination.links') }}
+            </div>
         @else
         <div class="flex items-center justify-center w-full h-60">
             <p class="text-gray-400">You do not have any listed product!</p>

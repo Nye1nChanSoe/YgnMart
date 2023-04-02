@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Inventory;
 use App\Models\Product;
+use App\Models\Review;
 use App\Traits\PhotoUploadTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -18,7 +19,7 @@ class VendorProductController extends Controller
         $inventories = Inventory::with('product')
             ->where('vendor_id', auth()->guard('vendor')->id())
             ->latest()
-            ->get();
+            ->paginate(25);
 
         return view('vendors.products.index', compact('inventories'));
     }
@@ -27,28 +28,10 @@ class VendorProductController extends Controller
     {
         $product = $product->load('inventory', 'analytics');
 
-        $ratings = DB::table(DB::raw('(SELECT 1 AS stars UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5) AS stars_table'))
-            ->leftJoin('reviews', function($join) use ($product) {
-                $join->on('stars_table.stars', '=', 'reviews.rating')
-                    ->where('reviews.product_id', '=', $product->id);
-            })
-            ->select(DB::raw('stars_table.stars, COALESCE(COUNT(reviews.rating), 0) AS count'))
-            ->groupBy('stars_table.stars')
-            ->get();
+        $ratings = Review::totalProductRatings($product);
 
         /* daily report data */
-        $analytics = $product->analytics()
-            ->select(DB::raw('DATE_FORMAT(date, "%d %b") as day'),
-                DB::raw('SUM(view) as view'),
-                DB::raw('SUM(cart) as cart'),
-                DB::raw('SUM(checkout) as checkout'),
-                DB::raw('SUM(`order`) as `order`'),
-                DB::raw('SUM(review) as review'),
-                DB::raw('SUM(quantity) as quantity'),
-                DB::raw('SUM(revenue) as revenue'))
-            ->groupBy('day')
-            ->orderBy('day', 'asc')
-            ->get();
+        $analytics = $product->analytics()->filter()->get();
         
         $viewData = $analytics->pluck('view', 'day');              // day => view  key:value pair
         $cartData = $analytics->pluck('cart', 'day');              

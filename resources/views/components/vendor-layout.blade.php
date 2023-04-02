@@ -53,7 +53,7 @@
                             <a href="{{ route('vendor.transactions') }}"><div class="flex items-center"><x-icon name="card" class="mr-2" />Transactions</div></a>
                         </li>
                         <li class="py-2.5 w-fit transition-all duration-300 hover:translate-x-3 {{ false ? 'text-blue-700' : '' }}">
-                            <a href="{{ route('vendor.discounts') }}"><div class="flex items-center"><x-icon name="discount" class="mr-2" />Discounts</div></a>
+                            <a href="{{ route('vendor.orders') }}"><div class="flex items-center"><x-icon name="orders" class="mr-2" />Orders</div></a>
                         </li>
                         <li class="py-2.5 w-fit transition-all duration-300 hover:translate-x-3 {{ false ? 'text-blue-700' : '' }}">
                             <a href="{{ route('vendor.settings') }}"><div class="flex items-center"><x-icon name="settings" class="mr-2" />Settings</div></a>
@@ -94,7 +94,7 @@
                         <a href="{{ route('vendor.transactions') }}"><div class="flex items-center"><x-icon name="card" /></div></a>
                     </li>
                     <li class="py-2.5 w-fit transition-all duration-300 hover:text-green-600 {{ false ? 'text-blue-700' : '' }}">
-                        <a href="{{ route('vendor.discounts') }}"><div class="flex items-center"><x-icon name="discount" /></div></a>
+                        <a href="{{ route('vendor.orders') }}"><div class="flex items-center"><x-icon name="orders" /></div></a>
                     </li>
                     <li class="py-2.5 w-fit transition-all duration-300 hover:text-green-600 {{ false ? 'text-blue-700' : '' }}">
                         <a href="{{ route('vendor.settings') }}"><div class="flex items-center"><x-icon name="settings" /></div></a>

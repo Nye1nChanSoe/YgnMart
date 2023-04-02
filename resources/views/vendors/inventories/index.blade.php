@@ -26,9 +26,9 @@
             <h1 class="col-span-1">Stock Status</h1>
             <h1 class="col-span-2">Date</h1>
         </header>
-        @foreach ($inventories as $index => $inventory)
+        @foreach ($inventories as $inventory)
         <a href="" class="grid grid-cols-9 even:bg-gray-100 items-center text-sm justify-items-center rounded py-1 text-gray-700 hover:bg-gray-200 md:grid-cols-9">
-            <div class="col-span-1">{{ $index + 1 }}</div>
+            <div class="col-span-1">{{ ($inventories->currentPage() - 1) * $inventories->perPage() + $loop->iteration }}</div>
             <div class="col-span-2">
                 <div class="flex items-center gap-x-4">
                     <div class="flex flex-shrink-0 items-center w-10 h-10 rounded-full overflow-hidden">
@@ -65,5 +65,8 @@
             </div>
         </a>
         @endforeach
+        <div class="text-sm mt-4">
+            {{ $inventories->links('vendor.pagination.links') }}
+        </div>
     </section>
 </x-vendor-layout>

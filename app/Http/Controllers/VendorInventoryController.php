@@ -12,7 +12,7 @@ class VendorInventoryController extends Controller
         $inventories = Inventory::with('product')
             ->where('vendor_id', auth()->guard('vendor')->id())
             ->latest()
-            ->get();
+            ->paginate(25);
 
         return view('vendors.inventories.index', compact('inventories'));
     }

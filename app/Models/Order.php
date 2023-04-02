@@ -21,4 +21,9 @@ class Order extends Model
     {
         return $this->belongsToMany(Product::class)->withPivot('quantity')->withTimestamps();
     }
+
+    public function transaction()
+    {
+        return $this->hasOne(Transaction::class);
+    }
 }

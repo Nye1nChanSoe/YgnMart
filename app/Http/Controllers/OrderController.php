@@ -169,11 +169,12 @@ class OrderController extends Controller
         try {
             foreach ($order->products as $product) {
                 $transaction = new Transaction();
-                $transaction->user_id = $order->user_id;
+                $transaction->order_id = $order->id;
                 $transaction->vendor_id = $product->inventory->vendor->id;
-                $transaction->transaction_type = $order->payment_intent_id ? 'card' : 'cash';
-                $transaction->gross_amount = $product->price;
-                $transaction->tax = $product->price * 0.1;
+                $transaction->payment_type = $order->payment_intent_id ? 'card' : 'cash';
+                $transaction->currency = 'mmk';
+                $transaction->gross_amount = $order->total_price;
+                $transaction->tax = $order->total_price * 0.1;
                 $transaction->other_fees = 0;
                 $transaction->status = 'succeed';   // pending, refund, succeed
                 $transaction->save();

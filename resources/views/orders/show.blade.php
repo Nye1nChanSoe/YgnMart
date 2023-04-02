@@ -20,11 +20,11 @@
                     x-data="{
                         copied: false,
                     }" 
-                    class="flex items-center bg-white p-3 rounded-lg justify-center space-x-2 md:w-fit md:justify-start"
+                    class="flex items-center bg-white p-3 shadow rounded-lg justify-center space-x-2 md:w-fit md:justify-start"
                 >
                     <h1 class="font-bold text-lg">Order Number</h1>
                     <p class="text-lime-700">
-                        #<input x-ref="orderCode" type="button" value="{{$order->order_code}}" class="focus:outline-none">
+                        #<input x-ref="orderCode" type="button" value="{{strtoupper($order->order_code)}}" class="focus:outline-none">
                     </p>
                     <div @@click="copyToClipboard" class="relative">
                         <x-icon name="clipboard" class="inline cursor-pointer hover:text-blue-700" />
