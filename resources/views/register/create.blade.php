@@ -2,8 +2,18 @@
     <x-slot:title>
         Register - YangonMart.com
     </x-slot:title>
+    <x-container class="mb-10">
+        <ul class="flex items-center my-3 px-3 py-3 text-sm">
+            <li class="flex items-center ml-2 gap-x-1">
+                <a href="{{ route('login') }}" class="{{ request()->routeIs('login') ? 'text-blue-600' : 'text-gray-700' }} hover:text-blue-600">Login</a><x-icon name="chevron-right" />
+            </li>
+            <li class="flex items-center ml-2 gap-x-1">
+                <a href="{{ route('register') }}" class="{{ request()->routeIs('register') ? 'text-blue-600' : 'text-gray-700' }} hover:text-blue-600">Register</a>
+            </li>
+        </ul>
+    </x-container>
     <x-container class="flex flex-col justify-center md:flex-row md:justify-around">
-        <div class="hidden self-stretch basis-1/2 md:flex md:flex-col md:items-center md:justify-center">
+        <div class="hidden bg-tablet self-stretch basis-1/2 md:flex md:flex-col md:items-center md:justify-center">
             <div class="px-6 py-4 rounded-lg mb-4 md:px-20">
                 <p class="text-center text-lg text-gray-700">
                     Are you a <span class="underline decoration-sky-500 decoration-2 font-medium"><a href="{{ route('vendor.register') }}">vendor / supplier</a></span> looking for a platform to reach a wider audience and increase sales? 

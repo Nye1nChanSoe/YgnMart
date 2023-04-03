@@ -40,7 +40,10 @@
                 <section class="mt-10 text-gray-700">
                     <div>
                         <h6 class="text-sm">Total Transactions</h6>
-                        <div class="font-medium text-lg"><span>$</span>360,021</div>
+                        @php
+                            $transactions = App\Models\Transaction::select('gross_amount')->where('vendor_id', auth()->guard('vendor')->id())->get();
+                        @endphp
+                        <div class="font-medium text-xl text-green-600">{{ number_format($transactions->reduce(fn($total, $value) => $total += $value->gross_amount), 0, '.', ',') }}<span class="ml-1 text-gray-500 text-sm font-normal">Kyat</span></div>
                     </div>
                     <ul class="flex flex-col mt-10">
                         <li class="py-2.5 w-fit transition-all duration-300 hover:translate-x-3 {{ request()->routeIs('vendor.dashboard') ? 'text-blue-700' : '' }}">
@@ -49,13 +52,13 @@
                         <li class="py-2.5 w-fit transition-all duration-300 hover:translate-x-3 {{ request()->routeIs(['vendor.products', 'vendor.products.*', 'vendor.inventories']) ? 'text-blue-700' : '' }}">
                             <a href="{{ route('vendor.products') }}"><div class="flex items-center"><x-icon name="listings" class="mr-2" />Product Listing</div></a>
                         </li>
-                        <li class="py-2.5 w-fit transition-all duration-300 hover:translate-x-3 {{ false ? 'text-blue-700' : '' }}">
+                        <li class="py-2.5 w-fit transition-all duration-300 hover:translate-x-3 {{ request()->routeIs('vendor.transactions') ? 'text-blue-700' : '' }}">
                             <a href="{{ route('vendor.transactions') }}"><div class="flex items-center"><x-icon name="card" class="mr-2" />Transactions</div></a>
                         </li>
-                        <li class="py-2.5 w-fit transition-all duration-300 hover:translate-x-3 {{ false ? 'text-blue-700' : '' }}">
+                        <li class="py-2.5 w-fit transition-all duration-300 hover:translate-x-3 {{ request()->routeIs('vendor.orders') ? 'text-blue-700' : '' }}">
                             <a href="{{ route('vendor.orders') }}"><div class="flex items-center"><x-icon name="orders" class="mr-2" />Orders</div></a>
                         </li>
-                        <li class="py-2.5 w-fit transition-all duration-300 hover:translate-x-3 {{ false ? 'text-blue-700' : '' }}">
+                        <li class="py-2.5 w-fit transition-all duration-300 hover:translate-x-3 {{ request()->routeIs('vendor.settings') ? 'text-blue-700' : '' }}">
                             <a href="{{ route('vendor.settings') }}"><div class="flex items-center"><x-icon name="settings" class="mr-2" />Settings</div></a>
                         </li>
                         <li class="py-2.5 w-fit transition-all duration-300 hover:translate-x-3 {{ request()->routeIs('vendor.logout') ? 'text-blue-700' : '' }}">
@@ -90,13 +93,13 @@
                     <li class="py-2.5 w-fit transition-all duration-300 hover:text-green-600 {{ request()->routeIs(['vendor.products', 'vendor.inventories']) ? 'text-blue-700' : '' }}">
                         <a href="{{ route('vendor.products') }}"><div class="flex items-center"><x-icon name="listings" /></div></a>
                     </li>
-                    <li class="py-2.5 w-fit transition-all duration-300 hover:text-green-600 {{ false ? 'text-blue-700' : '' }}">
+                    <li class="py-2.5 w-fit transition-all duration-300 hover:text-green-600 {{ request()->routeIs('vendor.transactions') ? 'text-blue-700' : '' }}">
                         <a href="{{ route('vendor.transactions') }}"><div class="flex items-center"><x-icon name="card" /></div></a>
                     </li>
-                    <li class="py-2.5 w-fit transition-all duration-300 hover:text-green-600 {{ false ? 'text-blue-700' : '' }}">
+                    <li class="py-2.5 w-fit transition-all duration-300 hover:text-green-600 {{ request()->routeIs('vendor.orders') ? 'text-blue-700' : '' }}">
                         <a href="{{ route('vendor.orders') }}"><div class="flex items-center"><x-icon name="orders" /></div></a>
                     </li>
-                    <li class="py-2.5 w-fit transition-all duration-300 hover:text-green-600 {{ false ? 'text-blue-700' : '' }}">
+                    <li class="py-2.5 w-fit transition-all duration-300 hover:text-green-600 {{ request()->routeIs('vendor.settings') ? 'text-blue-700' : '' }}">
                         <a href="{{ route('vendor.settings') }}"><div class="flex items-center"><x-icon name="settings" /></div></a>
                     </li>
                     <li class="py-2.5 w-fit transition-all duration-300 hover:text-green-600 {{ request()->routeIs('vendor.logout') ? 'text-blue-700' : '' }}">
@@ -123,14 +126,28 @@
                     </ul>
                 </div>
                 <div class="flex items-center gap-x-4">
-                    <div class="relative">
+                    @php
+                        $resultURL = '';
+                        if(request()->routeIs('vendor.products')) {
+                            $resultURL = route('vendor.products');
+                        } elseif (request()->routeIs('vendor.inventories')) {
+                            $resultURL = route('vendor.inventories');
+                        } elseif (request()->routeIs('vendor.transactions')) {
+                            $resultURL = route('vendor.transactions');
+                        } elseif (request()->routeIs('vendor.orders')) {
+                            $resultURL = route('vendor.orders');
+                        } else {
+                            $resultURL = route('vendor.products');
+                        }
+                    @endphp
+                    <form action="{{ $resultURL }}" method="GET" class="relative">
                         <div class="absolute top-2 left-3">
                             <button type="submit" class="text-gray-700 hover:text-black">
                                 <x-icon name="search" class="text-gray-700"/>
                             </button>
                         </div>
-                        <input type="text" name="search" class="w-full border-2 border-gray-400 pl-10 pr-2.5 py-1 rounded-lg focus:border-gray-600 focus:outline-none" placeholder="Search for products">
-                    </div>
+                        <input type="text" name="search" value="{{ request('search') ?? '' }}" class="w-full border-2 border-gray-400 pl-10 pr-2.5 py-1 rounded-lg focus:border-gray-600 focus:outline-none" placeholder="Search for products">
+                    </form>
                     <form action="{{ route('vendor.logout') }}" method="POST">
                         @csrf
                         @method('DELETE')

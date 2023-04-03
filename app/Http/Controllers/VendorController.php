@@ -23,11 +23,11 @@ class VendorController extends Controller
             ->get();
 
         /** daily transactions for vendor account */
-        $data = Transaction::filter()->get();
+        $data = Transaction::filter('day')->get();
         $transactionData = $data->pluck('revenue', 'day');
 
         /* daily report data */
-        $analytics = ProductAnalytic::filter()->get();
+        $analytics = ProductAnalytic::filter('day')->get();
         $viewData = $analytics->pluck('view', 'day');              // day => view  key:value pair
         $cartData = $analytics->pluck('cart', 'day');              
         $checkoutData = $analytics->pluck('checkout', 'day');      
@@ -35,7 +35,6 @@ class VendorController extends Controller
         $quantityData = $analytics->pluck('quantity', 'day');  
         
         /** orders and products */
-
         return view('vendors.index', compact([
             'transactions',
             'transactionData',

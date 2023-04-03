@@ -89,4 +89,14 @@ input:-webkit-autofill:active {
         background-size: cover;
         background-position: center;
     }
+
+    .bg-tablet {
+        background-image: url("/public/images/bg-tablet-pattern.svg");
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-clip: padding-box;
+        background-size: 500px;
+        z-index: -1;
+        background-position: 15% center;
+    }
 }

@@ -10,6 +10,7 @@ use App\Http\Controllers\SessionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\VendorInventoryController;
+use App\Http\Controllers\vendorOrdersController;
 use App\Http\Controllers\VendorProductController;
 use App\Http\Controllers\VendorTransactionController;
 use Illuminate\Support\Facades\Route;
@@ -92,7 +93,7 @@ Route::prefix('vendor')->middleware(['auth:vendor'])->group(function() {
 
     Route::get('/dashboard', [VendorController::class, 'index'])->name('vendor.dashboard');
     Route::get('/transactions', [VendorTransactionController::class, 'index'])->name('vendor.transactions');
-    Route::get('/orders', [VendorController::class, 'orders'])->name('vendor.orders');
+    Route::get('/orders', [vendorOrdersController::class, 'index'])->name('vendor.orders');
     Route::get('/{vendor:username}', [VendorController::class, 'show'])->name('vendor.show');
     Route::get('/settings', [VendorController::class, 'edit'])->name('vendor.settings');
 });

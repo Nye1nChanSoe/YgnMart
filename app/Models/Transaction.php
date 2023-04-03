@@ -29,6 +29,31 @@ class Transaction extends Model
         return $query;
     }
 
+    public function scopeSearch($query, $terms)
+    {
+        $query->when($terms['search'] ?? false, fn($query, $search) => $query
+            ->where(fn($query) => $query
+                ->whereHas('order.products', fn($query) => $query
+                    ->where('order_code', 'like', "%{$search}%")
+                    ->orWhere('name', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%")
+                    ->orWhere('meta_type', 'like', "%{$search}%")
+                    ->when(ctype_digit($search), fn($query) => $query
+                        ->orWhereRaw('price * order_product.quantity BETWEEN ? AND ?', [$search, $search + 1000])
+                    )
+                )
+                ->orWhere('payment_type', 'like', "%{$search}%")
+                ->orWhere('currency', 'like', "%{$search}%")
+                ->orWhere('status', 'like', "%{$search}%")
+                ->when(ctype_digit($search), fn($query) => $query
+                    ->orWhereRaw('gross_amount - tax BETWEEN ? AND ?', [$search, $search + 1000])
+                )
+            )
+        );
+
+        return $query;
+    }
+
 
     /** relations */
     public function user()

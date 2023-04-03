@@ -19,7 +19,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <title>{{ $title ?? 'YangonMart.com - Shop anytime, anywhere with us' }}</title>
 </head>
-<body class="antialiased ">
+<body class="antialiased">
     <section x-data="notification" class="relative">
 
         {{-- hamburger menu for small screen sizes --}}

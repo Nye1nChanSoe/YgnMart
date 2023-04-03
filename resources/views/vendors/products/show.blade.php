@@ -43,14 +43,23 @@
             <!-- Product, Inventory details -->
             <div class="flex gap-x-4 mt-8">
                 <div class="w-1/2 shadow p-4">
-                    <h1 class="text-lg font-medium">
-                        Product Info
-                        @if ($product->inventory->status == 'sell')
-                        <span class="bg-slate-100 text-blue-500 rounded-lg px-2.5 py-1 text-sm mr-1.5">Selling</span>
-                        @else
-                        <span class="bg-slate-100 text-gray-700 rounded-lg px-2.5 py-1 text-sm mr-1.5">Closed</span>
-                        @endif
-                    </h1>
+                    <div class="flex items-center justify-between">
+                        <h1 class="text-lg w-1/2 font-medium">
+                            Product Info
+                            @if ($product->inventory->status == 'sell')
+                            <span class="bg-slate-100 text-blue-500 rounded-lg px-2.5 py-1 text-sm mr-1.5">Selling</span>
+                            @else
+                            <span class="bg-slate-100 text-gray-700 rounded-lg px-2.5 py-1 text-sm mr-1.5">Closed</span>
+                            @endif
+                        </h1>
+                        <div class="flex w-1/2 self-center justify-end flex-wrap gap-x-1 gap-y-2">
+                            @foreach ($product->categories as $category)
+                            <div class="text-xs bg-blue-400 text-white px-2 py-1 rounded-lg">
+                                {{$category->sub_type}}
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
                     <div class="flex flex-col gap-y-1.5 mt-3 text-sm">
                         <p>Name: "<span class="text-green-600 font-medium text-sm">{{ $product->name }}</span>"</p>
                         <p>Price: <span class="text-amber-500 font-medium text-sm">{{ number_format($product->price, 0, '.', ',') }}</span></p>

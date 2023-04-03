@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->text('name');                   // fresh organic watermelon
+            $table->foreignId('inventory_id');
             $table->string('slug')->unique();
             $table->string('meta_type');            // watermelon
             $table->integer('price');
@@ -23,7 +24,6 @@ return new class extends Migration
             $table->float('rating_point')->default(0.0);
             $table->text('description');
             $table->string('image')->nullable();   // will provide the default image at first 
-            $table->foreignId('inventory_id');
             $table->timestamps();
 
             /** constraints */

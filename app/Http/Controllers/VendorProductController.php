@@ -6,19 +6,21 @@ use App\Models\Category;
 use App\Models\Inventory;
 use App\Models\Product;
 use App\Models\Review;
+use App\Traits\ParseTrait;
 use App\Traits\PhotoUploadTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class VendorProductController extends Controller
 {
-    use PhotoUploadTrait;
+    use PhotoUploadTrait, ParseTrait;
 
     public function index()
     {
-        $inventories = Inventory::with('product')
+        $inventories = Inventory::with('product.categories')
             ->where('vendor_id', auth()->guard('vendor')->id())
             ->latest()
+            ->search($this->parseHyphens(request(['search'])))
             ->paginate(25);
 
         return view('vendors.products.index', compact('inventories'));
@@ -26,12 +28,12 @@ class VendorProductController extends Controller
 
     public function show(Product $product)
     {
-        $product = $product->load('inventory', 'analytics');
+        $product = $product->load('inventory', 'analytics', 'categories');
 
         $ratings = Review::totalProductRatings($product);
 
         /* daily report data */
-        $analytics = $product->analytics()->filter()->get();
+        $analytics = $product->analytics()->filter('day')->get();
         
         $viewData = $analytics->pluck('view', 'day');              // day => view  key:value pair
         $cartData = $analytics->pluck('cart', 'day');              
@@ -67,7 +69,7 @@ class VendorProductController extends Controller
             'meta_type' => ['required', 'max:50'],
             'price' => ['required', 'numeric'],
             'description' => ['required'],
-            'image' => ['required', 'image', 'mimes:jpeg,png,jpg'],
+            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg'],
             'type' => ['required'],
             'sub_type' => ['required', 'array'],
             'sub_type.*' => ['required'],
@@ -87,7 +89,7 @@ class VendorProductController extends Controller
             'meta_type' => ['required', 'max:50'],
             'price' => ['required', 'numeric'],
             'description' => ['required'],
-            'image' => ['required', 'image', 'mimes:jpg,png,jpeg', 'max:2048']
+            'image' => ['nullable', 'image', 'mimes:jpg,png,jpeg', 'max:2048']
         ]);
 
         $request->validate([

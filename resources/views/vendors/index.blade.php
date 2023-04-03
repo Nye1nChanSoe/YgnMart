@@ -35,21 +35,21 @@
                     </div>
                     <div class="w-1/4 shadow py-2 px-4 rounded">
                         <div class="mt-2.5">
-                            <span class="text-4xl text-yellow-400 font-medium">{{ $viewData->reduce(fn($total, $value) => $total += $value) }}</span>
+                            <span class="text-4xl text-yellow-400 font-medium">{{ number_format($viewData->reduce(fn($total, $value) => $total += $value), 0, '.', ',') }}</span>
                         </div>
                         <h1 class="mt-4 font-medium text-lg">Total Views</h1>
                         <div class="mt-1 text-xs text-gray-500">Total number of time your products have been viewed</div>
                     </div>
                     <div class="w-1/4 shadow py-2 px-4 rounded">
                         <div class="mt-2.5">
-                            <span class="text-4xl text-blue-600 font-medium">{{ $orderData->reduce(fn($total, $value) => $total += $value) }}</span>
+                            <span class="text-4xl text-blue-600 font-medium">{{ number_format($orderData->reduce(fn($total, $value) => $total += $value), 0, '.', ',') }}</span>
                         </div>
                         <h1 class="mt-4 font-medium text-lg">Total Orders</h1>
                         <div class="mt-1 text-xs text-gray-500">Total number of time your products have been ordered</div>
                     </div>
                     <div class="w-1/4 shadow py-2 px-4 rounded">
                         <div class="mt-2.5">
-                            <span class="text-4xl text-purple-700 font-medium">{{ $quantityData->reduce(fn($total, $value) => $total += $value) }}</span>
+                            <span class="text-4xl text-purple-700 font-medium">{{ number_format($quantityData->reduce(fn($total, $value) => $total += $value), 0, '.', ',') }}</span>
                         </div>
                         <h1 class="mt-4 font-medium text-lg">Total Item Sales</h1>
                         <div class="mt-1 text-xs text-gray-500">Total number of items sold</div>
@@ -68,13 +68,13 @@
                             <canvas id="views-chart"></canvas>
                         </div>
                     </div>
-                    <div class="w-1/3 shadow py-2 px-4 rounded">
-                        <h1 class="mt-2 font-medium text-lg">Recent Comments</h1>
-                        <div class="mt-1 text-xs text-gray-500">Most recent comments of the products</div>
-
-                        <!-- Comments -->
-                        <div class="h-64 py-6 px-2 md:h-80">
-                            <canvas id="views-chart"></canvas>
+                    <div class="w-1/3 flex h-full items-center shadow py-2 px-4 rounded">
+                        <div>
+                            <h1 class="mt-2 font-medium text-lg">Number of unique customers</h1>
+                            <div class="mt-1 text-xs text-gray-500">Total number of unique customers</div>
+                            <div class="mt-2.5">
+                                <span class="text-4xl text-purple-700 font-medium">{{ number_format($transactions->pluck('user_id')->unique()->count(), 0, '.', ',') }}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -128,14 +128,14 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($transactions->take(10) as $transaction)
+                            @foreach ($transactions->take(3) as $transaction)
                                 @foreach ($transaction->order->products as $product)
                                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100">
-                                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                         <a href="{{ route('vendor.products.show', $product->slug) }}" class="hover:text-blue-600">
                                             {{ ucwords($product->name) }}
                                         </a>
-                                    </th>
+                                    </td>
                                     <td class="px-6 py-4">
                                         {{ strtoupper($transaction->order->order_code) }}
                                     </td>
@@ -179,7 +179,7 @@
         options: {
             scales: {
                 y: {
-                    beginAtZero: false,
+                    beginAtZero: true,
                     grid: {
                         display: true
                     },
@@ -238,7 +238,7 @@
                         display: true
                     },
                     ticks: {
-                        stepSize: 100 // set y-axis tick interval to 100
+                        // stepSize: 100 // set y-axis tick interval to 100
                     },
                 },
                 x: {

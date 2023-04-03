@@ -17,7 +17,7 @@
         </ul>
 
         {{-- product view --}}
-        <div class="flex flex-col items-center justify-center md:space-x-2 md:flex-row">
+        <div class="flex flex-col items-center justify-center md:justify-around md:space-x-2 md:flex-row">
             <div class="w-60 my-8 md:basis-1/3 md:w-full md:my-0">
                 <img src="{{$product->image ? asset($product->image) : asset('images/no-image.png')}}" alt="" class="w-full h-full object-contain">
             </div>

@@ -2,9 +2,9 @@
     <x-slot:title>
         Vendor Sign in - YangonMart.com
     </x-slot:title>
-    <x-container class="flex flex-col justify-center md:flex-row md:justify-around">
+    <x-container class="flex flex-col py-8 justify-center md:flex-row md:justify-around">
         <div class="hidden self-stretch md:basis-1/2 md:flex md:items-center md:justify-center">
-            <img src="images/creative/shopmore_savemoney.png" alt="" width="500">
+            <img src="{{ asset('/images/vendor.png') }}" alt="" width="500">
         </div>
         <x-card class="self-center w-full text-slate-700 py-4 px-6 md:py-10 md:px-10 md:basis-2/5">
             {{-- TODO: Socialite for OAuth Sign in --}}

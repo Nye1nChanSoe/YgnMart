@@ -24,6 +24,6 @@ class Order extends Model
 
     public function transaction()
     {
-        return $this->hasOne(Transaction::class);
+        return $this->hasMany(Transaction::class);
     }
 }

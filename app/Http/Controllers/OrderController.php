@@ -167,7 +167,15 @@ class OrderController extends Controller
     protected function createTransaction($order)
     {
         try {
-            foreach ($order->products as $product) {
+            $prevVendorId = null;
+
+            foreach ($order->products as $index => $product) {
+
+                /** if the products are from the same vendor store once and terminate the loop */
+                if($prevVendorId == $product->inventory->vendor->id) {
+                    break;
+                }
+
                 $transaction = new Transaction();
                 $transaction->order_id = $order->id;
                 $transaction->vendor_id = $product->inventory->vendor->id;
@@ -176,8 +184,10 @@ class OrderController extends Controller
                 $transaction->gross_amount = $order->total_price;
                 $transaction->tax = $order->total_price * 0.1;
                 $transaction->other_fees = 0;
-                $transaction->status = 'succeed';   // pending, refund, succeed
-                $transaction->save();
+                $transaction->status = 'succeed';        // pending, refund, succeed
+                $transaction = $transaction->save();
+
+                $prevVendorId = $product->inventory->vendor->id;
             }
         } catch(Exception $e) {
             Log::error($e->getMessage());
