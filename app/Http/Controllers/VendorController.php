@@ -33,7 +33,7 @@ class VendorController extends Controller
         $checkoutData = $analytics->pluck('checkout', 'day');      
         $orderData = $analytics->pluck('order', 'day');    
         $quantityData = $analytics->pluck('quantity', 'day');  
-        
+
         /** orders and products */
         return view('vendors.index', compact([
             'transactions',

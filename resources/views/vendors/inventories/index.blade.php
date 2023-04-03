@@ -20,28 +20,28 @@
 
         @unless ($inventories->isEmpty())
         <div class="relative overflow-x-auto shadow rounded">
-            <table class="w-full text-sm text-center text-gray-500 dark:text-gray-400">
+            <table class="w-full text-sm text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-white uppercase bg-gray-700">
                     <tr>
-                        <th scope="col" class="px-6 py-4">
+                        <th scope="col" class="px-6 py-4 text-start">
                             No
                         </th>
-                        <th scope="col" class="px-6 py-4">
+                        <th scope="col" class="px-6 py-4 text-start">
                             Product Name
                         </th>
-                        <th scope="col" class="px-6 py-4">
+                        <th scope="col" class="px-6 py-4 text-start">
                             Total Stocks
                         </th>
-                        <th scope="col" class="px-6 py-4">
+                        <th scope="col" class="px-6 py-4 text-start">
                             Minimum Threshold
                         </th>
-                        <th scope="col" class="px-6 py-4">
+                        <th scope="col" class="px-6 py-4 text-start">
                             Qty Avaliable
                         </th>
-                        <th scope="col" class="px-6 py-4">
+                        <th scope="col" class="px-6 py-4 text-start">
                             Status
                         </th>
-                        <th scope="col" class="px-6 py-4">
+                        <th scope="col" class="px-6 py-4 text-start">
                             Date
                         </th>
                     </tr>

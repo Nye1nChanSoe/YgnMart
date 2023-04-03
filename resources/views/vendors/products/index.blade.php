@@ -24,28 +24,28 @@
 
         @unless ($inventories->isEmpty())
         <div class="relative overflow-x-auto shadow rounded">
-            <table class="w-full text-sm text-center text-gray-500 dark:text-gray-400">
+            <table class="w-full text-sm text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-white uppercase bg-gray-700">
                     <tr>
-                        <th scope="col" class="px-6 py-4">
+                        <th scope="col" class="px-6 py-4 text-start">
                             No
                         </th>
-                        <th scope="col" class="px-6 py-4">
+                        <th scope="col" class="px-6 py-4 text-start">
                             Product Name
                         </th>
-                        <th scope="col" class="px-6 py-4">
+                        <th scope="col" class="px-6 py-4 text-start">
                             Price
                         </th>
-                        <th scope="col" class="px-6 py-4">
+                        <th scope="col" class="px-6 py-4 text-start">
                             Category
                         </th>
-                        <th scope="col" class="px-6 py-4">
+                        <th scope="col" class="px-6 py-4 text-start">
                             Rating
                         </th>
-                        <th scope="col" class="px-6 py-4">
+                        <th scope="col" class="px-6 py-4 text-start">
                             Status
                         </th>
-                        <th scope="col" class="px-6 py-4">
+                        <th scope="col" class="px-6 py-4 text-start">
                             Date
                         </th>
                     </tr>
@@ -89,9 +89,9 @@
                             </td>
                             <td class="px-6 py-2">
                                 @if ($inventory->status == 'sell')
-                                <div class="bg-green-600 rounded-lg text-white px-1.5 py-1">Selling</div>
+                                <div class="bg-green-50 rounded-lg text-green-700 text-center px-1 py-1">Selling</div>
                                 @else
-                                <div class="bg-gray-600 rounded-lg text-white px-1.5 py-1">Closed</div>
+                                <div class="bg-gray-600 rounded-lg text-white text-center px-1 py-1">Closed</div>
                                 @endif
                             </td>
                             <td class="px-6 py-2">

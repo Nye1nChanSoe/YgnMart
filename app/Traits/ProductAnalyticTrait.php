@@ -17,7 +17,7 @@ trait ProductAnalyticTrait
     {
         /** get the latest record for the product */
         $latestRecord = ProductAnalytic::where('product_id', $product->id)
-            ->orderBy('created_at', 'desc')
+            ->orderBy('date', 'desc')
             ->first();
 
         $today = now()->startOfDay();

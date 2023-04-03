@@ -23,8 +23,8 @@ class ProductAnalytic extends Model
                 DB::raw('SUM(review) as review'),
                 DB::raw('SUM(quantity) as quantity'),
                 DB::raw('SUM(revenue) as revenue'))
-            ->groupBy('day')
-            ->orderBy('day', 'asc');
+            ->groupBy('date')
+            ->orderBy('date', 'asc');
 
         return $query;
     }

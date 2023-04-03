@@ -109,7 +109,10 @@ class VendorProductController extends Controller
         /** product data second */
         $productData['slug'] = strtolower(str_replace([' ', '_'], '-', $request->input('name')));
         $productData['inventory_id'] = $inventory->id;
-        $productData['image'] = $this->upload($productData['image']);
+        if($productData['image'] ?? false)
+        {
+            $productData['image'] = $this->upload($productData['image']);
+        }
         $product = Product::create($productData);
 
         /** categories third */
