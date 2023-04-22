@@ -11,7 +11,7 @@ trait ProductAnalyticTrait
      * @param Product $product
      * @param string $increment - The name of the column that should be incremented 
      *                            'view'  'cart'  'order'  'review'
-     * @param bool $isOrder - set this parameter to true, to update quantity and revenue per day
+     * @param array $data - Optional data to be updated
      */
     public function dailyProductStats(Product $product, string $increment, array $data = [])
     {

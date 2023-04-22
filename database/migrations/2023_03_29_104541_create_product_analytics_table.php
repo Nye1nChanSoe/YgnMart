@@ -12,8 +12,8 @@ return new class extends Migration
         Schema::create('product_analytics', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id');
-            $table->bigInteger('view')->unsiged()->default(0);       
-            $table->integer('cart')->unsiged()->default(0);   
+            $table->bigInteger('view')->unsiged()->default(0);
+            $table->integer('cart')->unsiged()->default(0);
             $table->integer('checkout')->unsiged()->default(0);
             $table->integer('order')->unsiged()->default(0);
             $table->integer('review')->unsiged()->default(0);

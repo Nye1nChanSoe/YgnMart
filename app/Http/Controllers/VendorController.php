@@ -51,4 +51,9 @@ class VendorController extends Controller
     {
         return view('vendors.show', compact($vendor));
     }
+
+    public function edit()
+    {
+        return 'moo';
+    }
 }

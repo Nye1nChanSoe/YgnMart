@@ -95,5 +95,5 @@ Route::prefix('vendor')->middleware(['auth:vendor'])->group(function() {
     Route::get('/transactions', [VendorTransactionController::class, 'index'])->name('vendor.transactions');
     Route::get('/orders', [vendorOrdersController::class, 'index'])->name('vendor.orders');
     Route::get('/{vendor:username}', [VendorController::class, 'show'])->name('vendor.show');
-    Route::get('/settings', [VendorController::class, 'edit'])->name('vendor.settings');
+    Route::get('/{vendor:username}/settings', [VendorController::class, 'edit'])->name('vendor.settings');
 });

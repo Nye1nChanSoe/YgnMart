@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('checkouts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
-            $table->integer('total_price');
+            $table->float('total_price');
             $table->string('payment_intent_id')->nullable();
             $table->timestamps();
 

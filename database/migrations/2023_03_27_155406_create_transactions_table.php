@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('order_id');
             $table->foreignId('vendor_id');
+            $table->foreignId('user_id');
             $table->string('payment_type');
             $table->string('currency');
             $table->float('gross_amount');      // before tax - total payment amount
@@ -28,6 +29,7 @@ return new class extends Migration
             /** constraints */
             $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
             $table->foreign('vendor_id')->references('id')->on('vendors')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

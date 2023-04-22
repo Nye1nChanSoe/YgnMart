@@ -59,7 +59,7 @@
                             <a href="{{ route('vendor.orders') }}"><div class="flex items-center"><x-icon name="orders" class="mr-2" />Orders</div></a>
                         </li>
                         <li class="py-2.5 w-fit transition-all duration-300 hover:translate-x-3 {{ request()->routeIs('vendor.settings') ? 'text-blue-700' : '' }}">
-                            <a href="{{ route('vendor.settings') }}"><div class="flex items-center"><x-icon name="settings" class="mr-2" />Settings</div></a>
+                            <a href="{{ route('vendor.settings', $user->username) }}"><div class="flex items-center"><x-icon name="settings" class="mr-2" />Settings</div></a>
                         </li>
                         <li class="py-2.5 w-fit transition-all duration-300 hover:translate-x-3 {{ request()->routeIs('vendor.logout') ? 'text-blue-700' : '' }}">
                             <form action="/vendor/logout" method="POST">
@@ -100,7 +100,7 @@
                         <a href="{{ route('vendor.orders') }}"><div class="flex items-center"><x-icon name="orders" /></div></a>
                     </li>
                     <li class="py-2.5 w-fit transition-all duration-300 hover:text-green-600 {{ request()->routeIs('vendor.settings') ? 'text-blue-700' : '' }}">
-                        <a href="{{ route('vendor.settings') }}"><div class="flex items-center"><x-icon name="settings" /></div></a>
+                        <a href="{{ route('vendor.settings', $user->username) }}"><div class="flex items-center"><x-icon name="settings" /></div></a>
                     </li>
                     <li class="py-2.5 w-fit transition-all duration-300 hover:text-green-600 {{ request()->routeIs('vendor.logout') ? 'text-blue-700' : '' }}">
                         <form action="/vendor/logout" method="POST">

@@ -7,23 +7,23 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
-     *
-     * @return void
+     * TODO: Google Analytics or Mixpanel to track user activity and collect their behavior
      */
     public function up()
     {
-        Schema::create('product_user_analytics', function (Blueprint $table) {
+        Schema::create('user_analytics', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id');
-            $table->foreignId('user_id');                        
-            $table->tinyInteger('view_count')->unsigned()->default(0);
-            $table->tinyInteger('cart_count')->unsigned()->default(0);       
-            $table->tinyInteger('order_count')->unsigned()->default(0);      
-            $table->float('revenue')->default(0.0);                         
-            $table->string('device_type')->nullable();
-            $table->string('country')->nullable();
-            $table->string('city')->nullable();
+            $table->foreignId('user_id');
+            $table->string('ip_address');
+            $table->string('session_id');
+            $table->timestamp('start_time');
+            $table->timestamp('end_time');      // beforeunload, periodic AJAX, timeout 
+            $table->integer('page_views');
+            $table->json('visited_pages');
+            $table->string('device_type');
+            $table->string('browser_type');
+            $table->string('operating_system');
+            $table->text('location');
             $table->timestamps();
 
             /** constraints */

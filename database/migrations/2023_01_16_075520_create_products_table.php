@@ -19,8 +19,7 @@ return new class extends Migration
             $table->foreignId('inventory_id');
             $table->string('slug')->unique();
             $table->string('meta_type');            // watermelon
-            $table->integer('price');
-            $table->foreignId('measurement_id')->nullable();
+            $table->float('price');
             $table->float('rating_point')->default(0.0);
             $table->text('description');
             $table->string('image')->nullable();   // will provide the default image at first 
