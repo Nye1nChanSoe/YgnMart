@@ -22,7 +22,7 @@ return new class extends Migration
             $table->float('price');
             $table->float('rating_point')->default(0.0);
             $table->text('description');
-            $table->string('image')->nullable();   // will provide the default image at first 
+            $table->string('image')->nullable();   // will provide the default image at first
             $table->timestamps();
 
             /** constraints */

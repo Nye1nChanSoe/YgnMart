@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('ip_address');
             $table->string('session_id');
             $table->timestamp('start_time');
-            $table->timestamp('end_time');      // beforeunload, periodic AJAX, timeout 
+            $table->timestamp('end_time');      // beforeunload, periodic AJAX, timeout
             $table->integer('page_views');
             $table->json('visited_pages');
             $table->string('device_type');
@@ -38,6 +38,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('product_user_analytics');
+        Schema::dropIfExists('user_analytics');
     }
 };

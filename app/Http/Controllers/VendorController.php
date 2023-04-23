@@ -29,10 +29,10 @@ class VendorController extends Controller
         /* daily report data */
         $analytics = ProductAnalytic::filter('day')->get();
         $viewData = $analytics->pluck('view', 'day');              // day => view  key:value pair
-        $cartData = $analytics->pluck('cart', 'day');              
-        $checkoutData = $analytics->pluck('checkout', 'day');      
-        $orderData = $analytics->pluck('order', 'day');    
-        $quantityData = $analytics->pluck('quantity', 'day');  
+        $cartData = $analytics->pluck('cart', 'day');
+        $checkoutData = $analytics->pluck('checkout', 'day');
+        $orderData = $analytics->pluck('order', 'day');
+        $quantityData = $analytics->pluck('quantity', 'day');
 
         /** orders and products */
         return view('vendors.index', compact([

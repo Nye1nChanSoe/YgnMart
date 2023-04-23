@@ -126,11 +126,11 @@
     </x-container>
 
     {{-- TODO: Add Carousel effect --}}
-    <div class="bg-white md:bg-blue-50">
+    <div class="bg-white border rounded-md">
         <x-related-products :related-products="$relatedProducts" :product="$product" class="pb-10 container mx-auto" />
     </div>
 
-    <div class="bg-slate-50 py-20">
+    <div class="bg-white py-20">
         <div x-data="charts" class="container mx-auto">
             {{-- Reviews --}}
             <div id="reviews" class="flex flex-col gap-y-10 px-4 md:flex-row md:gap-x-20">

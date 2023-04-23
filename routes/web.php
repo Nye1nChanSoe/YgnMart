@@ -1,6 +1,10 @@
 <?php
 
 use App\Http\Controllers\AddressController;
+use App\Http\Controllers\AdminCategoryController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminCustomerController;
+use App\Http\Controllers\AdminVendorController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\OrderController;
@@ -41,7 +45,7 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/register/address/skip', [RegisterController::class, 'skipAddress'])->name('register.address.skip');
     Route::post('/register/address', [RegisterController::class, 'storeAddress'])->name('register.store.address');
 
-    Route::delete('/logout', [SessionController::class, 'destroy']);
+    Route::delete('/logout', [SessionController::class, 'destroy'])->name('logout');
 
     Route::post('/add', [ProductController::class, 'addToCart'])->name('products.add');
 
@@ -88,7 +92,7 @@ Route::prefix('vendor')->middleware(['auth:vendor'])->group(function() {
     Route::get('/products/{product:slug}/edit', [VendorProductController::class, 'edit'])->name('vendor.products.edit');
     Route::put('/products/{product:slug}', [VendorProductController::class, 'update'])->name('vendor.products.update');
     Route::delete('/products/{product:slug}', [VendorProductController::class, 'destroy'])->name('vendor.products.destroy');
-    
+
     Route::get('/inventories', [VendorInventoryController::class, 'index'])->name('vendor.inventories');
 
     Route::get('/dashboard', [VendorController::class, 'index'])->name('vendor.dashboard');
@@ -96,4 +100,19 @@ Route::prefix('vendor')->middleware(['auth:vendor'])->group(function() {
     Route::get('/orders', [vendorOrdersController::class, 'index'])->name('vendor.orders');
     Route::get('/{vendor:username}', [VendorController::class, 'show'])->name('vendor.show');
     Route::get('/{vendor:username}/settings', [VendorController::class, 'edit'])->name('vendor.settings');
+});
+
+Route::prefix('admin')->middleware(['auth', 'admin_access'])->group(function() {
+    Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::get('/customers', [AdminCustomerController::class, 'index'])->name('admin.customers');
+    Route::get('/customers/{user:username}', [AdminCustomerController::class, 'show'])->name('admin.customers.show');
+    
+    Route::get('/vendors', [AdminVendorController::class, 'index'])->name('admin.vendors');
+    Route::get('/vendors/{user:username}', [AdminVendorController::class, 'show'])->name('admin.vendors.show');
+    
+    Route::get('/categories', [AdminCategoryController::class, 'index'])->name('admin.categories');
+    Route::get('/categories/{category:sub_type}', [AdminCategoryController::class, 'show'])->name('admin.categories.show');
+
+    Route::get('/{user:username}', [AdminController::class, 'show'])->name('admin.show');
+    Route::get('/{user:username}/settings', [AdminController::class, 'edit'])->name('admin.settings');
 });

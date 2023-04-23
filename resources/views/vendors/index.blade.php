@@ -14,7 +14,7 @@
                         Today <span>{{ now()->format('d M Y') }}</span>
                     </div>
                 </div>
-    
+
                 <!-- Total Transactions -->
                 <div>
                     <div class="bg-white px-3 py-5 h-[320px] md:h-[420px]">
@@ -62,7 +62,7 @@
                     <div class="w-2/3 shadow py-2 px-4 rounded">
                         <h1 class="mt-2 font-medium text-lg">Daily Views</h1>
                         <div class="mt-1 text-xs text-gray-500">Total number of time your products have been viewed</div>
-                        
+
                         <!-- Views Chart -->
                         <div class="h-64 py-6 px-2 md:h-80">
                             <canvas id="views-chart"></canvas>
@@ -85,7 +85,7 @@
                     <div class="w-1/2 shadow py-2 px-4 rounded">
                         <h1 class="mt-2 font-medium text-lg">Daily Items added to Cart</h1>
                         <div class="mt-1 text-xs text-gray-500">Total number of time your products have been added to cart</div>
-                        
+
                         <!-- Cart Chart -->
                         <div class="h-64 py-6 px-2 md:h-80">
                             <canvas id="carts-chart"></canvas>
@@ -94,7 +94,7 @@
                     <div class="w-1/2 shadow py-2 px-4 rounded">
                         <h1 class="mt-2 font-medium text-lg">Daily Orders</h1>
                         <div class="mt-1 text-xs text-gray-500">Total number of time your products have been ordered</div>
-                        
+
                         <!-- Order Chart -->
                         <div class="h-64 py-6 px-2 md:h-80">
                             <canvas id="orders-chart"></canvas>
@@ -149,7 +149,7 @@
                                         {{ number_format($product->price * $product->pivot->quantity, 0, '.', ',') }}
                                     </td>
                                 </tr>
-                                @endforeach                    
+                                @endforeach
                             @endforeach
                         </tbody>
                     </table>

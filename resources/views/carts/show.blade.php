@@ -30,7 +30,7 @@
             <a href="{{ route('carts.index') }}" class="block px-3 py-2 mt-2 bg-blue-500 text-white w-fit rounded-lg hover:bg-blue-700">Go to cart</a>
         </div>
     </x-container>
-    <div class="bg-white pb-10 my-10 md:bg-blue-50">
+    <div class="bg-white pb-10 my-10 border rounded-md">
         <div class="container mx-auto">
             <x-related-products :related-products="$relatedProducts" :product="$product"/>
         </div>

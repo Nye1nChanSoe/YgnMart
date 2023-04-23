@@ -22,7 +22,7 @@ return new class extends Migration
             $table->float('total_price');
             $table->text('description')->nullable();
             $table->timestamps();
-            
+
             /** constraints */
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });

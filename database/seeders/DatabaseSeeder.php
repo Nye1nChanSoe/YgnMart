@@ -28,20 +28,20 @@ class DatabaseSeeder extends Seeder
     private array $fruits = ['banana', 'apple', 'watermelon', 'orange', 'tangerine', 'onion'];
     private array $alcohols = ['wine', 'beer', 'cocktails', 'vodka', 'rum', 'gin', 'whisky', 'tonic', 'soda', 'gold', 'black', 'white', 'blue', 'fire', 'ice'];
     private array $soft_drinks = ['coke', 'energy drinks', 'milk shake', 'orange juice', 'apple juice', 'vanilla cider', 'apple cide', 'pepsi', '100 plus', 'red bull', 'monster', 'coffee'];
-    
+
 
     public function run()
     {
         /**
          * Warning:
-         * Truncate a Foreign Key Constrained table  
+         * Truncate a Foreign Key Constrained table
          * To work around this, use either of these solutions. Both present risks of damaging the data integrity.
-         * SET FOREIGN_KEY_CHECKS=1 is not necessary No, you don't. The setting is only valid during the connection. 
+         * SET FOREIGN_KEY_CHECKS=1 is not necessary No, you don't. The setting is only valid during the connection.
          * As soon as you disconnect, the next connection will have it set back to 1
-         * 
+         *
          * This is just to populate a few records to the database for testing purposes.
          */
-        DB::statement('SET FOREIGN_KEY_CHECKS = 0');    
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
 
 
         /** to avoid unique items collision when seeding again */
@@ -65,7 +65,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'John Doe',
             'username' => 'jogndoe_213',
             'role' => 'user',
-            'email' => 'johndoe@gmail.com',
+            'email' => 'johndoe@email.com',
             'phone_number' => '09124124525',
             'password' => 'password',
         ]);
@@ -82,21 +82,21 @@ class DatabaseSeeder extends Seeder
         ]);
 
         /** seeding categories */
-        foreach($this->foods as $food) 
+        foreach($this->foods as $food)
         {
             Category::factory()->create([
                 'type' => 'Food',
                 'sub_type' => ucwords($food),
             ]);
         }
-        foreach($this->beverages as $beverage) 
+        foreach($this->beverages as $beverage)
         {
             Category::factory()->create([
                 'type' => 'Beverages',
                 'sub_type' => ucwords($beverage),
             ]);
         }
-        foreach($this->households as $household) 
+        foreach($this->households as $household)
         {
             Category::factory()->create([
                 'type' => 'Household',
@@ -139,7 +139,7 @@ class DatabaseSeeder extends Seeder
             $in_stock = rand(150, 542);
             $minimum_stock = 150;
             $available_stock = $in_stock - $minimum_stock;
-            
+
             $inventory = Inventory::create([
                 'sku' => 'YM-' . strtoupper(uniqid()),
                 'vendor_id' => 1,
@@ -167,7 +167,7 @@ class DatabaseSeeder extends Seeder
             $in_stock = rand(250, 2421);
             $minimum_stock = 250;
             $available_stock = $in_stock - $minimum_stock;
-            
+
             $inventory = Inventory::create([
                 'sku' => 'YM-' . strtoupper(uniqid()),
                 'vendor_id' => 1,

@@ -23,7 +23,7 @@ class User extends Authenticatable
     /**
      * The attributes that are not mass assignable
      * Set guarded to empty so the user's attributes are mass assignable
-     * 
+     *
      * @var array<int, string>
      */
     protected $guarded = [];
@@ -49,7 +49,33 @@ class User extends Authenticatable
 
 
     /**
-     * Accessors and Mutators 
+     *
+     */
+    public function scopeSearch($query, $terms)
+    {
+        $query->when($terms['search'] ?? false, fn($query, $search) => $query
+            ->where(fn($query) => $query
+                ->whereHas('addresses', fn($query) => $query
+                    ->where('street', 'like', "%{$search}%")
+                    ->orWhere('ward', 'like', "%{$search}%")
+                    ->orWhere('township', 'like', "%{$search}%")
+                )
+                ->orWhere('name', 'like', "%{$search}%")
+                ->orWhere('username', 'like', "%{$search}%")
+                ->orWhere('role', 'like', "%{$search}%")
+                ->orWhere('email', 'like', "%{$search}%")
+                ->orWhere('user_status', 'like', "{$search}%")
+                ->orWhere('created_at', 'like', "%{$search}%")
+                ->orWhere('phone_number', 'like', "%{$search}%")
+            )
+        );
+
+        return $query;
+    }
+
+
+    /**
+     * Accessors and Mutators
      * Encrypt the password at the last stage
      */
     public function setPasswordAttribute($password)

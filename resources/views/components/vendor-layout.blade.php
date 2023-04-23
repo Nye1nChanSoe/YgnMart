@@ -12,7 +12,7 @@
 
     <!-- favicon -->
     <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
-    
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <title>{{ $title ?? 'Dashboard - YangonMart.com' }}</title>
 </head>
@@ -90,7 +90,7 @@
                     <li class="py-2.5 w-fit transition-all duration-300 hover:text-green-600 {{ request()->routeIs('vendor.dashboard') ? 'text-blue-700' : '' }}">
                         <a href="{{ route('vendor.dashboard') }}"><div class="flex items-center"><x-icon name="chart" /></div></a>
                     </li>
-                    <li class="py-2.5 w-fit transition-all duration-300 hover:text-green-600 {{ request()->routeIs(['vendor.products', 'vendor.inventories']) ? 'text-blue-700' : '' }}">
+                    <li class="py-2.5 w-fit transition-all duration-300 hover:text-green-600 {{ request()->routeIs(['vendor.products', 'vendor.products.*', 'vendor.inventories']) ? 'text-blue-700' : '' }}">
                         <a href="{{ route('vendor.products') }}"><div class="flex items-center"><x-icon name="listings" /></div></a>
                     </li>
                     <li class="py-2.5 w-fit transition-all duration-300 hover:text-green-600 {{ request()->routeIs('vendor.transactions') ? 'text-blue-700' : '' }}">
@@ -114,7 +114,7 @@
                 </ul>
             </div>
         </aside>
-        
+
         {{-- dashboard --}}
         <div class="px-2 py-2 transition-all duration-300 ease-in-out" x-bind:class="{'ml-[270px]':open, 'ml-16':!open}">
             <nav class="flex justify-between items-center px-3 py-3 rounded-lg shadow">

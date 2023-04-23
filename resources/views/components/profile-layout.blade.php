@@ -49,7 +49,7 @@
                         </button>
                         <div x-show="open" @@click.outside="open = false" class="absolute py-2 bg-white shadow-lg w-16 mt-1 max-h-56 text-sm md:text-base overflow-auto border rounded z-10" x-cloak x-transition>
                             <a href="" class="block w-full text-sm leading-6 hover:bg-blue-500 hover:text-white pl-1">EN</a>
-                            <a href="" class="block w-full text-sm leading-6 hover:bg-blue-500 hover:text-white pl-1">MM</a>
+                            {{-- <a href="" class="block w-full text-sm leading-6 hover:bg-blue-500 hover:text-white pl-1">MM</a> --}}
                         </div>
                     </div>
                     <div class="relative">

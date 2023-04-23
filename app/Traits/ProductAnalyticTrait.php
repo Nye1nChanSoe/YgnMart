@@ -9,7 +9,7 @@ trait ProductAnalyticTrait
 {
     /**
      * @param Product $product
-     * @param string $increment - The name of the column that should be incremented 
+     * @param string $increment - The name of the column that should be incremented
      *                            'view'  'cart'  'order'  'review'
      * @param array $data - Optional data to be updated
      */
@@ -38,13 +38,13 @@ trait ProductAnalyticTrait
                 $increment => 1
             ]);
         }
-        else 
+        else
         {
             /** if the lastest record is from today, update the view count */
-            if(!empty($data)) 
+            if(!empty($data))
             {
                 $latestRecord->update($data);
-            } 
+            }
 
             $latestRecord->increment($increment);
         }
