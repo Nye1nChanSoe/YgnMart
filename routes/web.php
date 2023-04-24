@@ -71,13 +71,12 @@ Route::middleware(['auth'])->group(function() {
     Route::patch('/address', [AddressController::class, 'update'])->name('address.update');
     Route::delete('/address', [AddressController::class, 'destroy'])->name('address.destroy');
 
-    Route::patch('/user/password', [UserController::class, 'update'])->name('user.update.password');
-    Route::patch('/user', [UserController::class, 'update'])->name('user.update.info');
     Route::post('/user/address', [UserController::class, 'storeAddress'])->name('user.store.address');
     Route::delete('/user', [UserController::class, 'destroy'])->name('user.destroy');
-
+    
     Route::get('/{user:username}', [UserController::class, 'profile'])->name('profile');
     Route::get('/{user:username}/settings', [UserController::class, 'edit'])->name('profile.settings');
+    Route::patch('/{user:username}', [UserController::class, 'update'])->name('user.update');
     Route::get('/{user:username}/help', [UserController::class, 'profile'])->name('profile.help');
     Route::get('/{user:username}/privacy', [UserController::class, 'profile'])->name('profile.privacy');
 });
@@ -98,8 +97,10 @@ Route::prefix('vendor')->middleware(['auth:vendor'])->group(function() {
     Route::get('/dashboard', [VendorController::class, 'index'])->name('vendor.dashboard');
     Route::get('/transactions', [VendorTransactionController::class, 'index'])->name('vendor.transactions');
     Route::get('/orders', [vendorOrdersController::class, 'index'])->name('vendor.orders');
+
     Route::get('/{vendor:username}', [VendorController::class, 'show'])->name('vendor.show');
-    Route::get('/{vendor:username}/settings', [VendorController::class, 'edit'])->name('vendor.settings');
+    Route::get('/{vendor:username}/settings', [VendorController::class, 'show'])->name('vendor.settings');
+    Route::patch('/{vendor:username}', [VendorController::class, 'update'])->name('vendor.update');
 });
 
 Route::prefix('admin')->middleware(['auth', 'admin_access'])->group(function() {
@@ -114,5 +115,6 @@ Route::prefix('admin')->middleware(['auth', 'admin_access'])->group(function() {
     Route::get('/categories/{category:sub_type}', [AdminCategoryController::class, 'show'])->name('admin.categories.show');
 
     Route::get('/{user:username}', [AdminController::class, 'show'])->name('admin.show');
-    Route::get('/{user:username}/settings', [AdminController::class, 'edit'])->name('admin.settings');
+    Route::get('/{user:username}/settings', [AdminController::class, 'show'])->name('admin.settings');
+    Route::patch('/{user:username}', [AdminController::class, 'update'])->name('admin.update');
 });

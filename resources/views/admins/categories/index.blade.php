@@ -7,7 +7,7 @@
             <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'text-sky-100 font-bold' : 'text-gray-100' }} hover:text-sky-100">Dashboard</a><x-icon name="chevron-right" class="text-gray-300" />
         </li>
         <li class="flex items-center ml-2 gap-x-1">
-            <a href="{{ route('admin.categories') }}" class="{{ request()->routeIs('admin.categories') ? 'text-sky-100 font-bold' : 'text-gray-100' }} hover:text-sky-100">categories</a>
+            <a href="{{ route('admin.categories') }}" class="{{ request()->routeIs('admin.categories') ? 'text-sky-100 font-bold' : 'text-gray-100' }} hover:text-sky-100">Categories</a>
         </li>
     </ul>
 
@@ -18,7 +18,7 @@
 
         @unless ($categories->isEmpty())
         <div class="relative shadow rounded">
-            <table class="w-full text-sm text-slate-700 dark:text-gray-400">
+            <table class="w-full text-sm text-slate-200 dark:text-gray-400">
                 <thead class="text-xs text-white uppercase bg-gray-900">
                     <tr>
                         <th scope="col" class="px-6 py-4 text-start">
@@ -40,7 +40,7 @@
                 </thead>
                 <tbody x-data="">
                     @foreach ($categories as $category)
-                        <tr x-on:click="window.location.href = '{{ route('admin.categories.show', $category->sub_type) }}'" class="bg-slate-200 border-b even:bg-slate-200/90 dark:bg-gray-800 dark:border-gray-700 hover:bg-slate-200">
+                        <tr x-on:click="window.location.href = '{{ route('admin.categories.show', $category->sub_type) }}'" class="bg-slate-500 even:bg-slate-600 hover:bg-gray-800">
                             <td class="px-6 py-2">
                                 <div>{{ ($categories->currentPage() - 1) * $categories->perPage() + $loop->iteration }}</div>
                             </td>
@@ -48,7 +48,7 @@
                                 <div>{{ $category->type }}</div>
                             </td>
                             <td class="px-6 py-2">
-                                <div class="text-gray-900">{{ $category->sub_type }}</div>
+                                <div class="text-white font-semibold">{{ $category->sub_type }}</div>
                             </td>
                             <td class="px-6 py-2">
                                 <div class="w-72 overflow-hidden lg:w-96">

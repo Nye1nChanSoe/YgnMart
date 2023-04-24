@@ -12,29 +12,29 @@
             }" 
             class="w-full md:w-3/4 md:px-4"
         >
-            <form action="{{ route('user.update.info') }}" method="POST" class="bg-white rounded-lg shadow-md py-4 px-4 md:px-6">
+            <form action="{{ route('user.update', $user->username) }}" method="POST" class="bg-white rounded-lg shadow-md py-4 px-4 md:px-6">
                 @method('PATCH')
                 @csrf
                 <input type="hidden" name="update_type" value="info">
                 <h1 class="mb-6 font-medium text-xl">Edit Settings</h1>
                 <div class="mb-4">
                     <label class="block text-gray-700 font-medium mb-2" for="username">Username</label>
-                    <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300" name="username" id="username" type="text" value="{{ $user->username }}" placeholder="Username">
+                    <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300" name="username" id="username" type="text" value="{{ old('username') ?? $user->username }}" placeholder="Username">
                     <x-input-error field="username" />
                 </div>
                 <div class="mb-4">
                     <label class="block text-gray-700 font-medium mb-2" for="name">Name</label>
-                    <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300" name="name" id="name" type="text" value="{{ $user->name }}" placeholder="Name">
+                    <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300" name="name" id="name" type="text" value="{{ old('name') ?? $user->name }}" placeholder="Name">
                     <x-input-error field="name" />
                 </div>
                 <div class="mb-4">
                     <label class="block text-gray-700 font-medium mb-2" for="email">Email</label>
-                    <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300" name="email" id="email" type="email" value="{{ $user->email }}" placeholder="Email">
+                    <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300" name="email" id="email" type="email" value="{{ old('email') ?? $user->email }}" placeholder="Email">
                     <x-input-error field="email" />
                 </div>
                 <div class="mb-4">
                     <label class="block text-gray-700 font-medium mb-2" for="phone_number">Phone Number</label>
-                    <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300" name="phone_number" id="phone_number" type="text" value="{{ $user->phone_number }}" placeholder="Email">
+                    <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300" name="phone_number" id="phone_number" type="text" value="{{ old('phone_number') ?? $user->phone_number }}" placeholder="Phone Number">
                     <x-input-error field="phone_number" />
                 </div>
                 <button class="bg-blue-500 text-white py-2 px-3 rounded-lg hover:bg-blue-600">
@@ -42,7 +42,7 @@
                 </button>
             </form>
 
-            <form action="{{ route('user.update.password') }}" method="POST" class="bg-white rounded-lg mt-8 shadow-md py-4 px-4 md:px-6">
+            <form action="{{ route('user.update', $user->username) }}" method="POST" class="bg-white rounded-lg mt-8 shadow-md py-4 px-4 md:px-6">
                 @method('PATCH')
                 @csrf
                 <input type="hidden" name="update_type" value="password">
@@ -75,7 +75,7 @@
                     @foreach ($addresses as $address)
                     <div class="flex flex-col items-start space-y-2.5 py-4 text-sm md:text-base md:space-y-0 md:flex-row md:items-center">
                         <div class="flex items-center gap-x-1.5">
-                            <input type="radio" name="default_address" value="{{ $address->id }}" {{ $address->is_default ? 'checked' : '' }} class="self-start mt-1 md:mt-0 md:self-auto">
+                            <input type="radio" name="default_address" value="{{ old('') ?? $address->id }}" {{ $address->is_default ? 'checked' : '' }} class="self-start mt-1 md:mt-0 md:self-auto">
                             <span class="text-xs text-gray-600 pr-2 self-start md:self-auto">{{ $address->label }}</span>
                             <p class="text-gray-700">{{$address->full_address}}</p>
                         </div>

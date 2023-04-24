@@ -57,7 +57,7 @@
         id="flash"
     >
         <div class="flex items-center space-x-2">
-            <x-icon name="warning" class="text-amber-500" />
+            <x-icon name="warning" class="text-red-100" />
             <p>{{session()->get('error')}}</p>
             <span class="ml-1 hover:text-gray-200" x-on:click="show=false">
                 <x-icon name="close" />

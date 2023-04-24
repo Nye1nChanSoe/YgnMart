@@ -86,7 +86,7 @@
         </div>
         @else
         <div class="flex items-center justify-center w-full h-60">
-            <p class="text-gray-400">You do not have any orders yet!</p>
+            <p class="text-gray-400">You do not have any transactions yet!</p>
         </div>
         @endunless
         <div class="text-sm mt-4">

@@ -20,6 +20,11 @@
     <title>{{ $title ?? 'YangonMart.com - Shop anytime, anywhere with us' }}</title>
 </head>
 <body class="antialiased">
+    {{-- @if (auth()->user()->role == 'admin')
+    <div class="w-full bg-gray-900 text-gray-300">
+        <p class="text-center py-2">You are logged in as an admin</p>
+    </div>
+    @endif --}}
     <section x-data="notification" class="relative">
 
         {{-- hamburger menu for small screen sizes --}}

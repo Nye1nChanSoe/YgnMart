@@ -2,6 +2,16 @@
     <x-slot:title>
         Vendor Sign in - YangonMart.com
     </x-slot:title>
+    <x-container class="mb-10">
+        <ul class="flex items-center my-3 px-3 py-3 text-sm">
+            <li class="flex items-center ml-2 gap-x-1">
+                <a href="{{ route('login') }}" class="{{ request()->routeIs('login') ? 'text-blue-700' : 'text-gray-700' }} hover:text-blue-700">Login</a><x-icon name="chevron-right" />
+            </li>
+            <li class="flex items-center ml-2 gap-x-1">
+                <a href="{{ route('vendor.login') }}" class="{{ request()->routeIs('vendor.login') ? 'text-blue-700' : 'text-gray-700' }} hover:text-blue-700">Vendor Login</a>
+            </li>
+        </ul>
+    </x-container>
     <x-container class="flex flex-col py-8 justify-center md:flex-row md:justify-around">
         <div class="hidden self-stretch md:basis-1/2 md:flex md:items-center md:justify-center">
             <img src="{{ asset('/images/vendor.png') }}" alt="" width="500">

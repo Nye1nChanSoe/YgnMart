@@ -19,13 +19,13 @@ class ProductAnalyticFactory extends Factory
     {
         return [
             'product_id' => static::$i++ >= 33 ? static::$i = 1 : static::$i,
-            'view' => mt_rand(2946, 3250),           // Mersenne Twister algorithm, which is a popular pseudo-random number generator that produces high-quality random numbers with a long period.
-            'cart' => mt_rand(1035, 1164),
-            'checkout' => mt_rand(416, 485),
-            'order' => mt_rand(225, 294),
+            'view' => mt_rand(13, 21),           // Mersenne Twister algorithm, which is a popular pseudo-random number generator that produces high-quality random numbers with a long period.
+            'cart' => mt_rand(11, 17),
+            'checkout' => mt_rand(9, 13),
+            'order' => mt_rand(7, 9),
             'review' => mt_rand(0, 0),
-            'quantity' => mt_rand(2623, 2670),
-            'revenue' => mt_rand(4042305, 4842305),
+            'quantity' => mt_rand(42, 57),
+            'revenue' => mt_rand(59750, 64350),
         ];
     }
 }

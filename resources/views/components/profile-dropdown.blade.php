@@ -9,25 +9,34 @@
     </button>
 
     <div x-show="open" @@click.outside="open = false" class="absolute -left-20 py-2 mt-2 bg-white shadow-lg w-32 max-h-56 rounded-xl border border-slate-200 z-10 md:w-36" x-cloak x-transition>
-        <x-dropdown-item href="{{ route('profile', ['user' => $user->username]) }}">
+        @if ($user->role == 'user')
+        <x-dropdown-item href="{{ route('profile', $user->username) }}">
             <div class="flex items-center">
                 <div class="w-5 mr-2"><x-icon name="profile" /></div>
                 <span class="truncate">{{ $user->name }}</span>
             </div>
         </x-dropdown-item>
-        <x-dropdown-item href="{{ route('profile', ['user' => $user->username]) . '#history' }}">
+        @else
+        <x-dropdown-item href="{{ route('admin.show', $user->username) }}">
+            <div class="flex items-center">
+                <div class="w-5 mr-2"><x-icon name="profile" /></div>
+                <span class="truncate">{{ $user->name }}</span>
+            </div>
+        </x-dropdown-item>
+        @endif
+        <x-dropdown-item href="{{ route('profile', $user->username) . '#history' }}">
             <div class="flex items-center">
                 <div class="w-5 mr-2"><x-icon name="orders" /></div>
                 <span>Orders</span>
             </div>
         </x-dropdown-item>
-        <x-dropdown-item href="{{ route('profile.settings', ['user' => $user->username]) }}">
+        <x-dropdown-item href="{{ route('profile.settings', $user->username) }}">
             <div class="flex items-center">
                 <div class="w-5 mr-2"><x-icon name="settings" /></div>
                 <span>Settings</span>
             </div>
         </x-dropdown-item>
-        <x-dropdown-item href="{{ route('profile.help', ['user' => $user->username]) }}">
+        <x-dropdown-item href="{{ route('profile.help', $user->username) }}">
             <div class="flex items-center">
                 <div class="w-5 mr-2"><x-icon name="help" /></div>
                 <span>Help</span>

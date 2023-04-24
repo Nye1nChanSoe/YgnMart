@@ -1,4 +1,17 @@
 <x-layout>
+    <x-container class="mb-10">
+        <ul class="flex items-center my-3 px-3 py-3 text-sm">
+            <li class="flex items-center ml-2 gap-x-1">
+                <a href="{{ route('login') }}" class="{{ request()->routeIs('login') ? 'text-blue-600' : 'text-gray-700' }} hover:text-blue-600">Login</a><x-icon name="chevron-right" />
+            </li>
+            <li class="flex items-center ml-2 gap-x-1">
+                <a href="{{ route('register') }}" class="{{ request()->routeIs('register') ? 'text-blue-600' : 'text-gray-700' }} hover:text-blue-600">Register</a><x-icon name="chevron-right" />
+            </li>
+            <li class="flex items-center ml-2 gap-x-1">
+                <a href="{{ route('register') }}" class="text-blue-600">Register Address</a>
+            </li>
+        </ul>
+    </x-container>
     <x-container>
         <form action="{{ route('register.store.address') }}" method="POST" class="flex items-center justify-center p-2 md:p-10">
             @csrf

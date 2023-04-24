@@ -71,11 +71,10 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Vendor::create([
-            'name' => 'Yangon Mart',
             'username' => 'ygn_mart_official',
             'brand' => 'Yangon Mart',
             'email' => 'vendor@ygnmart.com',
-            'phone_number' => '+95 9 771 637 812',
+            'phone_number' => '0951260235',
             'password' => 'password',
             'is_verified' => true,
             'image' => 'logo.svg'

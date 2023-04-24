@@ -27,7 +27,7 @@
                             <img src="{{ asset('images/no-image.png') }}" alt="" class="object-contain">
                         </div>
                         <div class="flex flex-col text-gray-300">
-                            <h1 class="font-medium"><a href="">{{ $user->name }}</a></h1>
+                            <h1 class="font-medium"><a href="{{ route('admin.show', $user->username) }}" class="hover:text-blue-300">{{ $user->name }}</a></h1>
                             <span class="text-xs">@<span>{{ $user->username }}</span> </span>
                         </div>
                     </div>
@@ -117,11 +117,11 @@
 
         {{-- dashboard --}}
         <div class="px-2 py-2 bg-slate-600 h-screen transition-all duration-300 ease-in-out" x-bind:class="{'ml-[270px]':open, 'ml-14':!open}">
-            <nav class="flex justify-between items-center px-3 py-3 rounded-lg shadow bg-gray-900">
+            <nav class="flex justify-between items-center px-3 py-3 h-16 rounded-lg shadow bg-gray-900">
                 <div>
                     <ul class="flex gap-x-5">
-                        <li class="text-gray-300 hover:text-blue-300"><a href="{{ route('home') }}">Market Place</a></li>
-                        <li class="text-gray-300 hover:text-blue-300"><a href="">Profile</a></li>
+                        <li class="text-gray-300 hover:text-blue-300"><a href="{{ route('home') }}" target="_blank">Market Place</a></li>
+                        <li class="text-gray-300 hover:text-blue-300"><a href="{{ route('admin.show', $user->username) }}">Profile</a></li>
                         <li class="text-gray-300 hover:text-blue-300">Terms and Conditions</li>
                     </ul>
                 </div>
@@ -138,6 +138,7 @@
                             $resultURL = route('admin.customers');
                         }
                     @endphp
+                    @if (!request()->routeIs(['admin.show', 'admin.settings', 'admin.dashboard']))
                     <form action="{{ $resultURL }}" method="GET" class="relative">
                         <div class="absolute top-2 left-3">
                             <button type="submit" class="text-gray-300 hover:text-black">
@@ -146,6 +147,7 @@
                         </div>
                         <input type="text" name="search" value="{{ request('search') ?? '' }}" class="w-full border-2 text-black bg-slate-200 border-gray-300 pl-10 pr-2.5 py-1 rounded-lg focus:border-gray-100 focus:outline-none" placeholder="Search for products">
                     </form>
+                    @endif
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
                         @method('DELETE')

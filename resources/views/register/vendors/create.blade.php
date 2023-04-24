@@ -2,6 +2,16 @@
     <x-slot:title>
         Vendor Register - YangonMart.com
     </x-slot:title>
+    <x-container class="mb-10">
+        <ul class="flex items-center my-3 px-3 py-3 text-sm">
+            <li class="flex items-center ml-2 gap-x-1">
+                <a href="{{ route('vendor.login') }}" class="{{ request()->routeIs('vendor.login') ? 'text-blue-700' : 'text-gray-700' }} hover:text-blue-700">Vendor Login</a><x-icon name="chevron-right" />
+            </li>
+            <li class="flex items-center ml-2 gap-x-1">
+                <a href="{{ route('vendor.register') }}" class="{{ request()->routeIs('vendor.register') ? 'text-blue-700' : 'text-gray-700' }} hover:text-blue-700">Vendor Register</a>
+            </li>
+        </ul>
+    </x-container>
     <x-container class="flex flex-col justify-center md:flex-row md:justify-around">
         <div class="hidden self-stretch basis-1/2 md:flex md:flex-col md:items-center md:justify-center">
             <div class="px-6 py-4 rounded-lg mb-4 md:px-20">
@@ -71,7 +81,6 @@
                 </div>
                 <div class="flex flex-col justify-between items-center mt-6 md:flex-row">
                     <button type="submit" class="p-1.5 px-4 text-lg rounded text-white bg-orange-500 w-full hover:bg-orange-600 md:w-fit">Sign up</button>
-                    <p class="mt-4 text-white md:mt-0">Already have one? <a href="{{ route('vendor.login') }}" class="ml-2 rounded-lg px-2 py-1.5 bg-blue-400 text-white hover:bg-blue-500">Login</a></p>
                 </div>
             </form>
         </x-card>

@@ -9,6 +9,7 @@ use App\Traits\ParseTrait;
 use App\Traits\ProductAnalyticTrait;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -28,7 +29,7 @@ class ProductController extends Controller
                 ->where('status', 'sell'))
             ->latest()
             ->filter($this->parseHyphens(request(['search', 'category'])));
-        
+
         $products = $filteredQuery->paginate(20)->withQueryString();
 
         return view('products.index', compact('products'));
