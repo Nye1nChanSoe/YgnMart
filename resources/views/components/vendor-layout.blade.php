@@ -43,7 +43,7 @@
                         @php
                             $transactions = App\Models\Transaction::select('gross_amount')->where('vendor_id', auth()->guard('vendor')->id())->get();
                         @endphp
-                        <div class="font-medium text-xl text-green-600">{{ number_format($transactions->reduce(fn($total, $value) => $total += $value->gross_amount), 0, '.', ',') }}<span class="ml-1 text-gray-500 text-sm font-normal">Kyat</span></div>
+                        <div class="font-medium text-xl text-green-600">{{ number_format($transactions->reduce(fn($total, $value) => $total += $value->gross_amount) ?? 0, 0, '.', ',') }}<span class="ml-1 text-gray-500 text-sm font-normal">Kyat</span></div>
                     </div>
                     <ul class="flex flex-col mt-10">
                         <li class="py-2.5 w-fit transition-all duration-300 hover:translate-x-3 hover:text-green-600 {{ request()->routeIs('vendor.dashboard') ? 'text-blue-700' : '' }}">

@@ -1,4 +1,4 @@
-@if (!request()->routeIs(['login', 'register', 'vendor.*']))
+@if (!request()->routeIs(['login', 'register', 'vendor.login', 'vendor.register']))
 @php
     $categories = App\Models\Category::all();
     $cartItemsCount = App\Models\Cart::where('user_id', auth()->id())->count();
@@ -91,8 +91,10 @@
                             <x-icon name="cart" />
 
                             {{-- notification --}}
+                            @if (!request()->routeIs(['login', 'register', 'vendor.login', 'vendor.register']))
                             <div x-show="cartItemCounter" x-text="cartItemCounter" class="absolute -top-3.5 -right-3 inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-sky-400 border-2 border-white rounded-full md:-top-3 md:-right-3" x-cloak x-transition>
                             </div>
+                            @endif
                         </a>
                     </div>
                     @auth
@@ -180,7 +182,7 @@
 </body>
 </html>
 
-@if (!request()->routeIs(['login', 'register', 'vendor.*']))
+@if (!request()->routeIs(['login', 'register', 'vendor.login', 'vendor.register', 'profile']))
 <script>
     document.addEventListener('alpine:init', () => {
         Alpine.data('notification', () => ({

@@ -8,6 +8,7 @@ use App\Models\ProductAnalytic;
 use App\Models\Transaction;
 use App\Models\Vendor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
@@ -19,17 +20,25 @@ class VendorController extends Controller
     {
         $vendorId = auth()->guard('vendor')->id();
 
-        $transactions = Transaction::with('order.products')
+        $transactions = Cache::remember('vendor:dashboard:transaction', '300', function() use ($vendorId)  {
+            return Transaction::with('order.products')
             ->where('vendor_id', $vendorId)
             ->latest()
             ->get();
+        });
 
         /** daily transactions for vendor account */
-        $data = Transaction::filter('day')->get();
+        $data = Cache::remember('vendor:dashboard:transactionAnalytic', '300', function() {
+            return Transaction::filter('day')->get();
+        });
+
         $transactionData = $data->pluck('revenue', 'day');
 
         /* daily report data */
-        $analytics = ProductAnalytic::filter('day')->get();
+        $analytics = Cache::remember('vendor:dashboard:productAnalytic', '300', function() {
+            return ProductAnalytic::filter('day')->get();
+        });
+
         $viewData = $analytics->pluck('view', 'day');              // day => view  key:value pair
         $cartData = $analytics->pluck('cart', 'day');
         $checkoutData = $analytics->pluck('checkout', 'day');

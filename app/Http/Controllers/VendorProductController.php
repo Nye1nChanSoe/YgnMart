@@ -9,6 +9,7 @@ use App\Models\Review;
 use App\Traits\ParseTrait;
 use App\Traits\PhotoUploadTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class VendorProductController extends Controller
@@ -17,11 +18,13 @@ class VendorProductController extends Controller
 
     public function index()
     {
-        $inventories = Inventory::with('product.categories')
+        $inventories = Cache::remember('vendor:products', '300', function() {
+            return Inventory::with('product.categories')
             ->where('vendor_id', auth()->guard('vendor')->id())
             ->latest()
             ->search($this->parseHyphens(request(['search'])))
             ->paginate(25);
+        });
 
         return view('vendors.products.index', compact('inventories'));
     }

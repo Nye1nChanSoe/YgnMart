@@ -6,7 +6,7 @@
                     <div>
                         <h1 class="text-lg font-medium">Total Transactions</h1>
                         <div class="mt-1.5">
-                            <span class="text-5xl text-green-600 font-medium">{{ number_format($transactionData->reduce(fn($total, $value) => $total += $value), 0, '.', ',') }}</span>
+                            <span class="text-5xl text-green-600 font-medium">{{ number_format($transactionData->reduce(fn($total, $value) => $total += $value) ?? 0, 0, '.', ',') }}</span>
                             <span class="text-gray-500 font-normal text-sm">Kyat</span>
                         </div>
                     </div>
@@ -27,7 +27,7 @@
                 <div class="flex gap-x-4">
                     <div class="w-1/4 shadow py-2 px-4 rounded">
                         <div class="mt-2.5">
-                            <span class="text-4xl text-green-600 font-medium">{{ number_format($transactions->reduce(fn($total, $object) => $total += $object->net_revenue), 0, '.', ',') }}</span>
+                            <span class="text-4xl text-green-600 font-medium">{{ number_format($transactions->reduce(fn($total, $object) => $total += $object->net_revenue) ?? 0, 0, '.', ',') }}</span>
                             <span class="text-gray-500 font-normal text-sm">Kyat</span>
                         </div>
                         <h1 class="mt-4 font-medium text-lg">Total Net Profit</h1>
