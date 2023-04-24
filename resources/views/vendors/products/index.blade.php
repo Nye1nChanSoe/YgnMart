@@ -89,9 +89,9 @@
                             </td>
                             <td class="px-6 py-2">
                                 @if ($inventory->status == 'sell')
-                                <div class="bg-green-50 rounded-lg text-green-700 text-center px-1 py-1">Selling</div>
+                                <div class="bg-green-100 rounded-lg text-green-900 text-center px-1 py-1">Selling</div>
                                 @else
-                                <div class="bg-gray-600 rounded-lg text-white text-center px-1 py-1">Closed</div>
+                                <div class="bg-gray-500 rounded-lg text-white text-center px-1 py-1">Closed</div>
                                 @endif
                             </td>
                             <td class="px-6 py-2">

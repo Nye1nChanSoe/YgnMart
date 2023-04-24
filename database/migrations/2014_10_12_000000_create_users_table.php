@@ -24,7 +24,6 @@ return new class extends Migration
             $table->string('user_status')->default('inactive');
             $table->string('image')->nullable();
             $table->rememberToken();
-            $table->softDeletes();
             $table->timestamps();
         });
     }

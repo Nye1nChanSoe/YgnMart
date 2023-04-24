@@ -1,4 +1,4 @@
-@if (!empty(request(['search', 'category'])))
+@if(request()->filled('search') || request()->filled('category'))
     <nav role="navigation" aria-label="{{ __('Pagination Navigation') }}" class="flex items-center justify-between">
 
         <div class="sm:flex-1 sm:flex sm:items-center sm:justify-between">

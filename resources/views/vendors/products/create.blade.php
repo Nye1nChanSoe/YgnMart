@@ -49,6 +49,7 @@
                 x-cloak
             >
                 <h1 class="font-medium">1. Select the Category you want to sell</h1>
+                <div class="text-sm text-gray-400 mt-1.5 ml-1 font-normal">Note: you can only select one main category</div>
                 <div class="text-gray-700 flex gap-x-16 mt-10">
                     <div x-data="{open:false}">
                         <div class="flex items-center hover:text-blue-600 mb-3">
@@ -186,7 +187,7 @@
                                     <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
                                     <p class="text-xs text-gray-500 dark:text-gray-400">JPG, PNG, JPEG(MAX. 800x400px)</p>
                                 </div>
-                                <input id="image" type="file" name="image" class="" />
+                                <input id="image" type="file" name="image" class="hidden" />
                             </label>
                         </div> 
                         <x-input-error field="image" />

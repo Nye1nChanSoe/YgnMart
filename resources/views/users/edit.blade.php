@@ -162,7 +162,7 @@
                             <li class="flex"><span class="mr-2">4.</span><p>Access to any subscriptions, services, or products that are linked to your account.</p></li>
                         </ul>
                     </x-warning>
-                    <form action="{{ route('user.destroy') }}" method="POST" class="mt-4">
+                    <form action="{{ route('user.destroy', $user->username) }}" method="POST" class="mt-4">
                         @method('DELETE')
                         @csrf
                         <button type="submit" class="text-white bg-red-500 px-3 py-2 rounded-lg hover:bg-red-700">Delete Account</button>

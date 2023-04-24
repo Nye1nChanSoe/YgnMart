@@ -24,15 +24,23 @@ class ProductController extends Controller
          * Eager load or left join the model reviews
          * Dot notation to eager load the nested relationship like vendor
          */
-        
-        $products = Cache::remember('product', '300', function() {
+        if(request()->filled('search') || request()->filled('category')) {
             $filteredQuery = Product::with(['reviews', 'inventory.vendor'])
                 ->whereHas('inventory', fn($query) => $query
                     ->where('status', 'sell'))
                 ->latest()
                 ->filter($this->parseHyphens(request(['search', 'category'])));
-    
-            return $products = $filteredQuery->paginate(20)->withQueryString();
+            $products = $filteredQuery->paginate(20)->withQueryString();
+
+            return view('products.index', compact('products'));
+        }
+
+        $products = Cache::remember('product', '300', function() {
+            return Product::with(['reviews', 'inventory.vendor'])
+                ->whereHas('inventory', fn($query) => $query
+                    ->where('status', 'sell'))
+                ->latest()
+                ->paginate(20);
         });
 
         return view('products.index', compact('products'));

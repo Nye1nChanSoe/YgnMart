@@ -14,8 +14,8 @@
         </li>
     </ul>
 
-    <div class="flex items-center justify-end gap-x-2 px-5 py-1.5 mt-6">
-        <a href="{{ route('vendor.products.edit', $product->slug) }}" class="text-sm text-gray-500 hover:text-blue-600">Edit</a>
+    <div class="flex items-center justify-end gap-x-2 px-5 py-1.5 mt-3">
+        <a href="{{ route('vendor.products.edit', $product->slug) }}" class="text-base text-gray-500 hover:text-blue-600">Edit</a>
     </div>
     <section class="px-5 py-5 mt-1 shadow rounded">
         <div class="text-gray-700">
@@ -49,7 +49,7 @@
                             @if ($product->inventory->status == 'sell')
                             <span class="bg-slate-100 text-blue-500 rounded-lg px-2.5 py-1 text-sm mr-1.5">Selling</span>
                             @else
-                            <span class="bg-slate-100 text-gray-700 rounded-lg px-2.5 py-1 text-sm mr-1.5">Closed</span>
+                            <span class="bg-slate-100 text-gray-700 rounded-lg px-2.5 py-1 text-sm mr-1.5">Not Selling</span>
                             @endif
                         </h1>
                         <div class="flex w-1/2 self-center justify-end flex-wrap gap-x-1 gap-y-2">

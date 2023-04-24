@@ -13,12 +13,21 @@ class VendorInventoryController extends Controller
 
     public function index()
     {
+        if(request()->filled('search')) {
+            $inventories = Inventory::with('product')
+                ->where('vendor_id', auth()->guard('vendor')->id())
+                ->latest()
+                ->search($this->parseHyphens(request(['search'])))
+                ->paginate(25);
+
+            return view('vendors.inventories.index', compact('inventories'));
+        }
+
         $inventories = Cache::remember('vendor:inventory', '300', function() {
             return Inventory::with('product')
-            ->where('vendor_id', auth()->guard('vendor')->id())
-            ->latest()
-            ->search($this->parseHyphens(request(['search'])))
-            ->paginate(25);
+                ->where('vendor_id', auth()->guard('vendor')->id())
+                ->latest()
+                ->paginate(25);
         });
 
         return view('vendors.inventories.index', compact('inventories'));

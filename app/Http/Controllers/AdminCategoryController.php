@@ -13,10 +13,17 @@ class AdminCategoryController extends Controller
 
     public function index()
     {
+        if(request()->filled('search')) {
+            $categories = Category::latest()
+                ->search($this->parseHyphens(request(['search'])))
+                ->paginate(25);
+
+            return view('admins.categories.index', compact('categories'));
+        }
+
         $categories = Cache::remember('admin:category', '300', function() {
-            Category::latest()
-            ->search($this->parseHyphens(request(['search'])))
-            ->paginate(25);
+            return Category::latest()
+                ->paginate(25);
         });
 
         return view('admins.categories.index', compact('categories'));

@@ -13,11 +13,19 @@ class AdminVendorController extends Controller
 
     public function index()
     {
+        if(request()->filled('search')) {
+            $vendors = Vendor::with('inventories')
+                ->latest()
+                ->search($this->parseHyphens(request(['search'])))
+                ->paginate(25);
+
+            return view('admins.vendors.index', compact('vendors'));
+        }
+
         $vendors = Cache::remember('admin:vendor', '300', function() {
             return Vendor::with('inventories')
-            ->latest()
-            ->search($this->parseHyphens(request(['search'])))
-            ->paginate(25);
+                ->latest()
+                ->paginate(25);
         });
 
         return view('admins.vendors.index', compact('vendors'));

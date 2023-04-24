@@ -23,8 +23,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [ProductController::class, 'index'])->name('home');
 Route::get('/products/suggestions', [ProductController::class, 'suggestions'])->name('products.suggestions');   /** AJAX route */
 Route::get('/products/{product:slug}', [ProductController::class, 'show'])->name('products.show');
-// Route::get('/products/vendor/{vendor:username}')
-
 
 Route::middleware(['guest'])->group(function() {
     Route::get('/register', [RegisterController::class, 'create'])->name('register');
@@ -72,8 +70,8 @@ Route::middleware(['auth'])->group(function() {
     Route::delete('/address', [AddressController::class, 'destroy'])->name('address.destroy');
 
     Route::post('/user/address', [UserController::class, 'storeAddress'])->name('user.store.address');
-    Route::delete('/user', [UserController::class, 'destroy'])->name('user.destroy');
-    
+    Route::delete('/{user:username}}', [UserController::class, 'destroy'])->name('user.destroy');
+
     Route::get('/{user:username}', [UserController::class, 'profile'])->name('profile');
     Route::get('/{user:username}/settings', [UserController::class, 'edit'])->name('profile.settings');
     Route::patch('/{user:username}', [UserController::class, 'update'])->name('user.update');
@@ -90,7 +88,7 @@ Route::prefix('vendor')->middleware(['auth:vendor'])->group(function() {
     Route::get('/products/{product:slug}', [VendorProductController::class, 'show'])->name('vendor.products.show');
     Route::get('/products/{product:slug}/edit', [VendorProductController::class, 'edit'])->name('vendor.products.edit');
     Route::put('/products/{product:slug}', [VendorProductController::class, 'update'])->name('vendor.products.update');
-    Route::delete('/products/{product:slug}', [VendorProductController::class, 'destroy'])->name('vendor.products.destroy');
+    // Route::delete('/products/{product:slug}', [VendorProductController::class, 'destroy'])->name('vendor.products.destroy');
 
     Route::get('/inventories', [VendorInventoryController::class, 'index'])->name('vendor.inventories');
 
@@ -107,10 +105,13 @@ Route::prefix('admin')->middleware(['auth', 'admin_access'])->group(function() {
     Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::get('/customers', [AdminCustomerController::class, 'index'])->name('admin.customers');
     Route::get('/customers/{user:username}', [AdminCustomerController::class, 'show'])->name('admin.customers.show');
-    
+    Route::patch('/customers/{user:username}', [AdminCustomerController::class, 'update'])->name('admin.customers.update');
+    Route::delete('/customers/{user:username}', [AdminCustomerController::class, 'destroy'])->name('admin.customers.destroy');
+
     Route::get('/vendors', [AdminVendorController::class, 'index'])->name('admin.vendors');
+    Route::get('/vendors/verification', [AdminVendorController::class, 'verify'])->name('admin.vendors.verification');
     Route::get('/vendors/{user:username}', [AdminVendorController::class, 'show'])->name('admin.vendors.show');
-    
+
     Route::get('/categories', [AdminCategoryController::class, 'index'])->name('admin.categories');
     Route::get('/categories/{category:sub_type}', [AdminCategoryController::class, 'show'])->name('admin.categories.show');
 

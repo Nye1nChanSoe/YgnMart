@@ -39,10 +39,9 @@ class UserController extends Controller
         }
     }
 
-    public function destroy()
+    public function destroy(User $user)
     {
-        User::find(auth()->id())->delete();
-        
+        $user->delete;
         auth()->logout();
 
         /** remove all the data from current session */

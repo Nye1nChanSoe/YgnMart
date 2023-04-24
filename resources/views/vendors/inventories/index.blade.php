@@ -71,7 +71,7 @@
                             <td class="px-6 py-2">
                                 <div class="font-medium">{{ number_format($inventory->available_quantity, 0, '.', ',') }}</div>
                             </td>
-                            <td class="px-2 py-2">
+                            <td class="px-2 py-2 text-center">
                                 @if ($inventory->in_stock)
                                 <div class="bg-green-600 rounded-lg text-white px-1.5 py-1">In Stock</div>
                                 @elseif($inventory->low_stock)
