@@ -41,7 +41,7 @@ class UserAnalyticsMiddleware
             $userAnalytic = $user->analytics()
                 ->where('user_id', $user->id)
                 ->where('session_id', $sessionId)
-                ->orderBy('created_at', 'desc')
+                ->orderBy('updated_at', 'desc')
                 ->first();
 
                 // If there is no user analytic record for the current session, create a new one
@@ -65,10 +65,11 @@ class UserAnalyticsMiddleware
             } else {
                 // Increment the page view count and update the visited pages array
                 $userAnalytic->page_views++;
-                
+
+                // Add Visited Pages
                 $visitedPages = json_decode($userAnalytic->visited_pages);
                 $uniqueVisitedPages = json_decode($userAnalytic->unique_visited_pages);
-                
+
                 $visitedPages[] = $url;
                 if(!in_array($url, $uniqueVisitedPages)) 
                 {
@@ -79,6 +80,7 @@ class UserAnalyticsMiddleware
                 $userAnalytic->visited_pages = json_encode($visitedPages);
                 $userAnalytic->unique_visited_pages = json_encode($uniqueVisitedPages);
 
+                // Apply end time
                 $userAnalytic->end_time = now();
             }
 

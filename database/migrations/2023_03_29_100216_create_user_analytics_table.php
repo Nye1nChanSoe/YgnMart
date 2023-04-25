@@ -27,6 +27,7 @@ return new class extends Migration
             $table->string('browser_type');
             $table->string('operating_system');
             $table->text('location')->nullable();       // TODO: use GeoIP2 
+            $table->date('date')->default(now()->format('Y-m-d'));
             $table->timestamps();
 
             /** constraints */

@@ -25,7 +25,7 @@ class Transaction extends Model
                 DB::raw('SUM(gross_amount) as revenue'))
             ->groupBy(DB::raw('day'))
             ->where('vendor_id', auth()->guard('vendor')->id());
-        
+
         return $query;
     }
 
@@ -50,7 +50,6 @@ class Transaction extends Model
                 )
             )
         );
-
         return $query;
     }
 

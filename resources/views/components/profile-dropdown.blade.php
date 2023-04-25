@@ -17,7 +17,7 @@
             </div>
         </x-dropdown-item>
         @else
-        <x-dropdown-item href="{{ route('admin.show', $user->username) }}">
+        <x-dropdown-item href="{{ route('admin.show', $user->username) }}" target="_blank">
             <div class="flex items-center">
                 <div class="w-5 mr-2"><x-icon name="profile" /></div>
                 <span class="truncate">{{ $user->name }}</span>

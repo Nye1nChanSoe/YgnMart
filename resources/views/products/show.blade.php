@@ -126,7 +126,7 @@
     </x-container>
 
     {{-- TODO: Add Carousel effect --}}
-    <div class="bg-white border rounded-md">
+    <div class="bg-white px-3 border rounded-md">
         <x-related-products :related-products="$relatedProducts" :product="$product" class="pb-10 container mx-auto" />
     </div>
 

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\UserAnalytic;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 
@@ -12,11 +14,23 @@ class AdminController extends Controller
     /** dashboard */
     public function index()
     {
-        // TODO: show daily active users, both unique as well as non-unique amount,
-        // TODO: show user specific details,
-        // TODO: show daily product sales,
+        $visitors = UserAnalytic::filter('day', false)->get();
+        $uniqueVisitors = UserAnalytic::filter('day', true)->get();
 
-        return view('admins.index');
+        /** key => value pairs day => users */
+        $activeData = $visitors->pluck('users', 'day');
+        $viewData = $visitors->pluck('views', 'day');
+        $uniqueActiveData = $uniqueVisitors->pluck('unique_users', 'day');
+        $uniqueViewData = $uniqueVisitors->pluck('unique_views', 'day');
+
+        return view('admins.index', compact([
+            'visitors',
+            'uniqueVisitors',
+            'activeData',
+            'viewData',
+            'uniqueActiveData',
+            'uniqueViewData'
+        ]));
     }
 
     public function show(User $user)
