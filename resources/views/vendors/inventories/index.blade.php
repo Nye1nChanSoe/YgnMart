@@ -48,7 +48,7 @@
                 </thead>
                 <tbody x-data="">
                     @foreach ($inventories as $inventory)
-                        <tr x-on:click="window.location.href = '{{ route('vendor.products.show', $inventory->product->slug) }}'" class="bg-white border-b even:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-300">
+                        <tr x-on:click="window.location.href = '{{ route('vendor.products.show', $inventory->product->slug) }}'" class="bg-white border-b cursor-pointer even:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-300">
                             <td class="px-6 py-2">
                                 <div>{{ ($inventories->currentPage() - 1) * $inventories->perPage() + $loop->iteration }}</div>
                             </td>

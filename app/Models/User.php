@@ -114,4 +114,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Transaction::class);
     }
+
+    public function analytics()
+    {
+        return $this->hasMany(UserAnalytic::class);
+    }
 }

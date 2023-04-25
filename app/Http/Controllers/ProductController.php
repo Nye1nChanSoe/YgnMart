@@ -35,7 +35,8 @@ class ProductController extends Controller
             return view('products.index', compact('products'));
         }
 
-        $products = Cache::remember('product', '300', function() {
+        $cache_key = 'product:' . Product::count();
+        $products = Cache::remember($cache_key, '300', function() {
             return Product::with(['reviews', 'inventory.vendor'])
                 ->whereHas('inventory', fn($query) => $query
                     ->where('status', 'sell'))

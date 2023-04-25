@@ -182,7 +182,7 @@
 </body>
 </html>
 
-@if (!request()->routeIs(['login', 'register', 'vendor.login', 'vendor.register', 'profile']))
+@if (!request()->routeIs(['login', 'register', 'vendor.login', 'vendor.register']))
 <script>
     document.addEventListener('alpine:init', () => {
         Alpine.data('notification', () => ({

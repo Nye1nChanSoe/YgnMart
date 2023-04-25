@@ -17,13 +17,16 @@ return new class extends Migration
             $table->string('ip_address');
             $table->string('session_id');
             $table->timestamp('start_time');
-            $table->timestamp('end_time');      // beforeunload, periodic AJAX, timeout
+            $table->timestamp('end_time')->nullable();      // beforeunload, periodic AJAX, timeout
             $table->integer('page_views');
+            $table->integer('unique_page_views');
             $table->json('visited_pages');
+            $table->json('unique_visited_pages');
             $table->string('device_type');
+            $table->string('device_name');
             $table->string('browser_type');
             $table->string('operating_system');
-            $table->text('location');
+            $table->text('location')->nullable();       // TODO: use GeoIP2 
             $table->timestamps();
 
             /** constraints */

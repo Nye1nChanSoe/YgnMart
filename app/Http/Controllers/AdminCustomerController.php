@@ -25,7 +25,8 @@ class AdminCustomerController extends Controller
             return view('admins.customers.index', compact('customers'));
         }
 
-        $customers = Cache::remember('admin:customer', '300', function() {
+        $cache_key = 'admin:customer:' . User::count();
+        $customers = Cache::remember($cache_key, '300', function() {
             return User::with('addresses')
                 ->where('role', '<>', 'admin')
                 ->latest()
@@ -49,10 +50,10 @@ class AdminCustomerController extends Controller
         ]);
 
         $user->update($updateInfo);
-        Cache::forget('admin:customer');
+        Cache::forget('admin:customer:' . $user->count());
 
         return redirect()->route('admin.customers.show', $user->username)
-            ->with('success', 'User profile updated');
+            ->with('success', "User {$user->name} updated");
     }
 
     public function destroy(Request $request, User $user)
@@ -62,7 +63,6 @@ class AdminCustomerController extends Controller
         }
 
         $user->delete();
-        Cache::forget('admin:customer');
-        return redirect()->route('admin.customers')->with('success', 'You have removed the user');
+        return redirect()->route('admin.customers')->with('success', "User {$user->name} removed");
     }
 }

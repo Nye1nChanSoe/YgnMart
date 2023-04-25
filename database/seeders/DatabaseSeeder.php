@@ -190,7 +190,7 @@ class DatabaseSeeder extends Seeder
         }
 
         $this->call([
-            ProductAnalyticSeeder::class,
+            // ProductAnalyticSeeder::class,
         ]);
     }
 }

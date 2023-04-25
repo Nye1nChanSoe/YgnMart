@@ -16,7 +16,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <title>{{ $title ?? 'Dashboard - YangonMart.com' }}</title>
 </head>
-<body class="antialiased" x-cloak>
+<body class="antialiased bg-slate-600" x-cloak>
     <section x-data="{ open: true }">
         {{-- sidebar --}}
         <aside x-show="open" class="fixed w-[270px] inset-0 z-40 bg-gray-900" x-transition:enter="transform ease-in-out duration-300" x-transition:enter-start="-translate-x-full" x-transition:enter-end="translate-x-0" x-transition:leave="transform ease-in-out duration-300" x-transition:leave-start="translate-x-0" x-transition:leave-end="-translate-x-full" x-cloak>
@@ -116,7 +116,7 @@
         </aside>
 
         {{-- dashboard --}}
-        <div class="px-2 py-2 bg-slate-600 h-screen transition-all duration-300 ease-in-out" x-bind:class="{'ml-[270px]':open, 'ml-14':!open}">
+        <div class="px-2 py-2 bg-slate-600 h-full transition-all duration-300 ease-in-out" x-bind:class="{'ml-[270px]':open, 'ml-14':!open}">
             <nav class="flex justify-between items-center px-3 py-3 h-16 rounded-lg shadow bg-gray-900">
                 <div>
                     <ul class="flex gap-x-5">

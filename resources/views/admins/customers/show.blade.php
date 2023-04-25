@@ -88,7 +88,7 @@
             <div x-show="askPassword" class="fixed z-10 inset-0 overflow-y-auto" x-cloak x-transition>
                 <div class="flex items-center justify-center min-h-screen">
                     <div class="relative bg-gray-800 w-full max-w-sm mx-auto rounded-md shadow-lg px-4 py-3 md:px-8 md:py-5">
-                        <div class="relative">
+                        <div class="relative mb-6">
                             <h1 class="text-center text-gray-300 font-medium md:text-lg">Account Deletion</h1>
                             <button x-on:click="askPassword = false" class="absolute top-1.5 right-1.5"><x-icon name="close" class="text-gray-600 hover:text-blue-600" /></button>
                         </div>
@@ -96,7 +96,7 @@
                             @csrf
                             @method('DELETE')
                             <div class="mb-4">
-                                <label class="block text-gray-300 font-medium mb-2" for="password">Enter Your Password</label>
+                                <label class="block text-gray-300 mb-2" for="password">Enter Your Password</label>
                                 <input class="border rounded w-full py-2 px-3 bg-slate-200 text-gray-700 leading-tight focus:outline-blue-500" name="password" id="password" type="password">
                             </div>
                             <button type="submit" class="px-2.5 py-1.5 w-full rounded-lg text-white bg-red-500 hover:bg-red-600">Delete Account</button>

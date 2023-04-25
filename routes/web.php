@@ -20,9 +20,11 @@ use App\Http\Controllers\VendorTransactionController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/', [ProductController::class, 'index'])->name('home');
-Route::get('/products/suggestions', [ProductController::class, 'suggestions'])->name('products.suggestions');   /** AJAX route */
-Route::get('/products/{product:slug}', [ProductController::class, 'show'])->name('products.show');
+Route::middleware(['update.user.analytics'])->group(function() {
+    Route::get('/', [ProductController::class, 'index'])->name('home');
+    Route::get('/products/suggestions', [ProductController::class, 'suggestions'])->name('products.suggestions');   /** AJAX route */
+    Route::get('/products/{product:slug}', [ProductController::class, 'show'])->name('products.show');
+});
 
 Route::middleware(['guest'])->group(function() {
     Route::get('/register', [RegisterController::class, 'create'])->name('register');
@@ -39,7 +41,7 @@ Route::prefix('vendor')->middleware(['guest'])->group(function() {
     Route::post('/login', [SessionController::class, 'vstore']);
 });
 
-Route::middleware(['auth'])->group(function() {
+Route::middleware(['auth', 'update.user.analytics'])->group(function() {
     Route::get('/register/address/skip', [RegisterController::class, 'skipAddress'])->name('register.address.skip');
     Route::post('/register/address', [RegisterController::class, 'storeAddress'])->name('register.store.address');
 
@@ -101,7 +103,7 @@ Route::prefix('vendor')->middleware(['auth:vendor'])->group(function() {
     Route::patch('/{vendor:username}', [VendorController::class, 'update'])->name('vendor.update');
 });
 
-Route::prefix('admin')->middleware(['auth', 'admin_access'])->group(function() {
+Route::prefix('admin')->middleware(['auth', 'admin.access'])->group(function() {
     Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::get('/customers', [AdminCustomerController::class, 'index'])->name('admin.customers');
     Route::get('/customers/{user:username}', [AdminCustomerController::class, 'show'])->name('admin.customers.show');
@@ -110,10 +112,15 @@ Route::prefix('admin')->middleware(['auth', 'admin_access'])->group(function() {
 
     Route::get('/vendors', [AdminVendorController::class, 'index'])->name('admin.vendors');
     Route::get('/vendors/verification', [AdminVendorController::class, 'verify'])->name('admin.vendors.verification');
-    Route::get('/vendors/{user:username}', [AdminVendorController::class, 'show'])->name('admin.vendors.show');
+    Route::get('/vendors/{vendor:username}', [AdminVendorController::class, 'show'])->name('admin.vendors.show');
+    Route::patch('/vendors/{vendor:username}', [AdminVendorController::class, 'update'])->name('admin.vendors.update');
+    Route::patch('/vendors/{vendor:username}/verify', [AdminVendorController::class, 'verify'])->name('admin.vendors.verify');
+    Route::delete('/vendors/{vendor:username}', [AdminVendorController::class, 'destroy'])->name('admin.vendors.destroy');
 
     Route::get('/categories', [AdminCategoryController::class, 'index'])->name('admin.categories');
+    Route::post('/categories', [AdminCategoryController::class, 'store'])->name('admin.categories.store');
     Route::get('/categories/{category:sub_type}', [AdminCategoryController::class, 'show'])->name('admin.categories.show');
+    Route::delete('/categories/{category:sub_type}', [AdminCategoryController::class, 'destroy'])->name('admin.categories.destroy');
 
     Route::get('/{user:username}', [AdminController::class, 'show'])->name('admin.show');
     Route::get('/{user:username}/settings', [AdminController::class, 'show'])->name('admin.settings');

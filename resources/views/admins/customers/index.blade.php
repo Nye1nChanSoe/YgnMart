@@ -43,7 +43,7 @@
                 </thead>
                 <tbody x-data="">
                     @foreach ($customers as $customer)
-                        <tr x-on:click="window.location.href = '{{ route('admin.customers.show', $customer->username) }}'" class="bg-slate-500 even:bg-slate-600 hover:bg-gray-800"">
+                        <tr x-on:click="window.location.href = '{{ route('admin.customers.show', $customer->username) }}'" class="bg-slate-500 cursor-pointer even:bg-slate-600 hover:bg-gray-800"">
                             <td class="px-6 py-2">
                                 <div>{{ ($customers->currentPage() - 1) * $customers->perPage() + $loop->iteration }}</div>
                             </td>

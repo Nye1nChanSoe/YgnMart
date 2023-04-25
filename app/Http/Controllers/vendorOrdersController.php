@@ -22,7 +22,8 @@ class vendorOrdersController extends Controller
             return view('vendors.orders.index', compact('transactions'));
         }
 
-        $transactions = Cache::remember('vendor:order', '300', function() {
+        $cache_key = 'vendor:order:' . Transaction::count();
+        $transactions = Cache::remember($cache_key, '300', function() {
             return Transaction::with('order.products')
                 ->where('vendor_id', auth()->guard('vendor')->id())
                 ->latest()

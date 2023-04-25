@@ -27,7 +27,9 @@ class VendorProductController extends Controller
 
             return view('vendors.products.index', compact('inventories'));
         }
-        $inventories = Cache::remember('vendor:products', '300', function() {
+
+        $cache_key = 'vendor:products:' . Inventory::count();
+        $inventories = Cache::remember($cache_key, '300', function() {
             return Inventory::with('product.categories')
                 ->where('vendor_id', auth()->guard('vendor')->id())
                 ->latest()
