@@ -1,4 +1,4 @@
-@if(request()->filled('search') || request()->filled('category'))
+@if(request()->filled('search') || request()->filled('category') || request()->filled('seller'))
     <nav role="navigation" aria-label="{{ __('Pagination Navigation') }}" class="flex items-center justify-between">
 
         <div class="sm:flex-1 sm:flex sm:items-center sm:justify-between">
@@ -17,6 +17,10 @@
                     {!! __('results for') !!}
                     @if (request('search') ?? false)
                         <span class="font-semibold">"{{request('search')}}"</span>
+                    @endif
+                    @if (request('seller') ?? false)
+                    {!! __('supplier') !!}
+                        <span class="font-semibold">"{{ ucwords(str_replace('-', ' ', request('seller'))) }}"</span>
                     @endif
                     @if (request('category') ?? false)
                     {!! __('category') !!}

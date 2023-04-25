@@ -40,7 +40,7 @@
                         <a href="#reviews" class="text-sm ml-2 py-1.5 px-2 bg-slate-100 rounded-lg text-blue-500 hover:bg-slate-200">Leave Review</a>
                     </div>
                     <div class="text-blue-500 hover:text-blue-700 flex items-center gap-x-1">
-                        <a href="products/vendor/{{ strtolower(str_replace([' ', '_'], '-', $product->inventory->vendor->username)) }}">
+                        <a href="?seller={{ strtolower(str_replace([' ', '_'], '-', $product->inventory->vendor->brand)) }}">
                             <span class="text-zinc-800">Supplier</span> {{ $product->inventory->vendor->brand }}
                         </a>
                         @if ($product->inventory->vendor->is_verified)

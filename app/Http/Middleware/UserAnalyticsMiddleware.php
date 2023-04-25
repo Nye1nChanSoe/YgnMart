@@ -50,8 +50,6 @@ class UserAnalyticsMiddleware
                     'user_id' => $user->id,
                     'ip_address' => $request->ip(),
                     'session_id' => $sessionId,
-                    'start_time' => now(),
-                    'end_time' => null,
                     'page_views' => 1,
                     'unique_page_views' => 1,
                     'visited_pages' => json_encode([$url]),

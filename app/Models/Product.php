@@ -54,6 +54,12 @@ class Product extends Model
             )
         );
 
+        $query->when($terms['seller'] ?? false, fn($query, $seller) => $query
+            ->whereHas('inventory.vendor', fn($query) => $query
+                ->where('brand', 'like', "%{$seller}%")
+            )
+        );
+
         return $query;
     }
 

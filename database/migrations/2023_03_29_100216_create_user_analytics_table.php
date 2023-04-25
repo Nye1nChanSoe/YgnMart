@@ -16,8 +16,8 @@ return new class extends Migration
             $table->foreignId('user_id');
             $table->string('ip_address');
             $table->string('session_id');
-            $table->timestamp('start_time');
-            $table->timestamp('end_time')->nullable();      // beforeunload, periodic AJAX, timeout
+            $table->timestamp('start_time')->default(now());
+            $table->timestamp('end_time')->default(now());      // beforeunload, periodic AJAX, timeout
             $table->integer('page_views');
             $table->integer('unique_page_views');
             $table->json('visited_pages');

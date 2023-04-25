@@ -37,6 +37,7 @@ class AdminCustomerController extends Controller
 
     public function show(User $user)
     {
+        $user = $user->load(['analytics', 'orders']);
         return view('admins.customers.show', compact('user'));
     }
 

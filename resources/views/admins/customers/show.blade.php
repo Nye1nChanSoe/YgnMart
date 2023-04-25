@@ -1,6 +1,10 @@
+@php
+    $analytic = $user->analytics()->orderBy('updated_at', 'desc')->first();
+@endphp
+
 <x-admin-layout>
     <x-slot:title>
-        Profile - {{$user->name}} | YangonMart.com
+        {{$user->name}} - YangonMart.com
     </x-slot:title>
     <ul class="flex items-center my-3 px-3 py-3 text-sm">
         <li class="flex items-center ml-2 gap-x-1">
@@ -29,8 +33,10 @@
                     </div>
                     @if ($user->user_status == 'active')
                     <div class="flex items-center justify-center gap-x-1.5">Status <div class="bg-green-400 inline-block rounded-full px-1 py-1 w-fit "></div></div>
+                    <time class="text-sm text-gray-400 font-normal">{{ \Carbon\Carbon::createFromTimestamp(strtotime($analytic->end_time))->diffForHumans() }}</time>
                     @else
                     <div class="flex items-center justify-center gap-x-1.5">Status <div class="bg-red-400 inline-block rounded-full px-1 py-1 w-fit "></div></div>
+                    <time class="text-sm text-gray-400 font-normal">{{ \Carbon\Carbon::createFromTimestamp(strtotime($analytic->end_time))->diffForHumans() }}</time>
                     @endif
                     <div class="flex items-center justify-center gap-x-2.5 pt-4">
                         <x-icon name="mail" class="text-gray-400" />
@@ -40,17 +46,56 @@
                         <x-icon name="telephone" class="text-gray-400"/>
                         <a href="tel:+95{{$user->phone_number}}" class="hover:text-blue-300">{{ $user->phone_number }}</a>
                     </div>
-                    <div class="pt-2.5">
-                        <button x-on:click="open=!open" class="px-2.5 py-1.5 rounded-lg text-white bg-slate-500 hover:bg-slate-600">Edit Account</button>
-                    </div>
                 </div>
             </div>
             <div class="w-2/3">
-                <form action="{{ route('admin.customers.update', $user->username) }}" method="POST" class="py-4 px-4 bg-slate-600 rounded-lg text-gray-100 md:px-6">
+                <div class="py-4 px-4 bg-slate-600 rounded-lg text-gray-300 md:px-6">
+                    <div>
+                        <div class="mt-1.5">
+                            <h3 class="my-1">Total Orders</h3>
+                            <span class="bg-gray-800 rounded p-1.5 w-full inline-block">{{ $user->orders->count() }}</span>
+                        </div>
+                        <div class="mt-1.5">
+                            <h3 class="my-1">Purchased Amount</h3>
+                            <span class="bg-gray-800 rounded p-1.5 w-full inline-block">{{ number_format($user->orders->sum('total_price'), 0, '.', ',') }}<span class="text-xs text-gray-400 ml-1">Kyat</span></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4 py-4 px-4 bg-slate-600 rounded-lg text-gray-300 md:px-6">
+                    <div>
+                        <div class="mt-1.5">
+                            <h3 class="my-1">IP Address</h3>
+                            <span class="bg-gray-800 rounded p-1.5 w-full inline-block text-green-500">{{ $analytic->ip_address }}</span>
+                        </div>
+                        <div class="mt-1.5">
+                            <h3 class="my-1">Device Type</h3>
+                            <span class="bg-gray-800 rounded p-1.5 w-full inline-block text-green-500">{{ $analytic->device_type }}</span>
+                        </div>
+                        <div class="mt-1.5">
+                            <h3 class="my-1">Device Name</h3>
+                            <span class="bg-gray-800 rounded p-1.5 w-full inline-block text-green-500">{{ $analytic->device_name }}</span>
+                        </div>
+                        <div class="mt-1.5">
+                            <h3 class="my-1">Browser Type</h3>
+                            <span class="bg-gray-800 rounded p-1.5 w-full inline-block text-green-500">{{ $analytic->browser_type }}</span>
+                        </div>
+                        <div class="mt-1.5">
+                            <span>Operating System</span>
+                            <span class="bg-gray-800 rounded p-1.5 w-full inline-block text-green-500">{{ $analytic->operating_system }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <form action="{{ route('admin.customers.update', $user->username) }}" method="POST" class="mt-4 py-4 px-4 bg-slate-600 rounded-lg text-gray-100 md:px-6">
                     @method('PATCH')
                     @csrf
                     <input type="hidden" name="update_type" value="info">
-                    <h1 class="mb-6 font-medium text-xl">User Info</h1>
+                    <div class="flex mb-6 justify-between">
+                        <h1 class="font-medium text-xl">User Info</h1>
+                        <div>
+                            <button x-on:click="open=!open" class="px-2.5 py-1.5 rounded-lg text-white bg-slate-700 hover:bg-slate-800">Edit Account</button>
+                        </div>
+                    </div>
                     <div class="mb-4">
                         <label class="block text-gray-100 font-medium mb-2" for="username">Username</label>
                         <input class="border rounded w-full py-2 px-3 text-black leading-tight bg-slate-200 focus:outline-blue-500 focus:outline-2" name="username" id="username" type="text" value="{{ old('username') ?? $user->username }}" x-bind:readonly="!open" placeholder="Username">

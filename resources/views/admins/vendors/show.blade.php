@@ -1,6 +1,6 @@
 <x-admin-layout>
     <x-slot:title>
-        Profile - {{$vendor->name}} | YangonMart.com
+        {{$vendor->brand}} - YangonMart.com
     </x-slot:title>
     <ul class="flex items-center my-3 px-3 py-3 text-sm">
         <li class="flex items-center ml-2 gap-x-1">
