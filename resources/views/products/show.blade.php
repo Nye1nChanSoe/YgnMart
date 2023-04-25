@@ -18,12 +18,12 @@
 
         {{-- product view --}}
         <div class="flex flex-col items-center justify-center md:justify-around md:space-x-2 md:flex-row">
-            <div class="w-60 my-8 md:basis-1/3 md:w-full md:my-0">
-                <img src="{{$product->image ? asset($product->image) : asset('images/no-image.png')}}" alt="" class="w-full h-full object-contain">
+            <div class="flex justify-center w-60 h-60 my-8">
+                <img src="{{$product->image ? asset($product->image) : asset('images/no-image.png')}}" alt="" class="w-full h-full object-contain shrink-0">
             </div>
 
             {{-- product info --}}
-            <div class="px-2 py-6 bg-slate-50 rounded-lg space-y-3 md:p-10 md:basis-1/2">
+            <div class="px-2 py-6 bg-slate-50 rounded-lg space-y-3 w-fit md:p-10 md:w-[550px]">
                 <div class="flex items-center justify-center gap-x-2 md:justify-start">
                     @foreach ($product->categories as $category)
                         <div class="text-xs text-slate-600 px-3 py-1 border border-blue-400 rounded-full hover:text-black hover:border-blue-600">
@@ -41,7 +41,7 @@
                     </div>
                     <div class="text-blue-500 hover:text-blue-700 flex items-center gap-x-1">
                         <a href="?seller={{ strtolower(str_replace([' ', '_'], '-', $product->inventory->vendor->brand)) }}">
-                            <span class="text-zinc-800">Supplier</span> {{ $product->inventory->vendor->brand }}
+                            <span class="text-zinc-800 text-sm">Supplier</span> {{ $product->inventory->vendor->brand }}
                         </a>
                         @if ($product->inventory->vendor->is_verified)
                         <div x-data="{open:false}" class="relative ml-2">

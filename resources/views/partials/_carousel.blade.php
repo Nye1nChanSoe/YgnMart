@@ -63,7 +63,7 @@
             <template x-for="image in images">
                 <button 
                     class="bg-slate-300 py-[3px] px-2.5 rounded-2xl"
-                    x-bind:class="{'bg-slate-600': activeImage === image}"
+                    x-bind:class="{'bg-black': activeImage === image}"
                     x-on:click = "selectItem(image)"
                 >
                 </button>
