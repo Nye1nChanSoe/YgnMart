@@ -16,6 +16,7 @@
     <!-- favicon -->
     <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
 
+    <!-- Vite Built -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <title>{{ $title ?? 'YangonMart.com - Shop anytime, anywhere with us' }}</title>
 
@@ -74,17 +75,17 @@
 
                 {{-- search --}}
                 <div class="w-full order-last md:w-1/3 lg:w-96 xl:w-128 md:order-none">
-                    <div class="relative border-2 border-gray-400 dark:border-none rounded-xl">
+                    <div class="relative border-2 border-gray-400 dark:border-blue-300 rounded-xl">
                         <form action="{{ route('home') }}" method="GET">
                             <div class="absolute top-2.5 left-3">
-                                <button type="submit" class="text-slate-500 hover:text-slate-800">
+                                <button type="submit" class="text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-300">
                                     <x-icon name="search"/>
                                 </button>
                             </div>
                             @if (request()->has('category'))
                                 <input type="hidden" name="category" value="{{ request('category') }}">
                             @endif
-                            <input type="text" name="search" class="w-full text-black bg-white px-10 py-2 rounded-xl focus:ring-2 dark:ring-1 dark:ring-blue-300 focus:outline-none focus:ring-gray-400 dark:focus:ring-blue-300 dark:bg-gray-900 dark:text-gray-300" placeholder="Search everything you need" value="{{request('search') ?? ''}}">
+                            <input type="text" name="search" class="w-full text-black bg-white px-10 py-2 rounded-xl focus:ring-2 focus:outline-none focus:ring-gray-500 dark:focus:ring-blue-500 dark:bg-gray-900 dark:text-gray-300" placeholder="Search everything you need" value="{{request('search') ?? ''}}">
                         </form>
                     </div>
                 </div>

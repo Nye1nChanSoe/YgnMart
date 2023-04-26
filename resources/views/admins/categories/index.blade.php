@@ -15,7 +15,7 @@
         <div class="flex justify-between items-center mb-3">
             <h1 class="text-xl text-gray-300 font-medium">Category List</h1>
             <div class="flex items-center gap-x-4">
-                <button x-on:click="open=!open" type="button" class="px-2.5 py-1.5 rounded-lg text-gray-100 bg-sky-600">Add New Category</button>
+                <button x-on:click="open=!open" type="button" class="px-2.5 py-1.5 rounded-lg text-gray-100 bg-sky-600 hover:bg-sky-700">Add New Category</button>
             </div>
         </div>
 

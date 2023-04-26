@@ -26,7 +26,7 @@
                 </div>
                 <div class="mt-6 space-y-1.5 text-center text-gray-300">
                     <div class="pt-2.5">
-                        <button x-on:click="open=!open" class="px-2.5 py-1.5 rounded-lg text-white bg-slate-500 hover:bg-slate-600">Edit Category</button>
+                        <button x-on:click="open=!open" type="button" class="px-2.5 py-1.5 rounded-lg text-white bg-slate-500 hover:bg-slate-600">Edit Category</button>
                     </div>
                 </div>
             </div>

@@ -6,7 +6,7 @@
     <x-slot:title>
         {{$product->name}} - YangonMart.com
     </x-slot:title>
-    <x-container>
+    <x-container class="mb-10">
         <ul class="flex items-center my-3 px-3 py-3 text-sm">
             <li class="flex items-center ml-2 gap-x-1">
                 <a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'text-blue-600 dark:text-blue-300' : 'text-gray-700 dark:text-gray-300' }} hover:text-blue-600 dark:hover:text-blue-500">Home</a><x-icon name="chevron-right" class="dark:text-gray-200" />
@@ -17,7 +17,7 @@
         </ul>
 
         {{-- product view --}}
-        <div class="flex flex-col items-center h-full p-2.5 justify-between lg:justify-around md:space-x-2 md:flex-row dark:bg-gray-900">
+        <div class="flex flex-col items-center h-full py-10 px-2.5 justify-between lg:justify-around md:space-x-2 md:flex-row dark:bg-gray-900">
             <div class="flex flex-col">
                 <div class="flex justify-center w-60 h-60 my-2.5 p-2 border rounded-lg md:w-80 md:h-80 dark:border-gray-700">
                     <img src="{{$product->image ? asset($product->image) : asset('images/no-image.png')}}" alt="" class="w-full h-full object-contain shrink-0">
@@ -61,9 +61,9 @@
                 <div class="flex flex-col items-center pt-4 space-y-2 md:flex-row md:space-y-0">
                     <h5 class="px-2.5 py-[3px] bg-yellow-300 text-gray-800 font-semibold rounded-xl w-32 text-xl text-center">{{number_format($product->price, 0, '.', ',')}} <span class="text-sm">MMK</span></h5>
                     @if ($product->inventory->available_quantity >= 100)
-                    <div class="ml-3 bg-blue-500 px-2.5 py-1 rounded-lg text-white text-sm">{{ $product->inventory->available_quantity }} in stock</div>
+                    <div class="ml-3 bg-blue-500 px-2.5 py-1 rounded-lg text-white text-sm dark:bg-blue-600">{{ $product->inventory->available_quantity }} in stock</div>
                     @elseif($product->inventory->available_quantity == 0)
-                    <div class="ml-3 bg-red-600 px-2.5 py-1 rounded-lg text-white text-sm">Out of stock</div>
+                    <div class="ml-3 bg-red-600 px-2.5 py-1 rounded-lg text-white text-sm dark:bg-red-500">Out of stock</div>
                     @else
                     <div class="ml-3 bg-red-400 px-2.5 py-1 rounded-lg text-white text-sm">Only {{ $product->inventory->available_quantity }} items left in stock</div>
                     @endif
@@ -86,7 +86,7 @@
                         {{-- x-model is two-way bound, meaning it both "sets" and "gets". In addition to changing data, if the data itself changes, the element will reflect the change. --}}
                         <input type="hidden" name="quantity" x-model="quantity">
                         <input type="hidden" name="product" value="{{$product->id}}">
-                        <x-button class="rounded-full shadow-lg bg-blue-400" @@click="addToCart">
+                        <x-button class="rounded-full shadow-lg bg-blue-400 dark:bg-blue-600 dark:hover:bg-blue-700" @@click="addToCart">
                             <x-icon name="cart" />
                         </x-button>
                     </form>
@@ -193,7 +193,7 @@
                                     <label class="font-medium">Write Your Review</label>
                                     <textarea name="comment" id="comment" class="w-full resize-none border rounded-lg mt-1 p-2 h-24 bg-white focus:outline-blue-400 dark:bg-slate-200 dark:placeholder:text-gray-500 dark:text-gray-900" placeholder="Would you like to write anything about this product?"></textarea>
                                 </div>
-                                <button type="submit" id="review-submit" class="w-full px-3 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600" x-on:click.prevent="submitReview">Submit Review</button>
+                                <button type="submit" id="review-submit" class="w-full px-3 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800" x-on:click.prevent="submitReview">Submit Review</button>
                                 <div id="review-loading" class="flex justify-center items-center w-full px-3 py-2 bg-blue-50 rounded-lg space-x-2 dark:bg-gray-700">
                                     <span class="text-gray-500 dark:text-gray-200">Submitting</span>
                                     <div class="spinner"></div>

@@ -43,7 +43,7 @@
                         <a href="tel:+95{{$vendor->phone_number}}" class="hover:text-blue-300">{{ $vendor->phone_number }}</a>
                     </div>
                     <div class="pt-2.5">
-                        <button x-on:click="open=!open" class="px-2.5 py-1.5 rounded-lg text-white bg-slate-500 hover:bg-slate-600">Edit Account</button>
+                        <button x-on:click="open=!open" type="button" class="px-2.5 py-1.5 rounded-lg text-white bg-slate-500 hover:bg-slate-600">Edit Account</button>
                     </div>
                     @if (!$vendor->is_verified)
                     <div class="pt-2.5">

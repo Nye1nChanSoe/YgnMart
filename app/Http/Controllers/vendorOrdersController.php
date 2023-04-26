@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use App\Models\Transaction;
 use App\Traits\ParseTrait;
 use Illuminate\Support\Facades\Cache;
@@ -22,7 +23,7 @@ class vendorOrdersController extends Controller
             return view('vendors.orders.index', compact('transactions'));
         }
 
-        $cache_key = 'vendor:order:' . Transaction::count();
+        $cache_key = 'vendor:order:' . Order::count();
         $transactions = Cache::remember($cache_key, '300', function() {
             return Transaction::with('order.products')
                 ->where('vendor_id', auth()->guard('vendor')->id())

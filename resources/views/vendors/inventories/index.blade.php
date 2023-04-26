@@ -27,7 +27,7 @@
                             No
                         </th>
                         <th scope="col" class="px-6 py-4 text-start">
-                            Product Name
+                            SKU
                         </th>
                         <th scope="col" class="px-6 py-4 text-start">
                             Total Stocks
@@ -58,7 +58,7 @@
                                         <img src="{{ asset('images/no-image.png') }}" alt="" class="w-full h-full object-contain">
                                     </div>
                                     <div class="w-32 overflow-hidden lg:w-40">
-                                        <p class="truncate">{{ $inventory->product->name }}</p>
+                                        <p class="truncate">{{ $inventory->sku }}</p>
                                     </div>
                                 </div>
                             </td>

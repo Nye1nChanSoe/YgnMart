@@ -93,7 +93,7 @@
                     <div class="flex mb-6 justify-between">
                         <h1 class="font-medium text-xl">User Info</h1>
                         <div>
-                            <button x-on:click="open=!open" class="px-2.5 py-1.5 rounded-lg text-white bg-slate-700 hover:bg-slate-800">Edit Account</button>
+                            <button x-on:click="open=!open" type="button" class="px-2.5 py-1.5 rounded-lg text-white bg-slate-700 hover:bg-slate-800">Edit Account</button>
                         </div>
                     </div>
                     <div class="mb-4">

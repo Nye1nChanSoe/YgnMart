@@ -76,8 +76,8 @@
                     <div class="flex flex-col items-start space-y-2.5 py-4 text-sm md:text-base md:space-y-0 md:flex-row md:items-center">
                         <div class="flex items-center gap-x-1.5">
                             <input type="radio" name="default_address" value="{{ old('') ?? $address->id }}" {{ $address->is_default ? 'checked' : '' }} class="self-start mt-1 md:mt-0 md:self-auto">
-                            <span class="text-xs text-gray-600 pr-2 self-start md:self-auto">{{ $address->label }}</span>
-                            <p class="text-gray-700">{{$address->full_address}}</p>
+                            <span class="text-xs text-gray-600 pr-2 self-start md:self-auto dark:text-gray-500">{{ $address->label }}</span>
+                            <p class="text-gray-700 dark:text-gray-400">{{$address->full_address}}</p>
                         </div>
                         <div class="flex items-center">
                             <a 
@@ -213,9 +213,9 @@
 
             <div x-show="open_edit" class="fixed z-10 inset-0 overflow-y-auto" x-cloak x-transition>
                 <div class="flex items-center justify-center min-h-screen">
-                    <div class="relative bg-white w-full max-w-md mx-auto rounded shadow-lg px-4 py-3 md:px-8 md:py-5">
+                    <div class="relative bg-white w-full max-w-md mx-auto rounded shadow-lg px-4 py-3 md:px-8 md:py-5 dark:bg-gray-900">
                         <div class="relative">
-                            <h1 class="text-center text-gray-700 font-medium md:text-lg">Update the Address</h1>
+                            <h1 class="text-center text-gray-700 font-medium md:text-lg dark:text-gray-300">Update the Address</h1>
                             <button x-on:click="open_edit = false" class="absolute top-1.5 right-1.5"><x-icon name="close" class="text-gray-600 hover:text-blue-600" /></button>
                         </div>
                         <form action="{{ route('address.update') }}" method="POST">
@@ -252,9 +252,9 @@
 
             <div x-show="open_delete" class="fixed z-10 inset-0 overflow-y-auto" x-cloak x-transition>
                 <div class="flex items-center justify-center min-h-screen">
-                    <div class="relative bg-white w-full max-w-sm mx-auto rounded-lg shadow-lg px-2 py-3">
+                    <div class="relative bg-white w-full max-w-sm mx-auto rounded-lg shadow-lg px-2 py-3 dark:bg-gray-900">
                         <div class="relative pb-6">
-                            <h1 class="text-center text-gray-700 font-medium md:text-lg">Are you sure?</h1>
+                            <h1 class="text-center text-gray-700 font-medium md:text-lg dark:text-gray-300">Are you sure?</h1>
                             <button x-on:click="open_delete = false" class="absolute top-1 right-1.5"><x-icon name="close" class="text-gray-600 hover:text-blue-600" /></button>
                         </div>
                         <form action="{{ route('address.destroy') }}" method="POST">
@@ -262,8 +262,8 @@
                             @method('DELETE')
                             <input type="hidden" x-ref="address_id_delete" name="id">
                             <div class="flex justify-center items-center pt-3 border-t">
-                                <button type="button" x-on:click="open_delete = false" class="flex-1 text-center text-gray-600 hover:text-black">Cancel</button>
-                                <button type="submit" class="flex-1 text-center text-red-500 hover:text-red-700">Delete</button>
+                                <button type="button" x-on:click="open_delete = false" class="flex-1 text-center text-gray-600 hover:text-black dark:text-gray-300 dark:hover:text-gray-200">Cancel</button>
+                                <button type="submit" class="flex-1 text-center text-red-500 hover:text-red-700 dark:hover:text-red-400">Delete</button>
                             </div>
                         </form>
                     </div>

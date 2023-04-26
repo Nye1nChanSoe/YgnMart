@@ -46,22 +46,22 @@
                         <div class="font-medium text-xl text-green-600">{{ number_format($transactions->reduce(fn($total, $value) => $total += $value->gross_amount), 0, '.', ',') }}<span class="ml-1 text-gray-300 text-sm font-normal">Kyat</span></div> --}}
                     </div>
                     <ul class="flex flex-col mt-10">
-                        <li class="py-2.5 w-fit transition-all duration-300 hover:translate-x-3 hover:text-green-600 {{ request()->routeIs('admin.dashboard') ? 'text-blue-300' : '' }}">
+                        <li class="py-2.5 w-fit transition-all duration-300 hover:translate-x-3 hover:text-green-600 {{ request()->routeIs('admin.dashboard') ? 'text-blue-400' : '' }}">
                             <a href="{{ route('admin.dashboard') }}"><div class="flex items-center"><x-icon name="chart" class="mr-2" />Dashboard</div></a>
                         </li>
-                        <li class="py-2.5 w-fit transition-all duration-300 hover:translate-x-3 hover:text-green-600 {{ request()->routeIs(['admin.customers', 'admin.customers.*']) ? 'text-blue-300' : '' }}">
+                        <li class="py-2.5 w-fit transition-all duration-300 hover:translate-x-3 hover:text-green-600 {{ request()->routeIs(['admin.customers', 'admin.customers.*']) ? 'text-blue-400' : '' }}">
                             <a href="{{ route('admin.customers') }}"><div class="flex items-center"><x-icon name="customer" class="mr-2" />Customers</div></a>
                         </li>
-                        <li class="py-2.5 w-fit transition-all duration-300 hover:translate-x-3 hover:text-green-600 {{ request()->routeIs('admin.vendors') ? 'text-blue-300' : '' }}">
+                        <li class="py-2.5 w-fit transition-all duration-300 hover:translate-x-3 hover:text-green-600 {{ request()->routeIs(['admin.vendors', 'admin.vendors.*']) ? 'text-blue-400' : '' }}">
                             <a href="{{ route('admin.vendors') }}"><div class="flex items-center"><x-icon name="shop" class="mr-2" />Vendors</div></a>
                         </li>
-                        <li class="py-2.5 w-fit transition-all duration-300 hover:translate-x-3 hover:text-green-600 {{ request()->routeIs('admin.categories') ? 'text-blue-300' : '' }}">
+                        <li class="py-2.5 w-fit transition-all duration-300 hover:translate-x-3 hover:text-green-600 {{ request()->routeIs(['admin.categories', 'admin.categories.*']) ? 'text-blue-400' : '' }}">
                             <a href="{{ route('admin.categories') }}"><div class="flex items-center"><x-icon name="tag" class="mr-2" />Categories</div></a>
                         </li>
-                        <li class="py-2.5 w-fit transition-all duration-300 hover:translate-x-3 hover:text-green-600 {{ request()->routeIs('admin.settings') ? 'text-blue-300' : '' }}">
+                        <li class="py-2.5 w-fit transition-all duration-300 hover:translate-x-3 hover:text-green-600 {{ request()->routeIs('admin.settings') ? 'text-blue-400' : '' }}">
                             <a href="{{ route('admin.settings', $user->username) }}"><div class="flex items-center"><x-icon name="settings" class="mr-2" />Settings</div></a>
                         </li>
-                        <li class="py-2.5 w-fit transition-all duration-300 hover:translate-x-3 hover:text-green-600 {{ request()->routeIs('logout') ? 'text-blue-300' : '' }}">
+                        <li class="py-2.5 w-fit transition-all duration-300 hover:translate-x-3 hover:text-green-600 {{ request()->routeIs('logout') ? 'text-blue-400' : '' }}">
                             <form action="/admin/logout" method="POST">
                                 @csrf
                                 @method('DELETE')
@@ -78,7 +78,7 @@
         {{-- sidebar hidden --}}
         <aside x-show="!open" class="fixed w-14 inset-0 z-40 bg-gray-900" x-transition:enter="transform ease-in-out duration-300" x-transition:enter-start="-translate-x-full" x-transition:enter-end="translate-x-0" x-transition:leave="transform ease-in-out duration-300" x-transition:leave-start="translate-x-0" x-transition:leave-end="-translate-x-full" x-cloak>
             <div class="px-2 py-4 text-gray-300">
-                <button x-on:click="open=true" x-show="!open" class="flex w-full justify-center hover:text-blue-300">
+                <button x-on:click="open=true" x-show="!open" class="flex w-full justify-center hover:text-blue-400">
                     <x-icon name="hamburger" />
                 </button>
                 <div class="flex items-center justify-center mt-6">
@@ -87,22 +87,22 @@
                     </div>
                 </div>
                 <ul class="flex flex-col items-center mt-10">
-                    <li class="py-2.5 w-fit transition-all duration-300 hover:text-green-600 {{ request()->routeIs('admin.dashboard') ? 'text-blue-300' : '' }}">
+                    <li class="py-2.5 w-fit transition-all duration-300 hover:text-green-600 {{ request()->routeIs('admin.dashboard') ? 'text-blue-400' : '' }}">
                         <a href="{{ route('admin.dashboard') }}"><div class="flex items-center"><x-icon name="chart" /></div></a>
                     </li>
-                    <li class="py-2.5 w-fit transition-all duration-300 hover:text-green-600 {{ request()->routeIs(['admin.customers', 'admin.custmers.*']) ? 'text-blue-300' : '' }}">
+                    <li class="py-2.5 w-fit transition-all duration-300 hover:text-green-600 {{ request()->routeIs(['admin.customers', 'admin.customers.*']) ? 'text-blue-400' : '' }}">
                         <a href="{{ route('admin.customers') }}"><div class="flex items-center"><x-icon name="customer" /></div></a>
                     </li>
-                    <li class="py-2.5 w-fit transition-all duration-300 hover:text-green-600 {{ request()->routeIs('admin.vendors') ? 'text-blue-300' : '' }}">
+                    <li class="py-2.5 w-fit transition-all duration-300 hover:text-green-600 {{ request()->routeIs(['admin.vendors', 'admin.vendors.*']) ? 'text-blue-400' : '' }}">
                         <a href="{{ route('admin.vendors') }}"><div class="flex items-center"><x-icon name="shop" /></div></a>
                     </li>
-                    <li class="py-2.5 w-fit transition-all duration-300 hover:text-green-600 {{ request()->routeIs('admin.categories') ? 'text-blue-300' : '' }}">
+                        <li class="py-2.5 w-fit transition-all duration-300 hover:translate-x-3 hover:text-green-600 {{ request()->routeIs(['admin.categories', 'admin.categories.*']) ? 'text-blue-400' : '' }}">
                         <a href="{{ route('admin.categories') }}"><div class="flex items-center"><x-icon name="tag" /></div></a>
                     </li>
-                    <li class="py-2.5 w-fit transition-all duration-300 hover:text-green-600 {{ request()->routeIs('admin.settings') ? 'text-blue-300' : '' }}">
+                    <li class="py-2.5 w-fit transition-all duration-300 hover:text-green-600 {{ request()->routeIs('admin.settings') ? 'text-blue-400' : '' }}">
                         <a href="{{ route('admin.settings', $user->username) }}"><div class="flex items-center"><x-icon name="settings" /></div></a>
                     </li>
-                    <li class="py-2.5 w-fit transition-all duration-300 hover:text-green-600 {{ request()->routeIs('logout') ? 'text-blue-300' : '' }}">
+                    <li class="py-2.5 w-fit transition-all duration-300 hover:text-green-600 {{ request()->routeIs('logout') ? 'text-blue-400' : '' }}">
                         <form action="/admin/logout" method="POST">
                             @csrf
                             @method('DELETE')
@@ -120,9 +120,9 @@
             <nav class="flex justify-between items-center px-3 py-3 h-16 rounded-lg shadow bg-gray-900">
                 <div>
                     <ul class="flex gap-x-5">
-                        <li class="text-gray-300 hover:text-blue-300"><a href="{{ route('home') }}" target="_blank">Market Place</a></li>
-                        <li class="text-gray-300 hover:text-blue-300"><a href="{{ route('admin.show', $user->username) }}">Profile</a></li>
-                        <li class="text-gray-300 hover:text-blue-300">Terms and Conditions</li>
+                        <li class="text-gray-300 hover:text-blue-400"><a href="{{ route('home') }}" target="_blank">Market Place</a></li>
+                        <li class="text-gray-300 hover:text-blue-400"><a href="{{ route('admin.show', $user->username) }}">Profile</a></li>
+                        <li class="text-gray-300 hover:text-blue-400">Terms and Conditions</li>
                     </ul>
                 </div>
                 <div class="flex items-center gap-x-4">

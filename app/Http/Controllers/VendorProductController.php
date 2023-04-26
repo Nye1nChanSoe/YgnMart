@@ -28,7 +28,7 @@ class VendorProductController extends Controller
             return view('vendors.products.index', compact('inventories'));
         }
 
-        $cache_key = 'vendor:products:' . Inventory::count();
+        $cache_key = 'vendor:products:' . Product::count();
         $inventories = Cache::remember($cache_key, '300', function() {
             return Inventory::with('product.categories')
                 ->where('vendor_id', auth()->guard('vendor')->id())
@@ -167,6 +167,10 @@ class VendorProductController extends Controller
             'description' => ['required'],
             'image' => ['nullable', 'image', 'mimes:jpg,png,jpeg', 'max:2048']
         ]);
+
+        $availableQuantity = $inventoryData['in_stock_quantity'] - $inventoryData['minimum_quantity'];
+        $inventoryData['available_quantity'] = $availableQuantity;
+        $inventoryData['is_in_stock'] = $availableQuantity > 0 ? true : false;
 
         $product->inventory->update($inventoryData);
         $product->update($productData);

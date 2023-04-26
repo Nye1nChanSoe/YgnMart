@@ -15,7 +15,7 @@
     <x-container>
         <form action="{{ route('register.store.address') }}" method="POST" class="flex items-center justify-center p-2 md:p-10">
             @csrf
-            <div class="bg-white rounded-lg shadow-lg px-4 py-4 w-80 md:px-10 md:w-128 dark:bg-gray-800">
+            <div class="bg-white rounded-lg shadow-lg px-4 py-4 w-80 md:px-10 md:w-128 dark:bg-gray-900">
                 <h3 class="text-lg font-bold text-center dark:text-gray-300">Address</h3>
                 <div class="px-3 py-2 border rounded-lg my-3 md:my-5 dark:border-gray-600">
                     <x-icon name="info" class="text-blue-500 inline-block"/>
@@ -25,17 +25,17 @@
                     <div class="space-y-1.5 md:space-y-2.5">
                         <div>
                             <label for="street" class="block mb-1 dark:text-white">Street</label>
-                            <input type="text" id="street" name="street" class="w-full border-2 border-blue-200 p-1.5 rounded-lg outline-1 outline-blue-400 dark:bg-gray-900 dark:border-gray-600 dark:text-white" value="{{old('street')}}" placeholder="Street...">
+                            <input type="text" id="street" name="street" class="w-full border-2 border-blue-200 p-1.5 rounded-lg outline-1 outline-blue-400 dark:bg-gray-800 dark:border-gray-600 dark:text-white" value="{{old('street')}}" placeholder="Street...">
                             <x-input-error field="street" />
                         </div>
                         <div>
                             <label for="ward" class="block mb-1 dark:text-white">Ward</label>
-                            <input type="text" id="ward" name="ward" class="w-full border-2 border-blue-200 p-1.5 rounded-lg outline-1 outline-blue-400 dark:bg-gray-900 dark:border-gray-600 dark:text-white" value="{{old('ward')}}" placeholder="Ward...">
+                            <input type="text" id="ward" name="ward" class="w-full border-2 border-blue-200 p-1.5 rounded-lg outline-1 outline-blue-400 dark:bg-gray-800 dark:border-gray-600 dark:text-white" value="{{old('ward')}}" placeholder="Ward...">
                             <x-input-error field="ward" />
                         </div>
                         <div>
                             <label for="township" class="block mb-1 dark:text-white">Township</label>
-                            <input type="text" id="township" name="township" class="w-full border-2 border-blue-200 p-1.5 rounded-lg outline-1 outline-blue-400 dark:bg-gray-900 dark:border-gray-600 dark:text-white" value="{{old('township')}}" placeholder="Township...">
+                            <input type="text" id="township" name="township" class="w-full border-2 border-blue-200 p-1.5 rounded-lg outline-1 outline-blue-400 dark:bg-gray-800 dark:border-gray-600 dark:text-white" value="{{old('township')}}" placeholder="Township...">
                             <x-input-error field="township" />
                         </div>
                     </div>
