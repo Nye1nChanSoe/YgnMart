@@ -9,24 +9,29 @@
     <x-container>
         <ul class="flex items-center my-3 px-3 py-3 text-sm">
             <li class="flex items-center ml-2 gap-x-1">
-                <a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'text-blue-600' : 'text-gray-700' }} hover:text-blue-600">Home</a><x-icon name="chevron-right" />
+                <a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'text-blue-600 dark:text-blue-300' : 'text-gray-700 dark:text-gray-300' }} hover:text-blue-600 dark:hover:text-blue-500">Home</a><x-icon name="chevron-right" class="dark:text-gray-200" />
             </li>
             <li class="flex items-center ml-2 gap-x-1">
-                <a href="{{ route('products.show', $product->slug) }}" class="{{ request()->routeIs('products.show') ? 'text-blue-600' : 'text-gray-700' }} hover:text-blue-600">Product</a>
+                <a href="{{ route('products.show', $product->slug) }}" class="{{ request()->routeIs('products.show') ? 'text-blue-600 dark:text-blue-300' : 'text-gray-700 dark:text-gray-300' }} hover:text-blue-600 dark:hover:text-blue-500">{{ $product->name }}</a>
             </li>
         </ul>
 
         {{-- product view --}}
-        <div class="flex flex-col items-center justify-center md:justify-around md:space-x-2 md:flex-row">
-            <div class="flex justify-center w-60 h-60 my-8">
-                <img src="{{$product->image ? asset($product->image) : asset('images/no-image.png')}}" alt="" class="w-full h-full object-contain shrink-0">
+        <div class="flex flex-col items-center h-full p-2.5 justify-between lg:justify-around md:space-x-2 md:flex-row dark:bg-gray-900">
+            <div class="flex flex-col">
+                <div class="flex justify-center w-60 h-60 my-2.5 p-2 border rounded-lg md:w-80 md:h-80 dark:border-gray-700">
+                    <img src="{{$product->image ? asset($product->image) : asset('images/no-image.png')}}" alt="" class="w-full h-full object-contain shrink-0">
+                </div>
+                <div class="flex items-center justify-center w-24 h-24 my-2 p-1 border-2 rounded-lg border-slate-300 dark:border-gray-600 dark:ring-1 dark:ring-blue-300">
+                    <img src="{{$product->image ? asset($product->image) : asset('images/no-image.png')}}" alt="" class="w-full h-full object-contain shrink-0">
+                </div>
             </div>
 
             {{-- product info --}}
-            <div class="px-2 py-6 bg-slate-50 rounded-lg space-y-3 w-fit md:p-10 md:w-[550px]">
+            <div class="px-2 py-6 bg-slate-50 rounded-lg space-y-3 w-fit md:p-10 md:w-[550px] dark:bg-gray-700 dark:text-gray-300">
                 <div class="flex items-center justify-center gap-x-2 md:justify-start">
                     @foreach ($product->categories as $category)
-                        <div class="text-xs text-slate-600 px-3 py-1 border border-blue-400 rounded-full hover:text-black hover:border-blue-600">
+                        <div class="text-xs text-slate-600 px-3 py-1 border border-blue-400 rounded-full hover:text-black hover:border-blue-600 dark:text-gray-300">
                             {{$category->sub_type}}
                         </div>
                     @endforeach
@@ -37,15 +42,15 @@
                 <div class="flex flex-col justify-between items-center space-y-4 md:flex-row md:space-y-0">
                     <div class="flex justify-center items-center">
                         <x-product-review :product="$product" />
-                        <a href="#reviews" class="text-sm ml-2 py-1.5 px-2 bg-slate-100 rounded-lg text-blue-500 hover:bg-slate-200">Leave Review</a>
+                        <a href="#reviews" class="text-sm ml-2 py-1.5 px-2 bg-slate-100 rounded-lg text-blue-500 hover:bg-slate-200 dark:bg-slate-600 dark:text-blue-200 dark:hover:bg-slate-500">Leave Review</a>
                     </div>
-                    <div class="text-blue-500 hover:text-blue-700 flex items-center gap-x-1">
-                        <a href="?seller={{ strtolower(str_replace([' ', '_'], '-', $product->inventory->vendor->brand)) }}">
-                            <span class="text-zinc-800 text-sm">Supplier</span> {{ $product->inventory->vendor->brand }}
+                    <div class="text-blue-500 hover:text-blue-700 flex items-center gap-x-1 dark:text-blue-300 dark:hover:text-blue-400">
+                        <a href="{{ route('home') }}?seller={{ strtolower(str_replace([' ', '_'], '-', $product->inventory->vendor->brand)) }}">
+                            <span class="text-zinc-800 text-sm dark:text-zinc-300">Supplier</span> {{ $product->inventory->vendor->brand }}
                         </a>
                         @if ($product->inventory->vendor->is_verified)
                         <div x-data="{open:false}" class="relative ml-2">
-                            <x-icon name="shield" class="text-green-700 inline relative" x-on:mouseover="open = true" x-on:mouseleave="open = false" />
+                            <x-icon name="shield" class="text-green-700 inline relative dark:text-green-300" x-on:mouseover="open = true" x-on:mouseleave="open = false" />
                             <div x-show="open" class="absolute top-6 bg-white rounded-lg shadow w-32 text-center p-2 right-0" x-cloak>
                                 <span class="text-gray-700">Verified seller</span>
                             </div>
@@ -54,7 +59,7 @@
                     </div>
                 </div>
                 <div class="flex flex-col items-center pt-4 space-y-2 md:flex-row md:space-y-0">
-                    <h5 class="px-2.5 py-[3px] bg-yellow-300 text-black font-semibold rounded-xl w-32 text-xl text-center">{{number_format($product->price, 0, '.', ',')}} <span class="text-sm">MMK</span></h5>
+                    <h5 class="px-2.5 py-[3px] bg-yellow-300 text-gray-800 font-semibold rounded-xl w-32 text-xl text-center">{{number_format($product->price, 0, '.', ',')}} <span class="text-sm">MMK</span></h5>
                     @if ($product->inventory->available_quantity >= 100)
                     <div class="ml-3 bg-blue-500 px-2.5 py-1 rounded-lg text-white text-sm">{{ $product->inventory->available_quantity }} in stock</div>
                     @elseif($product->inventory->available_quantity == 0)
@@ -63,7 +68,7 @@
                     <div class="ml-3 bg-red-400 px-2.5 py-1 rounded-lg text-white text-sm">Only {{ $product->inventory->available_quantity }} items left in stock</div>
                     @endif
                 </div>
-                <div class="pt-4 text-zinc-800">
+                <div class="pt-4 text-zinc-800 dark:text-zinc-300">
                     <h3 class="font-semibold text-center mb-2 md:text-left">Product Description</h3>
                     <p class="leading-7 text-center text-sm md:text-left md:indent-10">{{$product->description}}</p>
                 </div>
@@ -85,16 +90,16 @@
                             <x-icon name="cart" />
                         </x-button>
                     </form>
-                    
+
                     <div class="relative">
-                        <button @@click="open = !open" type="button" class="flex items-center bg-gray-200 text-xs px-2 py-1 rounded-full ring-1 ring-slate-200 focus:ring-2 focus:ring-blue-400">
+                        <button @@click="open = !open" type="button" class="flex items-center bg-gray-200 text-xs px-2 py-1 rounded-full ring-1 ring-slate-200 focus:ring-2 focus:ring-blue-400 dark:bg-gray-700 dark:focus:ring-blue-200">
                             <div class="font-medium mr-1.5">
                                 Qty: <span x-text="quantity"></span>
                             </div>
                             <x-icon name="chevron-right" class="w-3.5 h-3" x-bind:class="{ 'rotate-90 transition-all duration-400':open }"/>
                         </button>
-                    
-                        <div x-show="open" @@click.outside="open = false" class="absolute py-2 mt-1 bg-white shadow-lg w-20 max-h-56 overflow-auto scrollbar rounded-xl border border-slate-200 z-10" x-cloak x-transition>
+
+                        <div x-show="open" @@click.outside="open = false" class="absolute py-2 mt-1 bg-white shadow-lg w-20 max-h-56 overflow-auto scrollbar rounded-xl border border-slate-200 z-10 dark:bg-gray-700 dark:text-gray-200 dark:border-slate-400" x-cloak x-transition>
                             <ul>
                                 @for ($i = 1; $i <= ($product->inventory->available_quantity > 100 ? 100 : $product->inventory->available_quantity); $i++)
                                 <li>
@@ -114,11 +119,11 @@
                 <div class="pt-4 space-y-1">
                     <div class="flex text-sm items-center justify-center space-x-2 md:justify-start">
                         <span>Delivery Available</span>
-                        <x-icon name="check" />
+                        <x-icon name="check" class="dark:text-green-300" />
                     </div>
                     <div class="flex text-sm items-center justify-center space-x-2 md:justify-start">
                         <span>Multipayment Available</span>
-                        <x-icon name="check" />
+                        <x-icon name="check" class="dark:text-green-300" />
                     </div>
                 </div>
             </div>
@@ -126,16 +131,16 @@
     </x-container>
 
     {{-- TODO: Add Carousel effect --}}
-    <div class="bg-white px-3 border rounded-md">
+    <div class="bg-white px-3 border rounded-md dark:bg-gray-900 dark:border-0 dark:text-gray-300">
         <x-related-products :related-products="$relatedProducts" :product="$product" class="pb-10 container mx-auto" />
     </div>
 
-    <div class="bg-white py-20">
+    <div class="bg-white py-20 dark:bg-gray-800 dark:text-gray-300">
         <div x-data="charts" class="container mx-auto">
             {{-- Reviews --}}
             <div id="reviews" class="flex flex-col gap-y-10 px-4 md:flex-row md:gap-x-20">
                 <div class="basis-2/5 flex flex-col gap-y-5">
-                    <section class="border rounded-lg bg-white px-2 py-4">
+                    <section class="border rounded-lg bg-white px-2 py-4 dark:bg-gray-900 dark:border-gray-700">
                         <div id="review" class="text-center">
                             <div class="text-md font-medium">Reviews</div>
                             <div class="text-4xl font-semibold" x-text="point"></div>
@@ -146,7 +151,7 @@
                             </div>
                             <div class="text-sm">Based on <span x-text="totalReviews"></span> reviews</div>
                         </div>
-        
+
                         <!-- Horizontal Scoreboard -->
                         <div class="space-y-2 mt-4 drop-shadow-sm">
                             <template x-for="(count, index) in reviews.slice().reverse()">
@@ -163,12 +168,12 @@
                     </section>
     
                     <!-- Review box -->
-                    <section x-data="rate">
+                    <section x-data="rate ">
                         <x-warning>
                             Manipulating or misleading reviews is strictly prohibited. We value honest and authentic feedback from our users. Any user found to be manipulating reviews may face account suspension or termination. Please ensure that all reviews submitted are truthful and based on genuine experiences
                         </x-warning>
                         <div class="mt-4">
-                            <form id="review-form" action="{{route('products.review', ['product' => $product->slug])}}" method="POST" class="bg-white p-3 border rounded-lg space-y-4">
+                            <form id="review-form" action="{{route('products.review', ['product' => $product->slug])}}" method="POST" class="bg-white p-3 border rounded-lg space-y-4 dark:bg-gray-900 dark:border-gray-700">
                                 @csrf
                                 <div>
                                     <label for="" class="font-medium">Rate the product</label>
@@ -186,11 +191,11 @@
                                 </div>
                                 <div>
                                     <label class="font-medium">Write Your Review</label>
-                                    <textarea name="comment" id="comment" class="w-full resize-none border rounded-lg mt-1 p-2 h-24 focus:outline-blue-400" placeholder="Would you like to write anything about this product?"></textarea>
+                                    <textarea name="comment" id="comment" class="w-full resize-none border rounded-lg mt-1 p-2 h-24 bg-white focus:outline-blue-400 dark:bg-slate-200 dark:placeholder:text-gray-500 dark:text-gray-900" placeholder="Would you like to write anything about this product?"></textarea>
                                 </div>
                                 <button type="submit" id="review-submit" class="w-full px-3 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600" x-on:click.prevent="submitReview">Submit Review</button>
-                                <div id="review-loading" class="flex justify-center items-center w-full px-3 py-2 bg-blue-50 rounded-lg space-x-2">
-                                    <span class="text-gray-500">Submitting</span>
+                                <div id="review-loading" class="flex justify-center items-center w-full px-3 py-2 bg-blue-50 rounded-lg space-x-2 dark:bg-gray-700">
+                                    <span class="text-gray-500 dark:text-gray-200">Submitting</span>
                                     <div class="spinner"></div>
                                 </div>
                                 <span id="error" class="inline-block text-red-500"></span>
@@ -198,19 +203,19 @@
                         </div>
                     </section>
                 </div>
-    
+
                 <!-- comments -->
                 <template x-if="totalReviews === 0">
                     <div class="flex flex-col flex-1 self-center items-center space-y-4 border-none">
                         <img src="{{asset('images/comment.png')}}" alt="" width="80">
-                        <p class="text-center text-gray-600">No comments on this product yet</p>
+                        <p class="text-center text-gray-600 dark:text-gray-400">No comments on this product yet</p>
                     </div>
                 </template>
-    
+
                 <section id="comments" class="flex-1 space-y-2" x-show="totalReviews > 0">
                     @foreach ($product->reviews as $review)
-                    <div class="flex p-2 pt-3 bg-white rounded">
-                        <img src="{{asset('images/no-image.png')}}" alt="" width="40" height="40" class="self-start border border-slate-100 p-1 py-1.5 rounded-full">
+                    <div class="flex p-2 pt-3 bg-white rounded dark:bg-gray-900 dark:border-gray-700">
+                        <img src="{{asset('images/no-image.png')}}" alt="" width="40" height="40" class="self-start border border-slate-100 p-1 py-1.5 rounded-full dark:border-gray-700">
                         <div class="flex-1 ml-4">
                             <div class="flex justify-between items-center">
                                 <div class="flex flex-col">
@@ -223,7 +228,7 @@
                                 </div>
                                 <span class="text-sm text-gray-500"><time>{{$review->created_at->diffForHumans()}}</time></span>
                             </div>
-                            <p class="mt-3 text-black text-sm md:text-base px-2 py-2 bg-stone-100 rounded-lg">
+                            <p class="mt-3 text-black text-sm md:text-base px-2 py-2 bg-stone-100 rounded-lg dark:bg-gray-700 dark:text-gray-200">
                                 {{$review->comment}}
                             </p>
                         </div>
@@ -416,8 +421,8 @@ function submitReview()
 function createComment(data, stars)
 {
     const newComment = `
-      <div class="flex p-2 pt-3 bg-white rounded">
-        <img src="{{asset('images/no-image.png')}}" alt="" width="40" height="40" class="self-start border border-slate-100 p-1 py-1.5 rounded-full">
+    <div class="flex p-2 pt-3 bg-white rounded dark:bg-gray-900 dark:border-gray-700">
+        <img src="{{asset('images/no-image.png')}}" alt="" width="40" height="40" class="self-start border border-slate-100 p-1 py-1.5 rounded-full dark:border-gray-700">
         <div class="flex-1 ml-4">
           <div class="flex justify-between items-center">
             <div class="flex flex-col">
@@ -428,7 +433,7 @@ function createComment(data, stars)
             </div>
             <span class="text-sm text-gray-500"><time>Now</time></span>
           </div>
-          <p class="mt-3 text-gray-800 text-sm md:text-base px-2 py-2 bg-slate-100 rounded-lg">
+          <p class="mt-3 text-black text-sm md:text-base px-2 py-2 bg-stone-100 rounded-lg dark:bg-gray-700 dark:text-gray-200">
             ${data.comment}
           </p>
         </div>

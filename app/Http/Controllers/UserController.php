@@ -19,6 +19,11 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
+        if($user->role == 'admin') 
+        {
+            return redirect()->route('admin.show', $user->username)->with('success', 'Redirected to Admin Panel');
+        }
+
         $addresses = $user->addresses;
 
         return view('users.edit', compact('user', 'addresses'));
@@ -41,7 +46,7 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
-        $user->delete;
+        $user->delete();
         auth()->logout();
 
         /** remove all the data from current session */

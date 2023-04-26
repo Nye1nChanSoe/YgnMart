@@ -19,6 +19,9 @@ use App\Http\Controllers\VendorProductController;
 use App\Http\Controllers\VendorTransactionController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/test', function() {
+    return view('register.create-address');
+});
 
 Route::middleware(['update.user.analytics'])->group(function() {
     Route::get('/', [ProductController::class, 'index'])->name('home');

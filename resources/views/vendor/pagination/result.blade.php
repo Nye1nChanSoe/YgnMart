@@ -3,7 +3,7 @@
 
         <div class="sm:flex-1 sm:flex sm:items-center sm:justify-between">
             <div>
-                <p class="text-base text-gray-700 leading-5">
+                <p class="text-base text-gray-700 dark:text-gray-300 leading-5">
                     {!! __('Showing') !!}
                     @if ($paginator->firstItem())
                         <span class="font-medium">{{ $paginator->firstItem() }}</span>

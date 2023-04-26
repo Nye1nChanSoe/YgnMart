@@ -40,8 +40,8 @@
                 @@click.outside="open=false"
             >
                 <button type="button" @@click="open=!open" class="absolute right-3">
-                    <x-icon name="hamburger" x-show="!open" />
-                    <x-icon name="close" x-show="open" />
+                    <x-icon name="hamburger" x-show="!open" class="dark:text-gray-300" />
+                    <x-icon name="close" x-show="open" class="dark:text-gray-300" />
                 </button>
                 <div x-show="open" class="absolute top-6 w-full rounded drop-shadow-xl bg-white" x-cloak x-transition>
                     @foreach ($categories->pluck('type')->unique() as $type)
@@ -53,15 +53,27 @@
         @endif
 
         {{-- Logos and navigation --}}
-        <header class="container text-gray-700 dark:text-gray-300 mx-auto space-y-3 mb-4 px-3 py-1 lg:px-8">
+        <header 
+            x-data="{ darkMode:true }" 
+            x-init="() => {
+                if (localStorage.getItem('color-theme') === 'dark') {
+                    darkMode = true;
+                } else {
+                    darkMode = false;
+                }
+            }" 
+            class="container text-gray-700 dark:text-gray-300 mx-auto space-y-3 mb-4 px-6 py-1 md:px-4 lg:px-8">
             <nav class="flex flex-col justify-between items-center space-y-5 py-2 md:flex-row md:space-y-0">
 
-                <div>
-                    <a href="/"><img src="/images/logo/logo.svg" alt="" width="100" height="16"></a>
+                <div class="md:w-1/4 lg:w-1/3">
+                    <a href="/">
+                        <img x-show="darkMode" src="/images/logo/logo_w.svg" alt="" width="100" class="mx-auto md:mx-0" x-cloak>
+                        <img x-show="!darkMode" src="/images/logo/logo.svg" alt="" width="100" class="mx-auto md:mx-0" x-cloak>
+                    </a>
                 </div>
 
                 {{-- search --}}
-                <div class="w-full order-last md:w-80 lg:w-96 xl:w-128 md:order-none">
+                <div class="w-full order-last md:w-1/3 lg:w-96 xl:w-128 md:order-none">
                     <div class="relative border-2 border-gray-400 dark:border-none rounded-xl">
                         <form action="{{ route('home') }}" method="GET">
                             <div class="absolute top-2.5 left-3">
@@ -72,36 +84,35 @@
                             @if (request()->has('category'))
                                 <input type="hidden" name="category" value="{{ request('category') }}">
                             @endif
-                            <input type="text" name="search" class="w-full text-black dark:text-black bg-white dark:bg-slate-200 px-10 py-2 rounded-xl focus:ring-2 focus:outline-none focus:ring-gray-400 dark:focus:ring-blue-300" placeholder="Search everything you need" value="{{request('search') ?? ''}}">
+                            <input type="text" name="search" class="w-full text-black bg-white px-10 py-2 rounded-xl focus:ring-2 dark:ring-1 dark:ring-blue-300 focus:outline-none focus:ring-gray-400 dark:focus:ring-blue-300 dark:bg-gray-900 dark:text-gray-300" placeholder="Search everything you need" value="{{request('search') ?? ''}}">
                         </form>
                     </div>
                 </div>
 
                 {{-- dark, lang, cart, login --}}
-                <div class="flex text-gray-700 dark:text-gray-300 items-center justify-center h-9 space-x-6 xl:space-x-8">
+                <div class="flex text-gray-700 items-center justify-center md:w-1/3 md:justify-end h-9 space-x-4 xl:space-x-6 dark:text-gray-300">
                     <div class="">
-                        <button id="theme-toggle" type="button" class="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none rounded-lg text-sm p-2.5">
-                            <x-icon id="theme-toggle-dark-icon" class="hidden" name="day" />
-                            <x-icon id="theme-toggle-light-icon" class="hidden" name="night" />
+                        <button x-on:click="darkMode=!darkMode" id="theme-toggle" type="button" class="text-gray-700 rounded-lg text-sm p-2.5 focus:outline-none dark:text-gray-300 hover:bg-slate-100 dark:hover:bg-gray-700">
+                            <x-icon id="theme-toggle-dark-icon" class="hidden" name="night" />
+                            <x-icon id="theme-toggle-light-icon" class="hidden" name="day" />
                         </button>
                     </div>
-                    <div x-data="{ open: false }" class="relative">
-                        <button @@click="open = !open" class="flex items-center lg:text-base hover:text-gray-600 dark:hover:text-gray-100">
+                    <div x-data="{ open: false }" class="relative dark:text-white">
+                        <button @@click="open = !open" class="flex items-center lg:text-base hover:text-gray-600 dark:text-gray-300 dark:hover:text-white">
                             EN
                             <x-icon name="chevron-right" class="inline pointer-events-none pl-1" x-bind:class="{ 'rotate-90 transition-all duration-400':open }" />
                         </button>
-                        <div x-show="open" @@click.outside="open = false" class="absolute py-2 bg-white shadow-lg w-16 mt-1 max-h-56 text-sm md:text-base overflow-auto border rounded z-10" x-cloak x-transition>
-                            <a href="" class="block w-full text-sm leading-6 hover:bg-blue-500 hover:text-white pl-1">EN</a>
-                            {{-- <a href="" class="block w-full text-sm leading-6 hover:bg-blue-500 hover:text-white pl-1">MM</a> --}}
+                        <div x-show="open" @@click.outside="open = false" class="absolute py-2 bg-white shadow-lg w-16 mt-1 max-h-56 text-sm overflow-auto border rounded z-10 md:text-base dark:bg-gray-700 dark:text-gray-200 dark:border-slate-600" x-cloak x-transition>
+                            <a href="" class="block w-full text-sm leading-6 hover:bg-blue-500 hover:text-white pl-1 dark:hover:bg-gray-500 dark:hover:text-gray-200">EN</a>
                         </div>
                     </div>
                     <div class="relative">
-                        <a href="{{ route('carts.index') }}" class="hover:text-blue-600 dark:hover:text-gray-100" id="cart">
+                        <a href="{{ route('carts.index') }}" class="hover:text-blue-600 dark:hover:text-white" id="cart">
                             <x-icon name="cart" />
 
                             {{-- notification --}}
                             @if (!request()->routeIs(['login', 'register', 'vendor.login', 'vendor.register']))
-                            <div x-show="cartItemCounter" x-text="cartItemCounter" class="absolute -top-3.5 -right-3 inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-sky-400 border-2 border-white rounded-full md:-top-3 md:-right-3" x-cloak x-transition>
+                            <div x-show="cartItemCounter" x-text="cartItemCounter" class="absolute -top-3.5 -right-3 inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-sky-400 border-2 border-white rounded-full md:-top-3 md:-right-3 hover:bg-sky-500 dark:bg-sky-600 dark:hover:bg-sky-700" x-cloak x-transition>
                             </div>
                             @endif
                         </a>
@@ -110,14 +121,14 @@
                     {{-- profile --}}
                     <x-profile-dropdown />
                     @else
-                    <a href="/register" class="text-sm font-semibold hover:text-blue-600 dark:hover:text-gray-100 lg:text-base">Register</a>
-                    <a href="/login" class="text-sm font-semibold hover:text-blue-600 dark:hover:text-gray-100 lg:text-base">Sign in</a>
+                    <a href="/register" class="text-sm font-semibold hover:text-blue-600 dark:hover:text-white lg:text-base">Register</a>
+                    <a href="/login" class="text-sm font-semibold hover:text-blue-600 dark:hover:text-white lg:text-base">Sign in</a>
                     @endauth
                 </div>
             </nav>
 
             {{-- Navigation --}}
-            @if (!request()->routeIs(['login', 'register', 'vendor.*']))
+            @if (!request()->routeIs(['login', 'register', 'vendor.*', 'profile']))
             <nav class="hidden container mx-auto flex-row justify-between items-center sm:flex">
                 @foreach ($categories->pluck('type')->unique() as $type)
                 <x-category-dropdown :categories="$categories" :type="$type" />
@@ -132,17 +143,17 @@
 
         <footer class="bg-neutral-800 dark:bg-slate-700 text-slate-300">
             <div class="container mx-auto flex flex-col px-8 py-6 md:px-12">
-                <section class="flex justify-center items-center md:justify-between">
+                <section class="flex justify-center items-center md:justify-between mb-8">
                     <div class="space-y-4 text-center md:text-left">
                         <div class="text-center md:text-left">
                             <p class="text-sm">We accept multiple payments</p>
                         </div>
                         <h2 class="text-xl font-bold lg:text-2xl">Start shopping with Yangon Mart today.</h2>
-                        <a href="/register" class="block w-full bg-blue-600 p-2 rounded-xl text-center shadow-lg text-white hover:bg-blue-700">Sign up</a>
+                        <a href="/register" class="block w-full bg-blue-600 p-2 rounded-xl text-center shadow-lg text-white hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800">Sign up</a>
                     </div>
 
                     <div class="hidden mx-auto md:block">
-                        <img src="/images/shopping_cart.png" alt="" width="240">
+                        {{-- <img src="/images/shopping_cart.png" alt="" width="240"> --}}
                     </div>
                 </section>
 

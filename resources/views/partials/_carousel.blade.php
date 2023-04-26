@@ -34,7 +34,7 @@
                 }, 5000);
             },
         }" 
-        class="relative h-72 bg-slate-100 mb-10 md:h-96"
+        class="relative h-72 bg-slate-100 md:h-96 dark:bg-slate-400"
     >
         <template x-for="image in images">
             {{-- TODO: add carousel images that are wide enough --}}
@@ -63,7 +63,7 @@
             <template x-for="image in images">
                 <button 
                     class="bg-slate-300 py-[3px] px-2.5 rounded-2xl"
-                    x-bind:class="{'bg-black': activeImage === image}"
+                    x-bind:class="{'bg-slate-800': activeImage === image}"
                     x-on:click = "selectItem(image)"
                 >
                 </button>

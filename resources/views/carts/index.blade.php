@@ -2,27 +2,27 @@
     <x-slot:title>
         Cart - YangonMart.com
     </x-slot:title>
-    <x-container class="mt-14">
+    <x-container class="mt-10">
         <ul class="flex items-center my-3 px-3 py-3 text-sm">
             <li class="flex items-center ml-2 gap-x-1">
-                <a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'text-blue-600' : 'text-gray-700' }} hover:text-blue-600">Home</a><x-icon name="chevron-right" />
+                <a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'text-blue-600 dark:text-blue-300' : 'text-gray-700 dark:text-gray-300' }} hover:text-blue-600 dark:hover:text-blue-500">Home</a><x-icon name="chevron-right" class="dark:text-gray-200" />
             </li>
             <li class="flex items-center ml-2 gap-x-1">
-                <a href="{{ route('carts.index') }}" class="{{ request()->routeIs('carts.index') ? 'text-blue-600' : 'text-gray-700' }} hover:text-blue-600">Carts</a>
+                <a href="{{ route('carts.index') }}" class="{{ request()->routeIs('carts.index') ? 'text-blue-600 dark:text-blue-300' : 'text-gray-700 dark:text-gray-300' }} hover:text-blue-600 dark:hover:text-blue-500">Cart</a>
             </li>
         </ul>
-        <div class="rounded-lg px-4 py-5 shadow-sm border md:px-10">
-            <h4 class="text-xs text-gray-700">Shopping cart</h4>
+        <div class="rounded-lg px-4 py-5 shadow-sm border md:px-10 dark:text-gray-300 dark:border-gray-700 dark:bg-gray-900">
+            <h4 class="text-xs text-gray-700 dark:text-gray-300">Shopping cart</h4>
 
             {{-- headings --}}
-            <div class="flex justify-between py-4 border-b border-gray-200 text-sm font-semibold text-slate-700">
+            <div class="flex justify-between py-4 border-b border-gray-200 text-sm font-semibold text-slate-700 dark:border-gray-700 dark:text-gray-300">
                 <h3 class="basis-1/2">Product</h3>
                 <h3>Quantity</h3>
                 <h3>Price</h3>
             </div>
 
             {{-- cart container --}}
-            <form action="{{ route('carts.checkout') }}" method="POST" class="divide-y divide-gray-200"
+            <form action="{{ route('carts.checkout') }}" method="POST" class="divide-y divide-gray-200 dark:divide-gray-700"
                 x-data="{
                     count: 0,   
                     total: 0,
@@ -37,7 +37,7 @@
                 }"
             >
                 @csrf
-                                    
+
                 {{-- cart item --}}
                 @if (!$carts->isEmpty())
                     @foreach ($carts as $cart)
@@ -56,7 +56,7 @@
                                 <a href="/products/{{$cart->product->slug}}"><img src="{{$cart->product->image ? asset($cart->product->image) : asset('images/no-image.png')}}" alt=""></a>
                             </div>
                             <div class="w-full mr-4 sm:self-start">
-                                <h4 class="text-sm sm:text-base"><a href="/products/{{$cart->product->slug}}" class="hover:text-blue-600">{{$cart->product->name}}</a></h4>
+                                <h4 class="text-sm sm:text-base"><a href="/products/{{$cart->product->slug}}" class="hover:text-blue-600 dark:hover:text-blue-400">{{$cart->product->name}}</a></h4>
 
                                 {{-- TODO: check product inventory and variants dynamically --}}
                                 @if ($cart->product->inventory->available_quantity >= $cart->quantity)
@@ -65,7 +65,7 @@
                                     <p class="ttext-xs px-1.5 py-1 mt-3 rounded-lg bg-red-400 text-white w-fit">Out of Stock</p>
                                 @endif
                                 <div class="flex text-xs py-1 space-x-3">
-                                    <button type="button" x-on:click="removeItem, $refs.item_{{$cart->id}}.remove()" class="text-red-500 hover:text-red-700">Remove</button>
+                                    <button type="button" x-on:click="removeItem, $refs.item_{{$cart->id}}.remove()" class="text-red-500 hover:text-red-700 dark:text-red-300 dark:hover:text-red-400">Remove</button>
                                 </div>
                             </div>
                         </div>
@@ -85,8 +85,8 @@
                                     </div>
                                     <x-icon name="chevron-right" class="w-3.5 h-3" x-bind:class="{ 'rotate-90 transition-all duration-400':open }"/>
                                 </button>
-                            
-                                <div x-show="open" @@click.outside="open = false" class="absolute py-2 mt-1 bg-white shadow-lg w-20 max-h-56 overflow-auto scrollbar rounded-xl border border-slate-200 z-10" x-cloak x-transition>
+
+                                <div x-show="open" @@click.outside="open = false" class="absolute py-2 mt-1 bg-white shadow-lg w-20 max-h-56 overflow-auto scrollbar rounded-xl border border-slate-200 z-10 dark:bg-gray-700 dark:text-gray-200 dark:border-slate-400" x-cloak x-transition>
                                     <ul>
                                         @for ($i = 1; $i <= ($cart->product->inventory->available_quantity > 100 ? 100 : $cart->product->inventory->available_quantity); $i++)
                                         <li>
@@ -102,9 +102,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="px-2 py-1 bg-yellow-300 rounded-lg font-semibold text-sm sm:text-base sm:p-0 sm:bg-white sm:rounded-none">
+                        <div class="flex flex-col items-center sm:block">
                             {{number_format($cart->product->price * $cart->quantity, 0, '.', ',')}}
-                            <span class="text-xs font-normal text-gray-600">Kyat</span>
+                            <span class="text-xs font-normal text-gray-600 dark:text-gray-300">Kyat</span>
                         </div>
                     </div>
                     @endforeach
@@ -115,9 +115,9 @@
                         <div class="mx-auto w-40 rotate-12">
                             <img src="/images/empty_cart.png" alt="">
                         </div>
-                        <div class="pb-3 pt-6 text-center text-slate-700">
+                        <div class="pb-3 pt-6 text-center text-slate-700 dark:text-gray-400">
                             Your shopping cart is empty! 
-                            <a href="/" class="block text-blue-500 hover:text-blue-700 mt-2">Add some items</a>
+                            <a href="/" class="block text-blue-500 hover:text-blue-700 mt-2 dark:hover:text-blue-300">Add some items</a>
                         </div>
                     </div>
                 </template>
@@ -129,12 +129,12 @@
                         <div>
                             <input type="hidden" name="total_amount" x-model="total">
                             SubTotal (<span x-text="count" class="font-semibold" id="quantity="></span> items) 
-                            <div class="bg-slate-100 px-3 py-[2px] rounded-lg inline-flex items-center space-x-1">
+                            <div class="bg-slate-100 px-3 py-[2px] rounded-lg inline-flex items-center space-x-1 dark:bg-slate-700 dark:text-gray-200">
                                 <span x-text="total.toLocaleString('en-US')" class="text-lg font-semibold text-center"></span>
                                 <span class="text-xs">Kyat</span>
                             </div>
                         </div>
-                        <button type="submit" class="text-base bg-blue-500 text-white px-3 py-[4px] mt-6 rounded-lg shadow hover:bg-blue-600 sm:text-lg sm:px-4 sm:py-2">
+                        <button type="submit" class="text-base bg-blue-500 text-white px-3 py-[4px] mt-6 rounded-lg shadow hover:bg-blue-600 sm:text-lg sm:px-4 sm:py-2 dark:bg-blue-700 dark:hover:bg-blue-800">
                             Proceed to checkout
                         </button>
                     </div>
@@ -153,7 +153,7 @@
             method: 'DELETE', 
             headers: {
                 'Content-Type': 'application/json',
-                
+
                 // To resolve the issue, you need to include a CSRF token in your AJAX request:
                 // The CSRF TOKEN is embedded in the meta tag 
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
@@ -163,7 +163,7 @@
             if(!response.ok) {
                 throw new Error('Network was not ok');
             }
-            
+
             return response.json();
         })
         .then(data => {
@@ -183,7 +183,7 @@
             method: 'PUT', 
             headers: {
                 'Content-Type': 'application/json',
-                
+
                 // To resolve the issue, you need to include a CSRF token in your AJAX request:
                 // The CSRF TOKEN is embedded in the meta tag 
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
@@ -196,12 +196,12 @@
             if(!response.ok) {
                 throw new Error('Network was not ok');
             }
-            
+
             return response.json();
         })
         .then(data => {
             console.log(data.message);
-            
+
             /* refresh the data on screen */
             window.location.reload();
         })

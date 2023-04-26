@@ -9,13 +9,13 @@
     <x-container x-data="{ openModal: false }" class="mt-4">
         <ul class="flex items-center my-3 px-3 py-3 text-sm">
             <li class="flex items-center ml-2 gap-x-1">
-                <a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'text-blue-600' : 'text-gray-700' }} hover:text-blue-600">Home</a><x-icon name="chevron-right" />
+                <a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'text-blue-600 dark:text-blue-300' : 'text-gray-700 dark:text-gray-300' }} hover:text-blue-600 dark:hover:text-blue-500">Home</a><x-icon name="chevron-right" class="dark:text-gray-200" />
             </li>
             <li class="flex items-center ml-2 gap-x-1">
-                <a href="{{ route('carts.index') }}" class="{{ request()->routeIs('carts.index') ? 'text-blue-600' : 'text-gray-700' }} hover:text-blue-600">Carts</a><x-icon name="chevron-right" />
+                <a href="{{ route('carts.index') }}" class="{{ request()->routeIs('carts.index') ? 'text-blue-600 dark:text-blue-300' : 'text-gray-700 dark:text-gray-300' }} hover:text-blue-600 dark:hover:text-blue-500">Carts</a><x-icon name="chevron-right" class="dark:text-gray-200" />
             </li>
             <li class="flex items-center ml-2 gap-x-1">
-                <a href="{{ route('checkout.index') }}" class="{{ request()->routeIs('checkout.index') ? 'text-blue-600' : 'text-gray-700' }} hover:text-blue-600">Checkout</a>
+                <a href="{{ route('checkout.index') }}" class="{{ request()->routeIs('checkout.index') ? 'text-blue-600 dark:text-blue-300' : 'text-gray-700 dark:text-gray-300' }} hover:text-blue-600 dark:hover:text-blue-500">Checkout</a>
             </li>
         </ul>
 
@@ -43,10 +43,10 @@
             action="" 
             method="POST" 
             x-bind:id = "payment==='cash' ? 'cash-payment-form' : 'card-payment-form'" 
-            class="block justify-between pt-6 md:flex"
+            class="block justify-between pt-6 md:flex dark:rounded dark:bg-gray-900 dark:text-gray-300"
         >
             @csrf
-            <div class="space-y-6 divide-y p-4 md:flex-1 md:mr-40">
+            <div class="space-y-6 divide-y p-4 md:flex-1 md:mr-40 dark:divide-gray-700">
                 <!-- Address -->
                 <div 
                     x-data="{
@@ -54,7 +54,7 @@
                     }" 
                     class="flex justify-between space-x-4 md:mr-8"
                 >
-                    <h1 class="text-sky-800 font-semibold">1</h1>
+                    <h1 class="text-sky-800 font-semibold dark:text-sky-600">1</h1>
                     <div class="flex flex-col items-start flex-1 md:flex-row">
                         <h2 class="font-semibold md:w-48">Delivery Address</h2>
                         <div class="flex flex-col flex-1 text-sm mt-2 md:mt-0 md:mr-6">
@@ -70,7 +70,7 @@
                                 <p class="text-gray-400 text-sm cursor-pointer">Please add the address for delivery</p>
                                 @endif
                             </div>
-                            <div x-show="open" class="border rounded-lg mt-6">
+                            <div x-show="open" class="border rounded-lg mt-6 dark:border-gray-700">
                                 <div class="p-3">
                                     <h2 class="font-semibold mb-3">Your addresses</h2>
                                     @foreach ($addresses as $address)
@@ -82,20 +82,20 @@
                                     @endforeach
                                     <button @@click="openModal=true" type="button" class="flex items-center mt-3">
                                         <x-icon name="plus" />
-                                        <span class="text-sm text-lime-600 hover:text-lime-700">Add new address</span>
+                                        <span class="text-sm text-lime-600 hover:text-lime-700 dark:text-lime-500 dark:hover:text-lime-400">Add new address</span>
                                     </button>
                                 </div>
-                                <div class="p-3 bg-slate-100">
-                                    <button type="button" class="bg-blue-500 text-white py-1.5 px-2.5 text-sm rounded-lg hover:bg-blue-600">Use this address</button>
+                                <div class="p-3 bg-slate-100 dark:bg-slate-800">
+                                    <button type="button" class="bg-blue-500 text-white py-1.5 px-2.5 text-sm rounded-lg hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800 dark:text-gray-200">Use this address</button>
                                 </div>
                             </div>
                         </div>
                         <button type="button" @@click="open=!open" class="hidden md:block">
-                            <x-icon name="chevron-down" class="hover:text-blue-600 rounded-full" x-bind:class="{ '-rotate-180 duration-400':open }" />
+                            <x-icon name="chevron-down" class="hover:text-blue-600 rounded-full dark:hover:text-white" x-bind:class="{ '-rotate-180 duration-400':open }" />
                         </button>
                     </div>
                     <button type="button" @@click="open=!open" class="self-start block md:hidden">
-                        <x-icon name="chevron-down" class="hover:text-blue-600 rounded-full" x-bind:class="{ '-rotate-180 duration-400':open }" />
+                        <x-icon name="chevron-down" class="hover:text-blue-600 rounded-full dark:hover:text-white" x-bind:class="{ '-rotate-180 duration-400':open }" />
                     </button>
                 </div>
                 <!-- End Address -->
@@ -107,7 +107,7 @@
                     }"
                     class="flex justify-between space-x-4 pt-5 md:mr-8"
                 >
-                    <h1 class="text-sky-800 font-semibold">2</h1>
+                    <h1 class="text-sky-800 font-semibold dark:text-sky-600">2</h1>
                     <div class="flex flex-col items-start flex-1 md:flex-row">
                         <h2 class="font-semibold w-48">Payment Method</h2>
                         <div class="flex flex-col flex-1 text-sm mt-4 md:mt-0 md:mr-6">
@@ -115,7 +115,7 @@
                             <div>
                                 <div class="flex items-center mb-2 md:mb-3">
                                     <input id="payment-cash" type="radio" name="payment_method" value="cash" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300" x-model="payment" checked>
-                                    <label for="payment-cash" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Pay with cash</label>
+                                    <label for="payment-cash" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Cash on delivery</label>
                                 </div>
                                 <div class="flex items-center">
                                     <input id="payment-card" type="radio" name="payment_method" value="card" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300" x-model="payment">
@@ -127,20 +127,20 @@
                             <div x-show="payment==='card'" class="mt-4 md:mt-6" x-transition>
                                 <input type="hidden" id="client-secret-key" name="client_secret_key" value="{{$clientSecret}}">
                                 <input type="hidden" id="checkout-id" name="checkout_id" value="{{$checkout->id}}">
-                                <div id="card" class="appearance-none border border-black/25 rounded-lg w-64 py-2 px-3 md:w-80"></div>
-                                <div id="card-errors" role="alert" class="text-red-500 mt-2"></div>
+                                <div id="card" class="appearance-none border border-black/25 rounded-lg w-64 py-2 px-3 md:w-80 dark:border-gray-300 dark:bg-gray-800 dark:text-gray-200"></div>
+                                <div id="card-errors" role="alert" class="text-red-500 mt-2 dark:text-red-400"></div>
                             </div>
                         </div>
                         <div x-data="{ show:false }" class="relative hidden md:block" @@mouseleave="show=false">
                             <button type="button" @@mouseenter="show=true">
-                                <x-icon name="info" class="text-black hover:text-blue-600" />
+                                <x-icon name="info" class="text-black hover:text-blue-600 dark:text-gray-300 dark:hover:text-white" />
                             </button>
-                            <div x-show="show" class="absolute top-5 right-0 border p-2 bg-slate-100 rounded-lg" x-cloak x-transition>
-                                <div x-data="{copied: false}" class="text-xs text-gray-700 w-60">
+                            <div x-show="show" class="absolute top-5 right-0 border p-2 bg-slate-100 rounded-lg dark:bg-slate-700 dark:text-gray-200 dark:border-gray-700" x-cloak x-transition>
+                                <div x-data="{copied: false}" class="text-xs text-gray-700 w-60 dark:text-gray-200">
                                     <h2 class="mb-2">You can test the payment</h2>
                                     <div class="flex space-x-4 relative">
                                         <input x-ref="testPaymentNumber" @@click="copyToClipboard" type="button" value="4242424242424242" class="text-sky-500 hover:text-sky-600 focus:outline-none" />
-                                        <span class="text-gray-500">Succeessful payment</span>
+                                        <span class="text-gray-500 dark:text-gray-300">Succeessful payment</span>
                                         <div x-show="copied" class="absolute -top-7 right-32 border rounded-lg bg-white shadow text-blue-500 py-1 px-2" x-cloak x-transition>Copied!</div>
                                     </div>
                                     {{-- <div class="flex space-x-4">
@@ -200,25 +200,25 @@
                     }"
                     class="flex justify-between pt-5 md:space-x-4 md:mr-8"
                 >
-                    <h1 class="text-sky-800 font-semibold">3</h1>
+                    <h1 class="text-sky-800 font-semibold dark:text-sky-600">3</h1>
                     <div class="flex-1 items-start ml-4 md:ml-0">
                         <div class="flex flex-1 justify-between">
                             <h2 class="font-semibold w-48">Product Review</h2>
                             <button type="button" @@click="open=!open" class="hidden md:block">
-                                <x-icon name="chevron-down" class="hover:text-blue-600 rounded-full" x-bind:class="{ '-rotate-180 duration-400':open }" />
+                                <x-icon name="chevron-down" class="hover:text-blue-600 rounded-full dark:hover:text-white" x-bind:class="{ '-rotate-180 duration-400':open }" />
                             </button>
                         </div>
 
                         {{-- products display --}}
-                        <div x-show="open" class="mt-4 px-4 py-2 border rounded-lg divide-y space-y-3 w-fit md:p-3 md:mr-10">
+                        <div x-show="open" class="mt-4 px-4 py-2 border rounded-lg divide-y space-y-3 w-fit md:p-3 md:mr-10 dark:border-gray-700">
                             @foreach ($cartItems as $cart)
                             <div class="flex flex-col items-center sm:flex-row md:h-28">
                                 <img src="{{$cart->product->image ? asset($cart->product->image) : asset('images/no-image.png')}}" alt="" width="120" style="object-fit:contain">
                                 <div class="text-sm text-center mt-2 sm:mt-0 sm:text-left sm:ml-8">
                                     <p class="text-gray-900">{{$cart->product->name}}</p>
-                                    <div class="bg-slate-50 rounded-lg mt-2 p-2 w-36 mx-auto sm:mx-0">
+                                    <div class="bg-slate-50 rounded-lg mt-2 p-2 w-36 mx-auto sm:mx-0 dark:bg-gray-800">
                                         <p>Quantity: <span class="font-semibold ml-1">{{$cart->quantity}}</span></p>
-                                        <p>Price: <span class="font-semibold text-lime-700 ml-1">{{number_format($cart->product->price * $cart->quantity, 0, '.', ',')}}</span> Kyat</p>
+                                        <p>Price: <span class="font-semibold text-lime-700 ml-1 dark:text-lime-500">{{number_format($cart->product->price * $cart->quantity, 0, '.', ',')}}</span> Kyat</p>
                                     </div>
                                 </div>
                             </div>
@@ -226,18 +226,18 @@
                         </div>
 
                         {{-- final order --}}
-                        <div class="flex flex-col justify-between items-center border rounded-lg p-4 mt-3 md:flex-row md:mt-4 md:mr-10">
+                        <div class="flex flex-col justify-between items-center border rounded-lg p-4 mt-3 md:flex-row md:mt-4 md:mr-10 dark:border-gray-700">
 
-                            <button id="payment-submit" type="submit" x-on:click="processOrder" class="w-40 mt-3 order-2 px-4 py-2 bg-blue-500 text-white rounded-lg text-lg hover:bg-blue-600 sm:mt-0 sm:order-none">Order Now</button>
-                            <div id="payment-loading" class="flex justify-center items-center w-40 mt-3 order-2 px-4 py-2 bg-blue-50 rounded-lg text-lg space-x-2 sm:mt-0 sm:order-none">
-                                <span class="text-gray-500">Ordering</span>
+                            <button id="payment-submit" type="submit" x-on:click="processOrder" class="w-40 mt-3 order-2 px-4 py-2 bg-blue-500 text-white rounded-lg text-lg hover:bg-blue-600 sm:mt-0 sm:order-none dark:bg-blue-700 dark:hover:bg-blue-800">Order Now</button>
+                            <div id="payment-loading" class="flex justify-center items-center w-40 mt-3 order-2 px-4 py-2 bg-blue-50 rounded-lg text-lg space-x-2 sm:mt-0 sm:order-none dark:bg-gray-700">
+                                <span class="text-gray-500 dark:text-gray-200">Ordering</span>
                                 <div class="spinner"></div>
                             </div>
 
                             <div class="flex order-1 flex-col items-center text-xl sm:order-none">
                                 <h1 class="text-lg">Total</h1>
                                 <div class="flex items-center">
-                                    <p x-text="total.toLocaleString('en-US')" class="font-semibold text-lime-700 inline text-2xl"></p>
+                                    <p x-text="total.toLocaleString('en-US')" class="font-semibold text-lime-700 inline text-2xl dark:text-lime-500"></p>
                                     <span class="text-xs ml-2"> Kyat</span>
                                 </div>
                             </div>
@@ -247,7 +247,7 @@
                         <input id="total-amount" type="hidden" name="total_amount" value="" x-model="total">
                     </div>
                     <button type="button" @@click="open=!open" class="self-start block md:hidden">
-                        <x-icon name="chevron-down" class="hover:text-blue-600 rounded-full" x-bind:class="{ '-rotate-180 duration-400':open }" />
+                        <x-icon name="chevron-down" class="hover:text-blue-600 rounded-full dark:hover:text-white" x-bind:class="{ '-rotate-180 duration-400':open }" />
                     </button>
                 </div>
                 <!-- End Review -->
@@ -313,21 +313,39 @@ var stripe = Stripe("{{ env('STRIPE_PUBLIC_KEY') }}");
  */
 var elements = stripe.elements();
 
-var style = {
-    base: {
-        fontFamily: 'Roboto, Open Sans, Segoe UI, sans-serif',
-        fontSize: '16px',
-        fontSmoothing: 'antialiased',
-        '::placeholder': {
-            color: 'gray'
+if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    var style = {
+        base: {
+            fontFamily: 'Roboto, Open Sans, Segoe UI, sans-serif',
+            fontSize: '16px',
+            fontSmoothing: 'antialiased',
+            '::placeholder': {
+                color: '#9ca3af'
+            },
+            color: '#a3e635',
+            fontWeight: 500,
         },
-        color: 'black',
-        fontWeight: 500,
-    },
-    invalid: {
-        color: '#D22B2B',
-    }
-};
+        invalid: {
+            color: '#f87171',
+        },
+    };
+} else {
+    var style = {
+        base: {
+            fontFamily: 'Roboto, Open Sans, Segoe UI, sans-serif',
+            fontSize: '16px',
+            fontSmoothing: 'antialiased',
+            '::placeholder': {
+                color: 'gray'
+            },
+            color: 'black',
+            fontWeight: 500,
+        },
+        invalid: {
+            color: '#D22B2B',
+        },
+    };
+}
 
 var cardElement = elements.create('card', {style:style});
 
