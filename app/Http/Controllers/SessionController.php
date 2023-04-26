@@ -31,6 +31,13 @@ class SessionController extends Controller
         /** generate a new session id to protect against session fixation */
         session()->regenerate();
         auth()->user()->update(['user_status' => 'active']);
+
+        if(auth()->user()->role == 'admin') 
+        {
+            return redirect()->route('admin.dashboard')
+                ->with('success', 'Welcome back, '.auth()->user()->name);
+        }
+
         return redirect()->route('home')
             ->with('success', 'Welcome back, '.auth()->user()->name);
     }
@@ -67,7 +74,7 @@ class SessionController extends Controller
         session()->regenerate();
         auth()->guard('vendor')->user()->update(['status' => 'active']);
 
-        return redirect()->route('vendor.dashboard')->with('success', 'Welcome, ' . auth()->guard('vendor')->user()->name);
+        return redirect()->route('vendor.dashboard')->with('success', 'Welcome, ' . auth()->guard('vendor')->user()->brand);
     }
 
     public function vdestroy()

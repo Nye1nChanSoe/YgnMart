@@ -3,21 +3,27 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\Product;
+use App\Models\Transaction;
+use App\Traits\ProductAnalyticTrait;
 use App\Traits\StripePaymentTrait;
+use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class OrderController extends Controller
 {
-    use StripePaymentTrait;
+    use StripePaymentTrait, ProductAnalyticTrait;
 
     public function show(Order $order)
     {
         try 
         {
-            $order = Order::where('user_id', auth()->id())->where('order_code', $order->order_code)->firstOrFail();
+            $order = Order::with('products')->where('user_id', auth()->id())->where('order_code', $order->order_code)->firstOrFail();
             return view('orders.show', compact('order'));
         } 
         catch (ModelNotFoundException $e) 
@@ -32,19 +38,30 @@ class OrderController extends Controller
     */
     public function store(Request $request)
     {
-        $order = $this->processOrder($request);
-
-        return response()->json([
-            'message' => 'Order created successfully',
-            'order_code' => $order->order_code,
-        ]);
+        try 
+        {
+            $order = $this->processOrder($request);
+            return response()->json([
+                'message' => 'Order created successfully',
+                'order_code' => $order->order_code,
+            ]);
+        } 
+        catch(Exception $e) 
+        {
+            return response()->json([
+                'message' => 'Order failed stock unavailable',
+                'status' => 'fail'
+            ]);
+        }   
     }
 
     public function success(Request $request)
     {
         try 
         {
-            $order = Order::where('order_code', $request->input('order'))->firstOrFail();
+            $order = Order::where('order_code', $request->input('order'))
+                ->where('user_id', auth()->id())
+                ->firstOrFail();
             return view('orders.success', compact(['order']));
         } 
         catch (ModelNotFoundException $e) 
@@ -61,7 +78,12 @@ class OrderController extends Controller
      */
     protected function processOrder(Request $request) 
     {
+        $productIdArray = explode(",", $request->json('form_data.products'));
+        $quantityArray = explode(",", $request->json('form_data.quantities'));
         $paymentMethod = $request->json('form_data.payment_method');
+
+        /** check for the availability of the product in the inventory table */
+        $this->updateStockOrFail($productIdArray, $quantityArray);
 
         $order = new Order();
         $order->order_code = 'c' . Carbon::now()->format('yds') . strtolower(Str::random('3'));
@@ -81,9 +103,6 @@ class OrderController extends Controller
         }
 
         $order->save();
-
-        $productIdArray = explode(",", $request->json('form_data.products'));
-        $quantityArray = explode(",", $request->json('form_data.quantities'));
         
         for($i = 0; $i < count($productIdArray); ++ $i)
         {
@@ -93,6 +112,85 @@ class OrderController extends Controller
         /** create order_product records */
         $order->products()->attach($records);
 
+        /** update analytics */
+        $this->productStats($productIdArray, $quantityArray);
+
+        /** create transaction records */
+        $this->createTransaction($order);
+
         return $order;
+    }
+
+    /**
+     * update the items from the inventory table
+     * 
+     * @param array $ids - array of product id
+     * @param array $quantities - array of purchased product quantities
+     */
+    protected function updateStockOrFail($ids, $quantities)
+    {
+        $products = Product::with('inventory')->whereIn('id', $ids)->get();
+
+        foreach($products as $index => $product)
+        {
+            $inventory = $product->inventory;
+            if($inventory->available_quantity >= $quantities[$index])
+            {
+                $inventory->available_quantity = $inventory->available_quantity - $quantities[$index];
+                $inventory->in_stock_quantity = $inventory->in_stock_quantity - $quantities[$index];
+                $inventory->save();
+            }
+            else 
+            {
+                throw new Exception('Not enough stock items');
+            }
+        }
+    }
+
+    /**
+     * @param array $ids - array of product id
+     * @param array $quantities - array of purchased quantities in same order as product ids
+     */
+    protected function productStats($ids, $quantities)
+    {
+        $products = Product::whereIn('id', $ids)->get();
+        foreach($products as $index => $product)
+        {
+            $this->dailyProductStats($product, 'order', [
+                'quantity' => $quantities[$index], 
+                'revenue' => $quantities[$index] * $product->price,
+            ]);
+        }
+    }
+
+    // TODO: implement with queues and event listener in the future
+    protected function createTransaction($order)
+    {
+        try {
+            $prevVendorId = null;
+
+            foreach ($order->products as $index => $product) {
+
+                /** if the products are from the same vendor store once and terminate the loop */
+                if($prevVendorId == $product->inventory->vendor->id) {
+                    break;
+                }
+
+                $transaction = new Transaction();
+                $transaction->order_id = $order->id;
+                $transaction->vendor_id = $product->inventory->vendor->id;
+                $transaction->payment_type = $order->payment_intent_id ? 'card' : 'cash';
+                $transaction->currency = 'mmk';
+                $transaction->gross_amount = $order->total_price;
+                $transaction->tax = $order->total_price * 0.1;
+                $transaction->other_fees = 0;
+                $transaction->status = 'succeed';        // pending, refund, succeed
+                $transaction = $transaction->save();
+
+                $prevVendorId = $product->inventory->vendor->id;
+            }
+        } catch(Exception $e) {
+            Log::error($e->getMessage());
+        }
     }
 }

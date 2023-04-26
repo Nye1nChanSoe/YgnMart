@@ -1,4 +1,7 @@
 <x-vendor-layout>
+    <x-slot:title>
+        Add new product - YangonMart.com
+    </x-slot:title>
     <ul class="flex items-center my-3 px-3 py-3 text-sm">
         <li class="flex items-center ml-2 gap-x-1">
             <a href="{{ route('vendor.dashboard') }}" class="{{ request()->routeIs('vendor.dashboard') ? 'text-blue-600' : 'text-gray-700' }} hover:text-blue-600">Dashboard</a><x-icon name="chevron-right" />
@@ -10,7 +13,6 @@
             <a href="{{ route('vendor.products.create') }}" class="{{ request()->routeIs('vendor.products.*') ? 'text-blue-600' : 'text-gray-700' }} hover:text-blue-600">Upload New Product</a>
         </li>
     </ul>
-    {{-- Name, Meta Type, Price, Description, Image, Stock Amount, Minimum Stock Threshold, Status --}}
     <section 
         x-data="{
             openCategory: true,
@@ -20,7 +22,7 @@
         }" 
         class="mx-10 mt-6 shadow rounded"
     >
-        <form action="{{ route('vendor.products.store') }}" method="POST">
+        <form action="{{ route('vendor.products.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="px-6 py-6 border-b">
                 <div class="flex items-center gap-x-10">
@@ -46,7 +48,8 @@
                 x-transition 
                 x-cloak
             >
-                <h1 for="">1. Select the Category you want to sell</h1>
+                <h1 class="font-medium">1. Select the Category you want to sell</h1>
+                <div class="text-sm text-gray-400 mt-1.5 ml-1 font-normal">Note: you can only select one main category</div>
                 <div class="text-gray-700 flex gap-x-16 mt-10">
                     <div x-data="{open:false}">
                         <div class="flex items-center hover:text-blue-600 mb-3">
@@ -149,7 +152,7 @@
             </section>
     
             <section class="px-6 py-6" x-show="openProduct" x-transition x-cloak>
-                <h1>2. Fill Product Information</h1>
+                <h1 class="font-medium">2. Fill Product Information</h1>
                 <div class="text-gray-700 mt-10">
                     <div class="grid grid-cols-3 gap-x-10">
                         <div>
@@ -182,7 +185,7 @@
                                 <div class="flex flex-col items-center justify-center pt-5 pb-6">
                                     <x-icon name="cloud" class="w-16 h-16 text-gray-500" />
                                     <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">JPG, PNG, JPEG(MAX. 800x400px)</p>
                                 </div>
                                 <input id="image" type="file" name="image" class="hidden" />
                             </label>
@@ -196,16 +199,16 @@
             </section>
     
             <section class="px-6 py-6" x-show="openInventory" x-transition x-cloak>
-                <h1>3. Fill Stock Amount</h1>
+                <h1 class="font-medium">3. Fill Stock Amount</h1>
                 <div x-data="{amount: 100}" class="text-gray-700 mt-10">
                     <div>
                         <label for="in_stock_quantity" class="block mb-1.5">Stock Amount</label>
-                        <input id="in_stock_quantity" type="number" name="in_stock_quantity" x-model="amount" class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300" placeholder="Total number of products in the stock...">
+                        <input id="in_stock_quantity" type="number" name="in_stock_quantity" x-bind:min="50" x-model="amount" class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300" placeholder="Total number of products in the stock...">
                         <x-input-error field="in_stock_quantity" />
                     </div>
                     <div class="mt-6">
                         <label for="minimum_quantity" class="block mb-1.5">Minimum In Stock Amount</label>
-                        <input id="minimum_quantity" type="number" name="minimum_quantity" x-bind:min="amount - 50" x-bind:max="amount" class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300" placeholder="Minimum number of products in stock...">
+                        <input id="minimum_quantity" type="number" name="minimum_quantity" x-bind:min="50" x-bind:max="amount-50" class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300" placeholder="Minimum number of products in stock...">
                         <x-input-error field="minimum_quantity" />
                     </div>
                     <div class="mt-6 flex flex-col">

@@ -5,17 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\Cart;
 use App\Models\Checkout;
 use App\Models\Product;
+use App\Traits\ProductAnalyticTrait;
 use App\Traits\StripePaymentTrait;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
-    use StripePaymentTrait;
+    use StripePaymentTrait, ProductAnalyticTrait;
 
     public function index()
     {
         return view('carts.index', [
-            'carts' => Cart::with('product')->where('user_id', auth()->id())->orderBy('created_at', 'asc')->get(),
+            'carts' => Cart::with('product.inventory')->where('user_id', auth()->id())->orderBy('created_at', 'asc')->get(),
         ]);
     }
 
@@ -23,10 +24,28 @@ class CartController extends Controller
     public function show(Product $product)
     {
         $relatedProducts = Product::with('reviews')->relatedProducts($product)->get();
+        $cart = Cart::where('product_id', $product->id)->first();
 
         return view('carts.show', [
+            'cart' => $cart,
             'product' => $product,
             'relatedProducts' => $relatedProducts,
+        ]);
+    }
+
+    public function update(Request $request, Cart $cart)
+    {
+        $quantity = $request->json('quantity');
+
+        $cart->update(['quantity' => $quantity]);
+        
+        $quantity = $cart->quantity;
+        $totalPrice = $cart->product->price * $quantity;
+        
+        return response()->json([
+            'message' => 'Item updated from the cart',
+            'totalPrice' => $totalPrice,
+            'quantity' => $quantity,
         ]);
     }
 
@@ -41,7 +60,7 @@ class CartController extends Controller
         $totalPrice = $cart->product->price * $quantity;
         $count = Cart::where('user_id', auth()->id())->count();
 
-        /** AJAX request so send JSON respond back to the client */
+        /** AJAX request: send JSON respond back to the client */
         return response()->json([
             'message' => 'Item removed from the cart', 
             'totalPrice' => $totalPrice, 
@@ -84,6 +103,15 @@ class CartController extends Controller
         else 
         {
             $paymentIntent = $this->updatePayment($checkout->payment_intent_id, $paymentOptions);
+        }
+
+        /** load all the carts related to the user and their associated products in a single query */
+        $carts = auth()->user()->carts->load('product');
+        
+        /** increment the checkout value of all the products in the cart */
+        foreach($carts as $cart)
+        {
+            $this->dailyProductStats($cart->product, 'checkout');
         }
 
         return redirect()->route('checkout.index');

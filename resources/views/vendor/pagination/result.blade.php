@@ -1,9 +1,9 @@
-@if (!empty(request(['search', 'category'])))
+@if(request()->filled('search') || request()->filled('category') || request()->filled('seller'))
     <nav role="navigation" aria-label="{{ __('Pagination Navigation') }}" class="flex items-center justify-between">
 
         <div class="sm:flex-1 sm:flex sm:items-center sm:justify-between">
             <div>
-                <p class="text-base text-gray-700 leading-5">
+                <p class="text-base text-gray-700 dark:text-gray-300 leading-5">
                     {!! __('Showing') !!}
                     @if ($paginator->firstItem())
                         <span class="font-medium">{{ $paginator->firstItem() }}</span>
@@ -17,6 +17,10 @@
                     {!! __('results for') !!}
                     @if (request('search') ?? false)
                         <span class="font-semibold">"{{request('search')}}"</span>
+                    @endif
+                    @if (request('seller') ?? false)
+                    {!! __('supplier') !!}
+                        <span class="font-semibold">"{{ ucwords(str_replace('-', ' ', request('seller'))) }}"</span>
                     @endif
                     @if (request('category') ?? false)
                     {!! __('category') !!}

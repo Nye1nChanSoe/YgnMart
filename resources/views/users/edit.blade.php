@@ -1,4 +1,4 @@
-<x-profile-layout>
+<x-layout>
     <x-container class="flex justify-center mt-8">
 
         <!-- Sidebar -->
@@ -12,60 +12,60 @@
             }" 
             class="w-full md:w-3/4 md:px-4"
         >
-            <form action="{{ route('user.update.info') }}" method="POST" class="bg-white rounded-lg shadow-md py-4 px-4 md:px-6">
+            <form action="{{ route('user.update', $user->username) }}" method="POST" class="bg-white rounded-lg shadow-md py-4 px-4 md:px-6 dark:text-gray-300 dark:bg-gray-900">
                 @method('PATCH')
                 @csrf
                 <input type="hidden" name="update_type" value="info">
                 <h1 class="mb-6 font-medium text-xl">Edit Settings</h1>
                 <div class="mb-4">
-                    <label class="block text-gray-700 font-medium mb-2" for="username">Username</label>
-                    <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300" name="username" id="username" type="text" value="{{ $user->username }}" placeholder="Username">
+                    <label class="block text-gray-700 font-medium mb-2 dark:text-gray-300" for="username">Username</label>
+                    <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300 dark:bg-gray-800 dark:text-gray-300 dark:placeholder:text-gray-400 dark:border-gray-600 dark:focus:outline-gray-900" name="username" id="username" type="text" value="{{ old('username') ?? $user->username }}" placeholder="Username">
                     <x-input-error field="username" />
                 </div>
                 <div class="mb-4">
-                    <label class="block text-gray-700 font-medium mb-2" for="name">Name</label>
-                    <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300" name="name" id="name" type="text" value="{{ $user->name }}" placeholder="Name">
+                    <label class="block text-gray-700 font-medium mb-2 dark:text-gray-300" for="name">Name</label>
+                    <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300 dark:bg-gray-800 dark:text-gray-300 dark:placeholder:text-gray-400 dark:border-gray-600 dark:focus:outline-gray-900" name="name" id="name" type="text" value="{{ old('name') ?? $user->name }}" placeholder="Name">
                     <x-input-error field="name" />
                 </div>
                 <div class="mb-4">
-                    <label class="block text-gray-700 font-medium mb-2" for="email">Email</label>
-                    <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300" name="email" id="email" type="email" value="{{ $user->email }}" placeholder="Email">
+                    <label class="block text-gray-700 font-medium mb-2 dark:text-gray-300" for="email">Email</label>
+                    <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300 dark:bg-gray-800 dark:text-gray-300 dark:placeholder:text-gray-400 dark:border-gray-600 dark:focus:outline-gray-900" name="email" id="email" type="email" value="{{ old('email') ?? $user->email }}" placeholder="Email">
                     <x-input-error field="email" />
                 </div>
                 <div class="mb-4">
-                    <label class="block text-gray-700 font-medium mb-2" for="phone_number">Phone Number</label>
-                    <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300" name="phone_number" id="phone_number" type="text" value="{{ $user->phone_number }}" placeholder="Email">
+                    <label class="block text-gray-700 font-medium mb-2 dark:text-gray-300" for="phone_number">Phone Number</label>
+                    <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300 dark:bg-gray-800 dark:text-gray-300 dark:placeholder:text-gray-400 dark:border-gray-600 dark:focus:outline-gray-900" name="phone_number" id="phone_number" type="text" value="{{ old('phone_number') ?? $user->phone_number }}" placeholder="Phone Number">
                     <x-input-error field="phone_number" />
                 </div>
-                <button class="bg-blue-500 text-white py-2 px-3 rounded-lg hover:bg-blue-600">
+                <button class="bg-blue-500 text-white py-2 px-3 rounded-lg hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800">
                     Save Changes
                 </button>
             </form>
 
-            <form action="{{ route('user.update.password') }}" method="POST" class="bg-white rounded-lg mt-8 shadow-md py-4 px-4 md:px-6">
+            <form action="{{ route('user.update', $user->username) }}" method="POST" class="bg-white rounded-lg mt-8 shadow-md py-4 px-4 md:px-6 dark:text-gray-300 dark:bg-gray-900">
                 @method('PATCH')
                 @csrf
                 <input type="hidden" name="update_type" value="password">
                 <div class="mb-8">
-                    <label class="block text-gray-700 font-medium mb-2" for="old_password">Old Password</label>
-                    <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300" name="old_password" id="old_password" type="password" placeholder="Old Password">
+                    <label class="block text-gray-700 font-medium mb-2 dark:text-gray-300" for="old_password">Old Password</label>
+                    <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300 dark:bg-gray-800 dark:text-gray-300 dark:placeholder:text-gray-400 dark:border-gray-600 dark:focus:outline-gray-900" name="old_password" id="old_password" type="password" placeholder="Old Password">
                     <x-input-error field="old_password" />
                 </div>
                 <div class="mb-4">
-                    <label class="block text-gray-700 font-medium mb-2" for="password">New Password</label>
-                    <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300" name="password" id="password" type="password" placeholder="New Password">
+                    <label class="block text-gray-700 font-medium mb-2 dark:text-gray-300" for="password">New Password</label>
+                    <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300 dark:bg-gray-800 dark:text-gray-300 dark:placeholder:text-gray-400 dark:border-gray-600 dark:focus:outline-gray-900" name="password" id="password" type="password" placeholder="New Password">
                     <x-input-error field="password" />
                 </div>
                 <div class="mb-4">
-                    <label class="block text-gray-700 font-medium mb-2" for="password_confirmation">Confirm Password</label>
-                    <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300" name="password_confirmation" id="password_confirmation" type="password" placeholder="Confirm Password">
+                    <label class="block text-gray-700 font-medium mb-2 dark:text-gray-300" for="password_confirmation">Confirm Password</label>
+                    <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300 dark:bg-gray-800 dark:text-gray-300 dark:placeholder:text-gray-400 dark:border-gray-600 dark:focus:outline-gray-900" name="password_confirmation" id="password_confirmation" type="password" placeholder="Confirm Password">
                 </div>
-                <button class="bg-blue-500 text-white py-2 px-3 rounded-lg hover:bg-blue-600">
+                <button class="bg-blue-500 text-white py-2 px-3 rounded-lg hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800">
                     Change Password
                 </button>
             </form>
 
-            <div id="address" class="bg-white rounded-lg mt-8 shadow-md py-4 px-4 md:px-6">
+            <div id="address" class="bg-white rounded-lg mt-8 shadow-md py-4 px-4 md:px-6 dark:text-gray-300 dark:bg-gray-900">
                 <h1 class="mb-6 font-medium text-xl">Addresses</h1>
                 @unless ($addresses->isEmpty())
                 <form action="{{ route('address.update') }}" method="POST">
@@ -75,7 +75,7 @@
                     @foreach ($addresses as $address)
                     <div class="flex flex-col items-start space-y-2.5 py-4 text-sm md:text-base md:space-y-0 md:flex-row md:items-center">
                         <div class="flex items-center gap-x-1.5">
-                            <input type="radio" name="default_address" value="{{ $address->id }}" {{ $address->is_default ? 'checked' : '' }} class="self-start mt-1 md:mt-0 md:self-auto">
+                            <input type="radio" name="default_address" value="{{ old('') ?? $address->id }}" {{ $address->is_default ? 'checked' : '' }} class="self-start mt-1 md:mt-0 md:self-auto">
                             <span class="text-xs text-gray-600 pr-2 self-start md:self-auto">{{ $address->label }}</span>
                             <p class="text-gray-700">{{$address->full_address}}</p>
                         </div>
@@ -111,7 +111,7 @@
                             <span class="text-lime-600 hover:text-lime-700">Add new address</span>
                         </button>
                     </div>
-                    <button type="submit" class="block bg-blue-500 text-white py-2 px-3 rounded-lg hover:bg-blue-600">
+                    <button type="submit" class="block bg-blue-500 text-white py-2 px-3 rounded-lg hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800">
                         Set Default
                     </button>
                 </form>
@@ -120,26 +120,26 @@
                     @csrf
                     <input type="hidden" name="settings" value="1">
                     <div class="mb-4">
-                        <label class="block text-gray-700 font-medium mb-2" for="label">Label</label>
-                        <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300" name="label" id="label" type="text" value="" placeholder="Home, Work, School...">
+                        <label class="block text-gray-700 font-medium mb-2 dark:text-gray-300" for="label">Label</label>
+                        <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300 dark:bg-gray-800 dark:text-gray-300 dark:placeholder:text-gray-400 dark:border-gray-600 dark:focus:outline-gray-900" name="label" id="label" type="text" value="" placeholder="Home, Work, School...">
                         <x-input-error field="label" />
                     </div>
                     <div class="mb-4">
-                        <label class="block text-gray-700 font-medium mb-2" for="street">Street</label>
-                        <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300" name="street" id="street" type="text" value="" placeholder="The name of your street">
+                        <label class="block text-gray-700 font-medium mb-2 dark:text-gray-300" for="street">Street</label>
+                        <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300 dark:bg-gray-800 dark:text-gray-300 dark:placeholder:text-gray-400 dark:border-gray-600 dark:focus:outline-gray-900" name="street" id="street" type="text" value="" placeholder="The name of your street">
                         <x-input-error field="street" />
                     </div>
                     <div class="mb-4">
-                        <label class="block text-gray-700 font-medium mb-2" for="ward">Ward</label>
-                        <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300" name="ward" id="ward" type="text" value="" placeholder="Ward number">
+                        <label class="block text-gray-700 font-medium mb-2 dark:text-gray-300" for="ward">Ward</label>
+                        <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300 dark:bg-gray-800 dark:text-gray-300 dark:placeholder:text-gray-400 dark:border-gray-600 dark:focus:outline-gray-900" name="ward" id="ward" type="text" value="" placeholder="Ward number">
                         <x-input-error field="ward" />
                     </div>
                     <div class="mb-4">
-                        <label class="block text-gray-700 font-medium mb-2" for="township">Township</label>
-                        <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300" name="township" id="township" type="text" value="" placeholder="The name of your township">
+                        <label class="block text-gray-700 font-medium mb-2 dark:text-gray-300" for="township">Township</label>
+                        <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300 dark:bg-gray-800 dark:text-gray-300 dark:placeholder:text-gray-400 dark:border-gray-600 dark:focus:outline-gray-900" name="township" id="township" type="text" value="" placeholder="The name of your township">
                         <x-input-error field="township" />
                     </div>
-                    <button type="submit" class="bg-blue-500 text-white py-2 px-3 rounded-lg hover:bg-blue-600">
+                    <button type="submit" class="bg-blue-500 text-white py-2 px-3 rounded-lg hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800">
                         Save Address
                     </button>
                 </form>
@@ -147,12 +147,12 @@
             </div>
 
             <div x-data="{open:false}" class="mt-16">
-                <button x-on:click="open=!open" class="flex items-center gap-x-4 text-gray-500 hover:text-blue-600">
+                <button x-on:click="open=!open" class="flex items-center gap-x-4 text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-500">
                     <span>I want to delete my account</span>
                     <x-icon name="chevron-down" x-bind:class="{ '-rotate-180 duration-400':open }" />
                 </button>
                 <div x-show="open" class="mt-6" x-cloak x-transition>
-                    <x-warning class="text-gray-700">
+                    <x-warning class="text-gray-700 dark:text-gray-300">
                         Before deleting your user account, it's important to understand the potential consequences of doing so. Deleting your account may result in the permanent loss of all data and information associated with your account.
                         <span class="text-red-500">Deleted Accounts Will Be Permanently Lost Within <span class="font-medium">14 Days</span></span>
                         <ul class="text-sm mt-3 space-y-2 md:text-base">
@@ -162,17 +162,17 @@
                             <li class="flex"><span class="mr-2">4.</span><p>Access to any subscriptions, services, or products that are linked to your account.</p></li>
                         </ul>
                     </x-warning>
-                    <form action="{{ route('user.destroy') }}" method="POST" class="mt-4">
+                    <form action="{{ route('user.destroy', $user->username) }}" method="POST" class="mt-4">
                         @method('DELETE')
                         @csrf
-                        <button type="submit" class="text-white bg-red-500 px-3 py-2 rounded-lg hover:bg-red-700">Delete Account</button>
+                        <button type="submit" class="text-white bg-red-500 px-3 py-2 rounded-lg hover:bg-red-700 dark:bg-red-600">Delete Account</button>
                     </form>
                 </div>
             </div>
 
             <!-- Blur Background -->
             <div x-show="open || open_edit || open_delete" class="fixed inset-0 bg-gray-700 bg-opacity-50" x-cloak></div>
-            
+
             <!-- Models -->
             <div x-show="open" class="fixed z-10 inset-0 overflow-y-auto" x-cloak x-transition>
                 <div class="flex items-center justify-center min-h-screen">
@@ -184,26 +184,26 @@
                         <form action="{{ route('address.store') }}" method="POST">
                             @csrf
                             <div class="mb-4">
-                                <label class="block text-gray-700 font-medium mb-2" for="label">Label</label>
-                                <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300" name="label" id="label" type="text" value="" placeholder="Home, Work, School...">
+                                <label class="block text-gray-700 font-medium mb-2 dark:text-gray-300" for="label">Label</label>
+                                <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300 dark:bg-gray-800 dark:text-gray-300 dark:placeholder:text-gray-400 dark:border-gray-600 dark:focus:outline-gray-900" name="label" id="label" type="text" value="" placeholder="Home, Work, School...">
                                 <x-input-error field="label" />
                             </div>
                             <div class="mb-4">
-                                <label class="block text-gray-700 font-medium mb-2" for="street">Street</label>
-                                <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300" name="street" id="street" type="text" value="" placeholder="The name of your street">
+                                <label class="block text-gray-700 font-medium mb-2 dark:text-gray-300" for="street">Street</label>
+                                <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300 dark:bg-gray-800 dark:text-gray-300 dark:placeholder:text-gray-400 dark:border-gray-600 dark:focus:outline-gray-900" name="street" id="street" type="text" value="" placeholder="The name of your street">
                                 <x-input-error field="street" />
                             </div>
                             <div class="mb-4">
-                                <label class="block text-gray-700 font-medium mb-2" for="ward">Ward</label>
-                                <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300" name="ward" id="ward" type="text" value="" placeholder="Ward number">
+                                <label class="block text-gray-700 font-medium mb-2 dark:text-gray-300" for="ward">Ward</label>
+                                <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300 dark:bg-gray-800 dark:text-gray-300 dark:placeholder:text-gray-400 dark:border-gray-600 dark:focus:outline-gray-900" name="ward" id="ward" type="text" value="" placeholder="Ward number">
                                 <x-input-error field="ward" />
                             </div>
                             <div class="mb-4">
-                                <label class="block text-gray-700 font-medium mb-2" for="township">Township</label>
-                                <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300" name="township" id="township" type="text" value="" placeholder="The name of your township">
+                                <label class="block text-gray-700 font-medium mb-2 dark:text-gray-300" for="township">Township</label>
+                                <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300 dark:bg-gray-800 dark:text-gray-300 dark:placeholder:text-gray-400 dark:border-gray-600 dark:focus:outline-gray-900" name="township" id="township" type="text" value="" placeholder="The name of your township">
                                 <x-input-error field="township" />
                             </div>
-                            <button type="submit" class="bg-blue-500 text-white py-2 px-3 rounded-lg hover:bg-blue-600">
+                            <button type="submit" class="bg-blue-500 text-white py-2 px-3 rounded-lg hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800">
                                 Add Address
                             </button>
                         </form>
@@ -223,26 +223,26 @@
                             @method('PATCH')
                             <input type="hidden" x-ref="address_id_edit" name="id">
                             <div class="mb-4">
-                                <label class="block text-gray-700 font-medium mb-2" for="label">Label</label>
-                                <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300" name="label" id="label" type="text" value="" placeholder="Home, Work, School..." x-ref="label">
+                                <label class="block text-gray-700 font-medium mb-2 dark:text-gray-300" for="label">Label</label>
+                                <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300 dark:bg-gray-800 dark:text-gray-300 dark:placeholder:text-gray-400 dark:border-gray-600 dark:focus:outline-gray-900" name="label" id="label" type="text" value="" placeholder="Home, Work, School..." x-ref="label">
                                 <x-input-error field="label" />
                             </div>
                             <div class="mb-4">
-                                <label class="block text-gray-700 font-medium mb-2" for="street">Street</label>
-                                <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300" name="street" id="street" type="text" value="" placeholder="The name of your street" x-ref="street">
+                                <label class="block text-gray-700 font-medium mb-2 dark:text-gray-300" for="street">Street</label>
+                                <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300 dark:bg-gray-800 dark:text-gray-300 dark:placeholder:text-gray-400 dark:border-gray-600 dark:focus:outline-gray-900" name="street" id="street" type="text" value="" placeholder="The name of your street" x-ref="street">
                                 <x-input-error field="street" />
                             </div>
                             <div class="mb-4">
-                                <label class="block text-gray-700 font-medium mb-2" for="ward">Ward</label>
-                                <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300" name="ward" id="ward" type="text" value="" placeholder="Ward number" x-ref="ward">
+                                <label class="block text-gray-700 font-medium mb-2 dark:text-gray-300" for="ward">Ward</label>
+                                <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300 dark:bg-gray-800 dark:text-gray-300 dark:placeholder:text-gray-400 dark:border-gray-600 dark:focus:outline-gray-900" name="ward" id="ward" type="text" value="" placeholder="Ward number" x-ref="ward">
                                 <x-input-error field="ward" />
                             </div>
                             <div class="mb-4">
-                                <label class="block text-gray-700 font-medium mb-2" for="township">Township</label>
-                                <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300" name="township" id="township" type="text" value="" placeholder="The name of your township" x-ref="township">
+                                <label class="block text-gray-700 font-medium mb-2 dark:text-gray-300" for="township">Township</label>
+                                <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300 dark:bg-gray-800 dark:text-gray-300 dark:placeholder:text-gray-400 dark:border-gray-600 dark:focus:outline-gray-900" name="township" id="township" type="text" value="" placeholder="The name of your township" x-ref="township">
                                 <x-input-error field="township" />
                             </div>
-                            <button type="submit" class="bg-blue-500 text-white py-2 px-3 rounded-lg hover:bg-blue-600">
+                            <button type="submit" class="bg-blue-500 text-white py-2 px-3 rounded-lg hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800">
                                 Edit Address
                             </button>
                         </form>
@@ -272,4 +272,4 @@
 
         </div>
     </x-container>
-</x-profile-layout>
+</x-layout>

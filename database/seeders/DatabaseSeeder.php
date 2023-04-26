@@ -8,7 +8,10 @@ use App\Models\Category;
 use App\Models\CategoryType;
 use App\Models\CategoryTypes;
 use App\Models\Inventory;
+use App\Models\Order;
 use App\Models\Product;
+use App\Models\ProductAnalytic;
+use App\Models\Transaction;
 use App\Models\User;
 use App\Models\Vendor;
 use Illuminate\Database\Seeder;
@@ -25,20 +28,20 @@ class DatabaseSeeder extends Seeder
     private array $fruits = ['banana', 'apple', 'watermelon', 'orange', 'tangerine', 'onion'];
     private array $alcohols = ['wine', 'beer', 'cocktails', 'vodka', 'rum', 'gin', 'whisky', 'tonic', 'soda', 'gold', 'black', 'white', 'blue', 'fire', 'ice'];
     private array $soft_drinks = ['coke', 'energy drinks', 'milk shake', 'orange juice', 'apple juice', 'vanilla cider', 'apple cide', 'pepsi', '100 plus', 'red bull', 'monster', 'coffee'];
-    
+
 
     public function run()
     {
         /**
          * Warning:
-         * Truncate a Foreign Key Constrained table  
+         * Truncate a Foreign Key Constrained table
          * To work around this, use either of these solutions. Both present risks of damaging the data integrity.
-         * SET FOREIGN_KEY_CHECKS=1 is not necessary No, you don't. The setting is only valid during the connection. 
+         * SET FOREIGN_KEY_CHECKS=1 is not necessary No, you don't. The setting is only valid during the connection.
          * As soon as you disconnect, the next connection will have it set back to 1
-         * 
+         *
          * This is just to populate a few records to the database for testing purposes.
          */
-        DB::statement('SET FOREIGN_KEY_CHECKS = 0');    
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
 
 
         /** to avoid unique items collision when seeding again */
@@ -47,7 +50,6 @@ class DatabaseSeeder extends Seeder
         Product::truncate();
         Vendor::truncate();
         Inventory::truncate();
-
 
         /** TODO: delete later */
         User::create([
@@ -63,38 +65,37 @@ class DatabaseSeeder extends Seeder
             'name' => 'John Doe',
             'username' => 'jogndoe_213',
             'role' => 'user',
-            'email' => 'johndoe@gmail.com',
+            'email' => 'johndoe@email.com',
             'phone_number' => '09124124525',
             'password' => 'password',
         ]);
 
         Vendor::create([
-            'name' => 'Yangon Mart',
             'username' => 'ygn_mart_official',
             'brand' => 'Yangon Mart',
             'email' => 'vendor@ygnmart.com',
-            'phone_number' => '+95 9 771 637 812',
+            'phone_number' => '0951260235',
             'password' => 'password',
             'is_verified' => true,
             'image' => 'logo.svg'
         ]);
 
         /** seeding categories */
-        foreach($this->foods as $food) 
+        foreach($this->foods as $food)
         {
             Category::factory()->create([
                 'type' => 'Food',
                 'sub_type' => ucwords($food),
             ]);
         }
-        foreach($this->beverages as $beverage) 
+        foreach($this->beverages as $beverage)
         {
             Category::factory()->create([
                 'type' => 'Beverages',
                 'sub_type' => ucwords($beverage),
             ]);
         }
-        foreach($this->households as $household) 
+        foreach($this->households as $household)
         {
             Category::factory()->create([
                 'type' => 'Household',
@@ -105,8 +106,23 @@ class DatabaseSeeder extends Seeder
         /** seeding products */
         foreach($this->fruits as $fruit)
         {
+            $in_stock = rand(785, 2421);
+            $minimum_stock = 250;
+            $available_stock = $in_stock - $minimum_stock;
+
+            $inventory = Inventory::create([
+                'sku' => 'YM-' . strtoupper(uniqid()),
+                'vendor_id' => 1,
+                'in_stock_quantity' => $in_stock,
+                'minimum_quantity' => $minimum_stock,
+                'available_quantity' => $available_stock,
+                'is_in_stock' => $available_stock > 0,
+                'status' => ($available_stock >= 50) ? 'sell' : 'close',
+            ]);
+
             $name = ucfirst('fresh '.$fruit.' '.rtrim(fake()->sentence(rand(4, 6)), '.'));
             $product = Product::factory()->create([
+                'inventory_id' => $inventory->id,
                 'name' => $name,
                 'slug' => strtolower(str_replace(' ', '-', $name)),
                 'meta_type' => strtolower($fruit),
@@ -115,27 +131,27 @@ class DatabaseSeeder extends Seeder
 
             $categories = Category::where('sub_type', 'fruits')->get();
             $product->categories()->sync($categories);
-
-
-            $in_stock = rand(785, 2421);
-            $minimum_stock = 250;
-            $available_stock = $in_stock - $minimum_stock;
-
-            Inventory::create([
-                'vendor_id' => 1,
-                'product_id' => $product->id,
-                'in_stock_quantity' => $in_stock,
-                'minimum_quantity' => $minimum_stock,
-                'available_quantity' => $available_stock,
-                'is_in_stock' => $available_stock <= 0,
-                'status' => ($available_stock >= 50) ? 'sell' : 'close',
-            ]);
         }
 
         foreach($this->alcohols as $alcohol)
         {
+            $in_stock = rand(150, 542);
+            $minimum_stock = 150;
+            $available_stock = $in_stock - $minimum_stock;
+
+            $inventory = Inventory::create([
+                'sku' => 'YM-' . strtoupper(uniqid()),
+                'vendor_id' => 1,
+                'in_stock_quantity' => $in_stock,
+                'minimum_quantity' => $minimum_stock,
+                'available_quantity' => $available_stock,
+                'is_in_stock' => $available_stock > 0,
+                'status' => ($available_stock >= 50) ? 'sell' : 'close',
+            ]);
+
             $name = ucfirst('imported '.$alcohol.' '.rtrim(fake()->sentence(rand(4, 6)), '.'));
             $product = Product::factory()->create([
+                'inventory_id' => $inventory->id,
                 'name' => $name,
                 'slug' => strtolower(str_replace(' ', '-', $name)),
                 'meta_type' => strtolower($alcohol),
@@ -143,26 +159,27 @@ class DatabaseSeeder extends Seeder
             ]);
             $categories = Category::where('sub_type', 'alcohol')->get();
             $product->categories()->sync($categories);
-
-            $in_stock = rand(150, 542);
-            $minimum_stock = 150;
-            $available_stock = $in_stock - $minimum_stock;
-            
-            Inventory::create([
-                'vendor_id' => 1,
-                'product_id' => $product->id,
-                'in_stock_quantity' => $in_stock,
-                'minimum_quantity' => $minimum_stock,
-                'available_quantity' => $available_stock,
-                'is_in_stock' => $available_stock <= 0,
-                'status' => ($available_stock >= 50) ? 'sell' : 'close',
-            ]);
         }
 
         foreach($this->soft_drinks as $soft_drink)
         {
+            $in_stock = rand(250, 2421);
+            $minimum_stock = 250;
+            $available_stock = $in_stock - $minimum_stock;
+
+            $inventory = Inventory::create([
+                'sku' => 'YM-' . strtoupper(uniqid()),
+                'vendor_id' => 1,
+                'in_stock_quantity' => $in_stock,
+                'minimum_quantity' => $minimum_stock,
+                'available_quantity' => $available_stock,
+                'is_in_stock' => $available_stock > 0,
+                'status' => ($available_stock >= 50) ? 'sell' : 'close',
+            ]);
+
             $name = ucfirst($soft_drink.' '.rtrim(fake()->sentence(rand(4, 6)), '.'));
             $product = Product::factory()->create([
+                'inventory_id' => $inventory->id,
                 'name' => $name,
                 'slug' => strtolower(str_replace(' ', '-', $name)),
                 'meta_type' => strtolower($soft_drink),
@@ -170,20 +187,10 @@ class DatabaseSeeder extends Seeder
             ]);
             $categories = Category::where('sub_type', 'soft drinks')->get();
             $product->categories()->sync($categories);
-
-            $in_stock = rand(250, 2421);
-            $minimum_stock = 250;
-            $available_stock = $in_stock - $minimum_stock;
-            
-            Inventory::create([
-                'vendor_id' => 1,
-                'product_id' => $product->id,
-                'in_stock_quantity' => $in_stock,
-                'minimum_quantity' => $minimum_stock,
-                'available_quantity' => $available_stock,
-                'is_in_stock' => $available_stock <= 0,
-                'status' => ($available_stock >= 50) ? 'sell' : 'close',
-            ]);
         }
+
+        $this->call([
+            // ProductAnalyticSeeder::class,
+        ]);
     }
 }

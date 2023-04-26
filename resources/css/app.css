@@ -78,15 +78,65 @@ input:-webkit-autofill:active {
     }
 
     to {
-        transform: rotate(360deg);       
+        transform: rotate(360deg);
     }
 }
 
 @media screen and (min-width: 768px) {
-    .bg-forcefields {
-        background-image: url("/public/images/scattered-forcefields.svg");
+    .bg-tablet {
+        background-image: url("/public/images/bg-tablet-pattern.svg");
         background-repeat: no-repeat;
         background-size: cover;
-        background-position: center;
+        background-clip: padding-box;
+        background-size: 500px;
+        z-index: -1;
+        background-position: 15% center;
     }
 }
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    input:-webkit-autofill:active {
+        -webkit-box-shadow: 0 0 0 30px #1f1f1f inset !important;
+    }
+
+    .scrollbar::-webkit-scrollbar-track {
+        background: #2d2d2d;
+    }
+
+    .scrollbar::-webkit-scrollbar-thumb {
+        background: #4f4f4f;
+        border: 3px solid #252525;
+    }
+
+    .scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #727272;
+    }
+}
+
+.dark
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px rgb(11, 18, 33) inset !important;
+    -webkit-text-fill-color: #dedede;
+}
+
+.dark .scrollbar::-webkit-scrollbar-track {
+    background: rgb(17 24 39);
+}
+
+.dark .scrollbar::-webkit-scrollbar-thumb {
+    background: #565353;
+    border: 3px solid #252525;
+}
+
+.dark .scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #727272;
+}
+
+

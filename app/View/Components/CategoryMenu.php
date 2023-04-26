@@ -10,10 +10,12 @@ class CategoryMenu extends Component
     /**
      * Main category type
      */
+    public $categories;
     public $type;
 
-    public function __construct($type)
+    public function __construct($categories, $type)
     {
+        $this->categories = $categories;
         $this->type = $type;
     }
 
@@ -24,9 +26,7 @@ class CategoryMenu extends Component
      */
     public function render()
     {
-        $subTypes = DB::table('categories')
-            ->where('type', $this->type)
-            ->pluck('sub_type');
+        $subTypes = $this->categories->filter(fn($category) => $category->type == $this->type)->pluck('sub_type');
         return view('components.category-menu', compact('subTypes'));
     }
 }

@@ -27,6 +27,35 @@ class Inventory extends Model
     }
 
 
+    /**
+     *
+     */
+    public function scopeSearch($query, $terms)
+    {
+        $query->when($terms['search'] ?? false, fn($query, $search) => $query
+            ->where(fn($query) => $query
+                ->whereHas('product', fn($query) => $query
+                    ->where('name', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%")
+                    ->orWhere('meta_type', 'like', "%{$search}%")
+                    ->when(ctype_digit($search), fn($query) => $query
+                        ->orwhereBetween('price', [$search, $search + 100])
+                    )
+                )
+                ->orWhere('sku', 'like', "%{$search}%")
+                ->orWhere('status', 'like', "%{$search}%")
+                ->when(ctype_digit($search), fn($query) => $query
+                    ->orwhereBetween('in_stock_quantity', [$search, $search + 100])
+                    ->orwhereBetween('minimum_quantity', [$search, $search + 100])
+                    ->orwhereBetween('available_quantity', [$search, $search + 100])
+                )
+            )
+        );
+
+        return $query;
+    }
+
+
     /** relatins */
     public function vendor()
     {
@@ -39,6 +68,6 @@ class Inventory extends Model
          * each product can relate with many inventory records since many vendors
          * can sell the same product with different variants such as price, color...`
          */
-        return $this->belongsTo(Product::class);    
+        return $this->hasOne(Product::class);
     }
 }

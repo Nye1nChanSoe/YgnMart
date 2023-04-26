@@ -3,58 +3,63 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
-use App\Models\Category;
 use App\Models\Product;
 use App\Models\Review;
-use App\Traits\parseTrait;
+use App\Traits\ParseTrait;
+use App\Traits\ProductAnalyticTrait;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
-    use parseTrait;
+    use ParseTrait, ProductAnalyticTrait;
 
-    public function index()
+    public function index(Request $request)
     {
         /**
-         * Eager loaded Models: reviews
+         * Eager loaded Models: reviews, inventory.vendor
          * Eager load or left join the model reviews
+         * Dot notation to eager load the nested relationship like vendor
          */
-        $filteredQuery = Product::with('reviews')->oldest()->filter($this->parseHyphens(request(['search', 'category'])));
-        
-        $products = $filteredQuery->paginate(20)->withQueryString();
+        if(request()->filled('search') || request()->filled('category') || request()->filled('seller')) {
+            $filteredQuery = Product::with(['reviews', 'inventory.vendor'])
+                ->whereHas('inventory', fn($query) => $query
+                    ->where('status', 'sell'))
+                ->latest()
+                ->filter($this->parseHyphens(request(['search', 'category', 'seller'])));
+            $products = $filteredQuery->paginate(20)->withQueryString();
 
-        return view('products.index', compact('products'));
+            return view('products.search', compact('products'));
+        }
+
+        $cache_key = 'product:' . Product::count();
+        $recentProducts = $this->recentlyAdded($request, $cache_key);
+        $foodProducts = $this->foodProducts($request, $cache_key);
+        $drinkProducts = $this->drinkProducts($request, $cache_key);
+        $householdProducts = $this->householdProducts($request, $cache_key);
+
+        return view('products.index', compact([
+            'recentProducts',
+            'foodProducts',
+            'drinkProducts',
+            'householdProducts'
+        ]));
     }
 
     public function show(Product $product)
     {
-        /**
-         * to select reviews from the review table 
-         * even if there are no reviews it will return back a table like this
-         * 
-         * --------------------
-         * |  star  |  count  |
-         * --------------------
-         * |   1    |    0    |
-         * |   2    |    0    |
-         * |   3    |    0    |
-         * |   4    |    0    |
-         * |   5    |    0    |
-         * ---------------------
-         */
-        $ratings = DB::select(DB::raw('SELECT stars_table.stars, COALESCE(COUNT(reviews.rating), 0) AS count
-                    FROM (
-                        SELECT 1 AS stars UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5
-                        ) AS stars_table
-                    LEFT OUTER JOIN reviews ON stars_table.stars = reviews.rating 
-                    AND reviews.product_id = '.$product->id.'
-                    GROUP BY stars_table.stars'));
+        $ratings = Review::totalProductRatings($product);
 
         $relatedProducts = Product::with('reviews')->relatedProducts($product)->get();
-        
+
+        $this->dailyProductStats($product, 'view');
+
+        /** load related models on a specific instance */
+        $product->load(['inventory.vendor']);
+
         return view('products.show',compact('product', 'ratings', 'relatedProducts'));
     }
 
@@ -77,6 +82,8 @@ class ProductController extends Controller
             ]);
         }
 
+        $this->dailyProductStats($product, 'cart');
+
         return redirect()->route('carts.show', ['product' => $product]);
     }
 
@@ -97,13 +104,18 @@ class ProductController extends Controller
         $review->comment = $request->json('comment');
         $review->save();
 
-        $ratings = DB::select(DB::raw('SELECT stars_table.stars, COALESCE(COUNT(reviews.rating), 0) AS count
-            FROM (
-                SELECT 1 AS stars UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5
-                ) AS stars_table
-            LEFT OUTER JOIN reviews ON stars_table.stars = reviews.rating 
-            AND reviews.product_id = '.$product->id.'
-            GROUP BY stars_table.stars'));
+        // $ratings = DB::select(DB::raw('SELECT stars_table.stars, COALESCE(COUNT(reviews.rating), 0) AS count
+        //     FROM (
+        //         SELECT 1 AS stars UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5
+        //         ) AS stars_table
+        //     LEFT OUTER JOIN reviews ON stars_table.stars = reviews.rating 
+        //     AND reviews.product_id = '.$product->id.'
+        //     GROUP BY stars_table.stars'));
+
+        $ratings = Review::totalProductRatings($product);
+
+
+        $this->dailyProductStats($product, 'review');
 
         return response()->json([
             'message' => 'success',
@@ -146,5 +158,92 @@ class ProductController extends Controller
     {
         $product->update(['rating_point' => $request->json('point')]);
         return response()->json(['message' => 'success']);
+    }
+
+    /**
+     * Query most recent items from the product catelogue
+     * 
+     * @param Request $request
+     * @param int  $key - cache key
+     * @return Product $products 
+     */
+    protected function recentlyAdded(Request $request, $key)
+    {
+        $cache_key = 'recentProduct:' . $key;
+        $products = Cache::remember($cache_key, '300', function() {
+            return Product::with(['reviews', 'inventory.vendor'])
+                ->whereHas('inventory', fn($query) => $query
+                    ->where('status', 'sell'))
+                ->latest()
+                ->limit(30)
+                ->get();
+        });
+        return $products;
+    }
+
+    /**
+     * Query food related products from the product catelogue
+     * 
+     * @param Request $request
+     * @param int  $key - cache key
+     * @return Product $products 
+     */
+    protected function foodProducts(Request $request, $key)
+    {
+        $cache_key = 'foodProduct:' . $key;
+        $products = Cache::remember($cache_key, '300', function() {
+            return Product::with(['reviews', 'inventory.vendor'])
+                ->whereHas('inventory', fn($query) => $query
+                    ->where('status', 'sell'))
+                ->whereHas('categories', fn($query) => $query
+                    ->where('type', 'food'))
+                ->inRandomOrder()
+                ->get();
+        });
+        return $products;
+    }
+
+    /**
+     * Query drinks related products from the product catelogue
+     * 
+     * @param Request $request
+     * @param int  $key - cache key
+     * @return Product $products 
+     */
+    protected function drinkProducts(Request $request, $key)
+    {
+        $cache_key = 'drinkProduct:' . $key;
+        $products = Cache::remember($cache_key, '300', function() {
+            return Product::with(['reviews', 'inventory.vendor'])
+                ->whereHas('inventory', fn($query) => $query
+                    ->where('status', 'sell'))
+                ->whereHas('categories', fn($query) => $query
+                    ->where('type', 'beverages'))
+                ->inRandomOrder()
+                ->get();
+        });
+        return $products;
+    }
+
+    /**
+     * Query household related products from the product catelogue
+     * 
+     * @param Request $request
+     * @param int  $key - cache key
+     * @return Product $products 
+     */
+    protected function householdProducts(Request $request, $key)
+    {
+        $cache_key = 'householdProduct:' . $key;
+        $products = Cache::remember($cache_key, '300', function() {
+            return Product::with(['reviews', 'inventory.vendor'])
+                ->whereHas('inventory', fn($query) => $query
+                    ->where('status', 'sell'))
+                ->whereHas('categories', fn($query) => $query
+                    ->where('type', 'household'))
+                ->inRandomOrder()
+                ->get();
+        });
+        return $products;
     }
 }

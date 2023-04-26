@@ -1,4 +1,4 @@
-<div {{$attributes->merge(['class' => 'border border-amber-400 rounded-lg p-3 bg-white'])}}>
+<div {{$attributes->merge(['class' => 'border border-amber-400 rounded-lg p-3 bg-white dark:bg-gray-900 dark:border-amber-300'])}}>
     <h2 class="font-medium text-amber-400">
         <x-icon name="warning" class="inline mr-1" /> Warning
     </h2>
