@@ -13,23 +13,11 @@ class vendorOrdersController extends Controller
 
     public function index()
     {
-        if(request()->filled('search')) {
-            $transactions = Transaction::with('order.products')
-                ->where('vendor_id', auth()->guard('vendor')->id())
-                ->latest()
-                ->search($this->parseHyphens(request(['search'])))
-                ->paginate(25);
-
-            return view('vendors.orders.index', compact('transactions'));
-        }
-
-        $cache_key = 'vendor:order:' . Order::count();
-        $transactions = Cache::remember($cache_key, '300', function() {
-            return Transaction::with('order.products')
-                ->where('vendor_id', auth()->guard('vendor')->id())
-                ->latest()
-                ->paginate(25);
-        });
+        $transactions = Transaction::with('order.products')
+            ->where('vendor_id', auth()->guard('vendor')->id())
+            ->latest()
+            ->search($this->parseHyphens(request(['search'])))
+            ->paginate(25);
 
         return view('vendors.orders.index', compact('transactions'));
     }

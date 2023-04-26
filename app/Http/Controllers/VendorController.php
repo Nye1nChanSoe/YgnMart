@@ -2,43 +2,37 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Inventory;
-use App\Models\Product;
 use App\Models\ProductAnalytic;
 use App\Models\Transaction;
 use App\Models\Vendor;
+use App\Traits\PhotoUploadTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 
 class VendorController extends Controller
 {
+    use PhotoUploadTrait;
+
     /** dashboard */
     public function index()
     {
         $vendorId = auth()->guard('vendor')->id();
 
-        $transactions = Cache::remember('vendor:dashboard:transaction', '300', function() use ($vendorId)  {
-            return Transaction::with('order.products')
+        $transactions = Transaction::with('order.products')
             ->where('vendor_id', $vendorId)
             ->latest()
             ->get();
-        });
 
         /** daily transactions for vendor account */
-        $data = Cache::remember('vendor:dashboard:transactionAnalytic', '300', function() {
-            return Transaction::filter('day')->get();
-        });
+        $data = Transaction::filter('day')->get();
 
         $transactionData = $data->pluck('revenue', 'day');
 
         /* daily report data */
-        $analytics = Cache::remember('vendor:dashboard:productAnalytic', '300', function() {
-            return ProductAnalytic::filter('day')->get();
-        });
-
+        $analytics = ProductAnalytic::filter('day')->get();
+        
         $viewData = $analytics->pluck('view', 'day');              // day => view  key:value pair
         $cartData = $analytics->pluck('cart', 'day');
         $checkoutData = $analytics->pluck('checkout', 'day');
@@ -66,6 +60,11 @@ class VendorController extends Controller
     public function update(Request $request, Vendor $vendor)
     {
         $update_type = $request->input('update_type');
+
+        if($update_type == 'image')
+        {
+            return $this->uploadImage($request, $vendor);
+        }
 
         if($update_type == 'info')
         {
@@ -99,16 +98,34 @@ class VendorController extends Controller
             'old_password' => ['required'],
             'password' => ['required', 'confirmed', 'min:8'],
         ]);
-        
+
         if (!Hash::check($request->input('old_password'), $vendor->password)) {
             return back()->withInput()->withErrors(['old_password' => 'Incorrect password']);
         }
-        
+
         // If old password is correct, update the user's password
         $vendor->password = $updatedPassword['password'];
         $vendor->save();
-        
+
         return redirect()->route('vendor.show', $vendor->username)
             ->with('success', 'Password updated successfully');
+    }
+
+    public function uploadImage(Request $request, Vendor $vendor)
+    {
+        if($request->image == null) 
+        {
+            return back()->with('error', 'Failed to upload new image');
+        }
+
+        $imageData = $request->validate([
+            'image' => 'required|image|mimes:jpeg,png,webp,svg,jpg|max:2048|dimensions:max_width=2000,max_height=2000', // Maximum file size of 2 MB, maximum dimensions of 2000x2000 pixels, and only JPEG and PNG files allowed
+        ]);
+
+        $storagePath = $this->upload($imageData['image']);
+        $vendor->update(['image' => $storagePath]);
+
+        return redirect()->route('vendor.show', $vendor->username)
+            ->with('success', 'Profile Updated Successfully');
     }
 }

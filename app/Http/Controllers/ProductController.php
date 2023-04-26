@@ -122,7 +122,7 @@ class ProductController extends Controller
             'ratings' => $ratings,
             'user' => [
                 'name' => auth()->user()->name,
-                'image' => auth()->user()->image,
+                'image' => asset('storage/images/'.auth()->user()->image),
             ],
             'comment' => request()->json('comment'),
         ]);

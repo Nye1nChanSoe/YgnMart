@@ -15,23 +15,10 @@ class AdminCustomerController extends Controller
 
     public function index()
     {
-        if(request()->filled('search')) {
-            $customers = User::with('addresses')
-                ->where('role', '<>', 'admin')
-                ->latest()
-                ->search($this->parseHyphens(request(['search'])))
-                ->paginate(25);
-
-            return view('admins.customers.index', compact('customers'));
-        }
-
-        $cache_key = 'admin:customer:' . User::count();
-        $customers = Cache::remember($cache_key, '300', function() {
-            return User::with('addresses')
-                ->where('role', '<>', 'admin')
-                ->latest()
-                ->paginate(25);
-        });
+        $customers = User::with('addresses')
+            ->latest()
+            ->search($this->parseHyphens(request(['search'])))
+            ->paginate(25);
         return view('admins.customers.index', compact('customers'));
     }
 
@@ -51,7 +38,6 @@ class AdminCustomerController extends Controller
         ]);
 
         $user->update($updateInfo);
-        Cache::forget('admin:customer:' . $user->count());
 
         return redirect()->route('admin.customers.show', $user->username)
             ->with('success', "User {$user->name} updated");

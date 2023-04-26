@@ -16,8 +16,8 @@ return new class extends Migration
             $table->foreignId('user_id');
             $table->string('ip_address');
             $table->string('session_id');
-            $table->timestamp('start_time')->default(now());
-            $table->timestamp('end_time')->default(now());      // beforeunload, periodic AJAX, timeout
+            $table->timestamp('start_time')->default(now('Asia/Yangon'));
+            $table->timestamp('end_time')->default(now('Asia/Yangon'));      // beforeunload, periodic AJAX, timeout
             $table->integer('page_views');
             $table->integer('unique_page_views');
             $table->json('visited_pages');
@@ -27,7 +27,7 @@ return new class extends Migration
             $table->string('browser_type');
             $table->string('operating_system');
             $table->text('location')->nullable();       // TODO: use GeoIP2 
-            $table->date('date')->default(now());
+            $table->date('date')->default(today('Asia/Yangon'));
             $table->timestamps();
 
             /** constraints */

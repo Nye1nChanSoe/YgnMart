@@ -18,23 +18,11 @@ class VendorProductController extends Controller
 
     public function index()
     {
-        if(request()->filled('search')) {
-            $inventories = Inventory::with('product.categories')
-                ->where('vendor_id', auth()->guard('vendor')->id())
-                ->latest()
-                ->search($this->parseHyphens(request(['search'])))
-                ->paginate(25);
-
-            return view('vendors.products.index', compact('inventories'));
-        }
-
-        $cache_key = 'vendor:products:' . Product::count();
-        $inventories = Cache::remember($cache_key, '300', function() {
-            return Inventory::with('product.categories')
-                ->where('vendor_id', auth()->guard('vendor')->id())
-                ->latest()
-                ->paginate(25);
-        });
+        $inventories = Inventory::with('product.categories')
+            ->where('vendor_id', auth()->guard('vendor')->id())
+            ->latest()
+            ->search($this->parseHyphens(request(['search'])))
+            ->paginate(25);
 
         return view('vendors.products.index', compact('inventories'));
     }
@@ -47,7 +35,7 @@ class VendorProductController extends Controller
 
         /* daily report data */
         $analytics = $product->analytics()->filter('day')->get();
-        
+
         $viewData = $analytics->pluck('view', 'day');              // day => view  key:value pair
         $cartData = $analytics->pluck('cart', 'day');              
         $checkoutData = $analytics->pluck('checkout', 'day');      
@@ -55,7 +43,7 @@ class VendorProductController extends Controller
         $reviewData = $analytics->pluck('review', 'day');        
         $quantityData = $analytics->pluck('quantity', 'day');      
         $revenueData = $analytics->pluck('revenue', 'day');
-        
+
         return view('vendors.products.show', compact([
             'product',
             'ratings',
@@ -88,6 +76,7 @@ class VendorProductController extends Controller
             'sub_type.*' => ['required'],
             'in_stock_quantity' => ['required', 'numeric', 'min:100'],
             'minimum_quantity' => ['required', 'numeric', 'min:50'],
+            'image' => 'required|image|mimes:jpeg,png,webp,svg,jpg|max:2048|dimensions:max_width=2000,max_height=2000', // Maximum file size of 2 MB, maximum dimensions of 2000x2000 pixels, and only JPEG and PNG files allowed
             'status' => ['required'],
         ]);
 
@@ -102,23 +91,20 @@ class VendorProductController extends Controller
             'meta_type' => ['required', 'max:50'],
             'price' => ['required', 'numeric'],
             'description' => ['required'],
-            'image' => ['nullable', 'image', 'mimes:jpg,png,jpeg', 'max:2048']
+            'image' => 'required|image|mimes:jpeg,png,webp,svg,jpg|max:2048|dimensions:max_width=2000,max_height=2000', // Maximum file size of 2 MB, maximum dimensions of 2000x2000 pixels, and only JPEG and PNG files allowed
         ]);
 
         /** create inventory record first */
         $inventoryData['sku'] = 'YM-' . strtoupper(uniqid());
         $inventoryData['vendor_id'] = auth()->guard('vendor')->id();
         $inventoryData['available_quantity'] = $inventoryData['in_stock_quantity'] - $inventoryData['minimum_quantity'];
-        $inventoryData['is_in_stock'] = $inventoryData['available_quantity'] <= 0;
+        $inventoryData['is_in_stock'] = $inventoryData['available_quantity'] > 0;
         $inventory = Inventory::create($inventoryData);
 
         /** product data second */
-        $productData['slug'] = strtolower(str_replace([' ', '_'], '-', $request->input('name')));
+        $productData['image'] = $this->upload($productData['image']);
+        $productData['slug'] = strtolower(str_replace([' ', '_'], '-', $productData['name']));
         $productData['inventory_id'] = $inventory->id;
-        if($productData['image'] ?? false)
-        {
-            $productData['image'] = $this->upload($productData['image']);
-        }
         $product = Product::create($productData);
 
         /** categories third */
@@ -151,6 +137,7 @@ class VendorProductController extends Controller
             'sub_type.*' => ['required'],
             'in_stock_quantity' => ['required', 'numeric', 'min:100'],
             'minimum_quantity' => ['required', 'numeric', 'min:50'],
+            'image' => 'image|mimes:jpeg,png,webp,svg,jpg|max:2048|dimensions:max_width=2000,max_height=2000', // Maximum file size of 2 MB, maximum dimensions of 2000x2000 pixels, and only JPEG and PNG files allowed
             'status' => ['required'],
         ]);
 
@@ -165,13 +152,17 @@ class VendorProductController extends Controller
             'meta_type' => ['required', 'max:50'],
             'price' => ['required', 'numeric'],
             'description' => ['required'],
-            'image' => ['nullable', 'image', 'mimes:jpg,png,jpeg', 'max:2048']
+            'image' => 'image|mimes:jpeg,png,webp,svg,jpg|max:2048|dimensions:max_width=2000,max_height=2000', // Maximum file size of 2 MB, maximum dimensions of 2000x2000 pixels, and only JPEG and PNG files allowed
         ]);
 
         $availableQuantity = $inventoryData['in_stock_quantity'] - $inventoryData['minimum_quantity'];
         $inventoryData['available_quantity'] = $availableQuantity;
-        $inventoryData['is_in_stock'] = $availableQuantity > 0 ? true : false;
+        $inventoryData['is_in_stock'] = $availableQuantity > 0;
 
+        if($productData['image'] ?? false)
+        {
+            $productData['image'] = $this->upload($productData['image']);
+        }
         $product->inventory->update($inventoryData);
         $product->update($productData);
         $categories = Category::whereIn('sub_type', $request->input('sub_type'))->get();
@@ -186,5 +177,4 @@ class VendorProductController extends Controller
         $product->delete();
         return redirect()->route('vendor.products')->with('success', 'Product removal request successfully send');
     }
-
 }

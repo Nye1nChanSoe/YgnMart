@@ -117,7 +117,7 @@
                             <x-input-error field="sub_type" />
                         </div>
                     </template>
-    
+
                     <template x-if="type==='Household'">
                         <div x-data="{open:true}" x-cloak>
                             <div class="flex items-center hover:text-blue-600 mb-3">
@@ -181,13 +181,27 @@
                     <div class="w-full mt-6">
                         <h3 class="mb-1.5">Upload Product Image</h3>
                         <div class="flex items-center justify-center w-full">
-                            <label for="image" class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-                                <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                            <label for="image" class="flex flex-row items-center justify-between w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                                <div class="w-1/2 flex flex-col items-center justify-center pt-5 pb-6">
                                     <x-icon name="cloud" class="w-16 h-16 text-gray-500" />
                                     <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400">JPG, PNG, JPEG(MAX. 800x400px)</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">PNG, JPG, Webp or SVG (MAX. 2000x200px)</p>
                                 </div>
-                                <input id="image" type="file" name="image" class="hidden" />
+                                <div id="image-container" class="w-1/2 flex items-center justify-center bg-slate-50 border h-full">
+                                    <img src="https://placehold.co/400/png" alt="" class="w-full h-full object-cover">
+                                    </div>
+                                <script>
+                                    function previewImage(event) {
+                                        var img = event.target.files[0];
+                                        var reader = new FileReader();
+                                        reader.onload = function(e) {
+                                            document.querySelector('#image-container img').setAttribute('src', e.target.result);
+                                        }
+                                        reader.readAsDataURL(img);
+                                        console.log('sds');
+                                    }
+                                </script>
+                                <input id="image" type="file" name="image" class="hidden" onchange="previewImage(event)"/>
                             </label>
                         </div> 
                         <x-input-error field="image" />

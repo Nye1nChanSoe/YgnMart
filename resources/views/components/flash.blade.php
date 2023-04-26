@@ -53,7 +53,7 @@
         x-data="{show:true}" 
         x-show="show" 
         x-init="animate(), setTimeout(() => show = false, 5000)"
-        class="fixed z-10 bg-red-400 text-white bottom-5 right-3 shadow-lg text-sm font-semibold py-2 px-4 rounded-lg"
+        class="fixed z-10 bg-red-500 text-white bottom-5 right-3 shadow-lg text-sm font-semibold py-2 px-4 rounded-lg"
         id="flash"
     >
         <div class="flex items-center space-x-2">

@@ -20,10 +20,20 @@
         <div class="flex flex-col items-center h-full py-10 px-2.5 justify-between lg:justify-around md:space-x-2 md:flex-row dark:bg-gray-900">
             <div class="flex flex-col">
                 <div class="flex justify-center w-60 h-60 my-2.5 p-2 border rounded-lg md:w-80 md:h-80 dark:border-gray-700">
-                    <img src="{{$product->image ? asset($product->image) : asset('images/no-image.png')}}" alt="" class="w-full h-full object-contain shrink-0">
+                    @if ($product->image)
+                    <img src="{{ asset('storage/images/'.$product->image) }}" alt="" class="w-full h-full object-cover shrink-0">
+                    @else
+                    {{-- <img src="https://placehold.co/240/png" alt="" class="w-full h-full object-cover"> --}}
+                    <img src="{{ asset('images/no-image.png') }}" alt="" class="w-full h-full shrink-0 object-contain">
+                    @endif
                 </div>
-                <div class="flex items-center justify-center w-24 h-24 my-2 p-1 border-2 rounded-lg border-slate-300 dark:border-gray-600 dark:ring-1 dark:ring-blue-300">
-                    <img src="{{$product->image ? asset($product->image) : asset('images/no-image.png')}}" alt="" class="w-full h-full object-contain shrink-0">
+                <div class="flex justify-center w-24 h-24 my-2 p-1 border-2 rounded-lg border-slate-300 dark:border-gray-600 dark:ring-1 dark:ring-blue-300">
+                    @if ($product->image)
+                    <img src="{{ asset('storage/images/'.$product->image) }}" alt="" class="w-full h-full object-cover shrink-0">
+                    @else
+                    {{-- <img src="https://placehold.co/240/png" alt="" class="w-full h-full object-cover"> --}}
+                    <img src="{{ asset('images/no-image.png') }}" alt="" class="w-full h-full shrink-0 object-contain">
+                    @endif
                 </div>
             </div>
 
@@ -215,7 +225,13 @@
                 <section id="comments" class="flex-1 space-y-2" x-show="totalReviews > 0">
                     @foreach ($product->reviews as $review)
                     <div class="flex p-2 pt-3 bg-white rounded dark:bg-gray-900 dark:border-gray-700">
-                        <img src="{{asset('images/no-image.png')}}" alt="" width="40" height="40" class="self-start border border-slate-100 p-1 py-1.5 rounded-full dark:border-gray-700">
+                        <div class="flex items-center justify-center border rounded-full w-12 h-12 dark:border-gray-700">
+                            @if ($review->user->image)
+                            <img src="{{ asset('storage/images/'.$review->user->image) }}" alt="" class="w-full h-full object-cover shrink-0 rounded-full">
+                            @else
+                            <img src="https://placehold.co/48/png" alt="" class="w-full h-full object-cover rounded-full">
+                            @endif
+                        </div>
                         <div class="flex-1 ml-4">
                             <div class="flex justify-between items-center">
                                 <div class="flex flex-col">
@@ -422,7 +438,9 @@ function createComment(data, stars)
 {
     const newComment = `
     <div class="flex p-2 pt-3 bg-white rounded dark:bg-gray-900 dark:border-gray-700">
-        <img src="{{asset('images/no-image.png')}}" alt="" width="40" height="40" class="self-start border border-slate-100 p-1 py-1.5 rounded-full dark:border-gray-700">
+        <div class="flex items-center justify-center border rounded-full w-12 h-12 dark:border-gray-700">
+            <img src="${data.user.image}" alt="" class="w-full h-full object-cover shrink-0 rounded-full">
+        </div>
         <div class="flex-1 ml-4">
           <div class="flex justify-between items-center">
             <div class="flex flex-col">

@@ -34,8 +34,13 @@
                 @foreach ($products as $product)
                 <x-product-card class="border dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100" :product="$product">
                     <x-product-review :product="$product" class="justify-center mb-2.5" />
-                    <div class="flex justify-center h-24 md:h-32">
-                        <img src="{{$product->image ? asset($product->image) : asset('images/no-image.png')}}" alt="" class="w-full h-full shrink-0 object-contain">
+                    <div class="flex items-center justify-center h-24 md:h-32">
+                        @if ($product->image)
+                        <img src="{{ asset('storage/images/'.$product->image) }}" alt="" class="w-full h-full object-cover shrink-0">
+                        @else
+                        {{-- <img src="https://placehold.co/240/png" alt="" class="w-full h-full object-cover"> --}}
+                        <img src="{{ asset('images/no-image.png') }}" alt="" class="w-full h-full shrink-0 object-contain">
+                        @endif
                     </div>
                     {{-- name and stock --}}
                     <div>

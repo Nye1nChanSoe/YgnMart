@@ -23,8 +23,12 @@
             <div class="pl-8 pr-4 py-4">
                 <div class="flex w-full items-start justify-between">
                     <div class="flex items-center space-x-4">
-                        <div class="w-8 h-8 flex overflow-hidden rounded-full bg-white">
-                            <img src="{{ asset('images/no-image.png') }}" alt="" class="object-contain">
+                        <div class="flex items-center justify-center w-8 h-8 overflow-hidden rounded-full bg-white">
+                            @if ($user->image)
+                            <img src="{{ asset('storage/images/'.$user->image) }}" alt="" class="w-full h-full object-cover shrink-0 rounded-full">
+                            @else
+                            <img src="https://placehold.co/32/png" alt="" class="w-full h-full object-cover rounded-full">
+                            @endif
                         </div>
                         <div class="flex flex-col text-gray-700">
                             <h1 class="font-medium"><a href="{{ route('vendor.show', $user->username) }}" class="hover:text-blue-700">{{ $user->brand }}</a></h1>
@@ -82,8 +86,12 @@
                     <x-icon name="hamburger" />
                 </button>
                 <div class="flex items-center justify-center mt-6">
-                    <div class="h-7 w-7 flex overflow-hidden rounded-full bg-white">
-                        <img src="{{ asset('images/no-image.png') }}" alt="" class="object-contain">
+                    <div class="flex items-center justify-center w-7 h-7 overflow-hidden rounded-full bg-white">
+                        @if ($user->image)
+                        <img src="{{ asset('storage/images/'.$user->image) }}" alt="" class="w-full h-full object-cover shrink-0 rounded-full">
+                        @else
+                        <img src="https://placehold.co/32/png" alt="" class="w-full h-full object-cover rounded-full">
+                        @endif
                     </div>
                 </div>
                 <ul class="flex flex-col items-center mt-10">

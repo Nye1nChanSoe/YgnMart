@@ -12,6 +12,35 @@
             }" 
             class="w-full md:w-3/4 md:px-4"
         >
+            <form action="{{ route('user.update', $user->username) }}" method="POST" enctype="multipart/form-data" class="mb-6 flex flex-col items-center sm:block">
+                @csrf
+                @method('PATCH')
+                <div id="image-container" class="flex items-center justify-center border rounded-full w-32 h-32 dark:border-gray-700">
+                    @if ($user->image)
+                    <img src="{{ asset('storage/images/'.$user->image) }}" alt="" class="w-full h-full object-cover rounded-full">
+                    @else
+                    <img src="https://placehold.co/128/png" alt="" class="w-full h-full object-cover rounded-full">
+                    @endif
+                </div>
+                <div>
+                    <div class="flex gap-x-2.5 items-center mt-4">
+                        <input type="hidden" name="update_type" value="image">
+                        <input class="block w-fit text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400" name="image" type="file" onchange="previewImage(event)">
+                        <button type="submit" class="bg-blue-500 text-white py-1 px-2 rounded-lg text-sm hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800">Upload</button>
+                    </div>
+                    <p class="mt-3 text-sm text-gray-500 dark:text-gray-400 text-center sm:text-start">PNG, JPG, Webp or SVG (MAX. 2000x200px).</p>
+                </div>
+            </form>
+            <script>
+                function previewImage(event) {
+                    var img = event.target.files[0];
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        document.querySelector('#image-container img').setAttribute('src', e.target.result);
+                    }
+                    reader.readAsDataURL(img);
+                }
+            </script>
             <form action="{{ route('user.update', $user->username) }}" method="POST" class="bg-white rounded-lg shadow-md py-4 px-4 md:px-6 dark:text-gray-300 dark:bg-gray-900">
                 @method('PATCH')
                 @csrf
@@ -121,22 +150,22 @@
                     <input type="hidden" name="settings" value="1">
                     <div class="mb-4">
                         <label class="block text-gray-700 font-medium mb-2 dark:text-gray-300" for="label">Label</label>
-                        <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300 dark:bg-gray-800 dark:text-gray-300 dark:placeholder:text-gray-400 dark:border-gray-600 dark:focus:outline-gray-900" name="label" id="label" type="text" value="" placeholder="Home, Work, School...">
+                        <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300 dark:bg-gray-800 dark:text-gray-300 dark:placeholder:text-gray-400 dark:border-gray-600 dark:focus:outline-gray-900" name="label" type="text" value="" placeholder="Home, Work, School...">
                         <x-input-error field="label" />
                     </div>
                     <div class="mb-4">
                         <label class="block text-gray-700 font-medium mb-2 dark:text-gray-300" for="street">Street</label>
-                        <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300 dark:bg-gray-800 dark:text-gray-300 dark:placeholder:text-gray-400 dark:border-gray-600 dark:focus:outline-gray-900" name="street" id="street" type="text" value="" placeholder="The name of your street">
+                        <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300 dark:bg-gray-800 dark:text-gray-300 dark:placeholder:text-gray-400 dark:border-gray-600 dark:focus:outline-gray-900" name="street" type="text" value="" placeholder="The name of your street">
                         <x-input-error field="street" />
                     </div>
                     <div class="mb-4">
                         <label class="block text-gray-700 font-medium mb-2 dark:text-gray-300" for="ward">Ward</label>
-                        <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300 dark:bg-gray-800 dark:text-gray-300 dark:placeholder:text-gray-400 dark:border-gray-600 dark:focus:outline-gray-900" name="ward" id="ward" type="text" value="" placeholder="Ward number">
+                        <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300 dark:bg-gray-800 dark:text-gray-300 dark:placeholder:text-gray-400 dark:border-gray-600 dark:focus:outline-gray-900" name="ward" type="text" value="" placeholder="Ward number">
                         <x-input-error field="ward" />
                     </div>
                     <div class="mb-4">
                         <label class="block text-gray-700 font-medium mb-2 dark:text-gray-300" for="township">Township</label>
-                        <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300 dark:bg-gray-800 dark:text-gray-300 dark:placeholder:text-gray-400 dark:border-gray-600 dark:focus:outline-gray-900" name="township" id="township" type="text" value="" placeholder="The name of your township">
+                        <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300 dark:bg-gray-800 dark:text-gray-300 dark:placeholder:text-gray-400 dark:border-gray-600 dark:focus:outline-gray-900" name="township" type="text" value="" placeholder="The name of your township">
                         <x-input-error field="township" />
                     </div>
                     <button type="submit" class="bg-blue-500 text-white py-2 px-3 rounded-lg hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800">
@@ -185,22 +214,22 @@
                             @csrf
                             <div class="mb-4">
                                 <label class="block text-gray-700 font-medium mb-2 dark:text-gray-300" for="label">Label</label>
-                                <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300 dark:bg-gray-800 dark:text-gray-300 dark:placeholder:text-gray-400 dark:border-gray-600 dark:focus:outline-gray-900" name="label" id="label" type="text" value="" placeholder="Home, Work, School...">
+                                <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300 dark:bg-gray-800 dark:text-gray-300 dark:placeholder:text-gray-400 dark:border-gray-600 dark:focus:outline-gray-900" name="label" type="text" value="" placeholder="Home, Work, School...">
                                 <x-input-error field="label" />
                             </div>
                             <div class="mb-4">
                                 <label class="block text-gray-700 font-medium mb-2 dark:text-gray-300" for="street">Street</label>
-                                <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300 dark:bg-gray-800 dark:text-gray-300 dark:placeholder:text-gray-400 dark:border-gray-600 dark:focus:outline-gray-900" name="street" id="street" type="text" value="" placeholder="The name of your street">
+                                <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300 dark:bg-gray-800 dark:text-gray-300 dark:placeholder:text-gray-400 dark:border-gray-600 dark:focus:outline-gray-900" name="street" type="text" value="" placeholder="The name of your street">
                                 <x-input-error field="street" />
                             </div>
                             <div class="mb-4">
                                 <label class="block text-gray-700 font-medium mb-2 dark:text-gray-300" for="ward">Ward</label>
-                                <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300 dark:bg-gray-800 dark:text-gray-300 dark:placeholder:text-gray-400 dark:border-gray-600 dark:focus:outline-gray-900" name="ward" id="ward" type="text" value="" placeholder="Ward number">
+                                <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300 dark:bg-gray-800 dark:text-gray-300 dark:placeholder:text-gray-400 dark:border-gray-600 dark:focus:outline-gray-900" name="ward" type="text" value="" placeholder="Ward number">
                                 <x-input-error field="ward" />
                             </div>
                             <div class="mb-4">
                                 <label class="block text-gray-700 font-medium mb-2 dark:text-gray-300" for="township">Township</label>
-                                <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300 dark:bg-gray-800 dark:text-gray-300 dark:placeholder:text-gray-400 dark:border-gray-600 dark:focus:outline-gray-900" name="township" id="township" type="text" value="" placeholder="The name of your township">
+                                <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300 dark:bg-gray-800 dark:text-gray-300 dark:placeholder:text-gray-400 dark:border-gray-600 dark:focus:outline-gray-900" name="township" type="text" value="" placeholder="The name of your township">
                                 <x-input-error field="township" />
                             </div>
                             <button type="submit" class="bg-blue-500 text-white py-2 px-3 rounded-lg hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800">
@@ -224,22 +253,22 @@
                             <input type="hidden" x-ref="address_id_edit" name="id">
                             <div class="mb-4">
                                 <label class="block text-gray-700 font-medium mb-2 dark:text-gray-300" for="label">Label</label>
-                                <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300 dark:bg-gray-800 dark:text-gray-300 dark:placeholder:text-gray-400 dark:border-gray-600 dark:focus:outline-gray-900" name="label" id="label" type="text" value="" placeholder="Home, Work, School..." x-ref="label">
+                                <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300 dark:bg-gray-800 dark:text-gray-300 dark:placeholder:text-gray-400 dark:border-gray-600 dark:focus:outline-gray-900" name="label" type="text" value="" placeholder="Home, Work, School..." x-ref="label">
                                 <x-input-error field="label" />
                             </div>
                             <div class="mb-4">
                                 <label class="block text-gray-700 font-medium mb-2 dark:text-gray-300" for="street">Street</label>
-                                <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300 dark:bg-gray-800 dark:text-gray-300 dark:placeholder:text-gray-400 dark:border-gray-600 dark:focus:outline-gray-900" name="street" id="street" type="text" value="" placeholder="The name of your street" x-ref="street">
+                                <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300 dark:bg-gray-800 dark:text-gray-300 dark:placeholder:text-gray-400 dark:border-gray-600 dark:focus:outline-gray-900" name="street" type="text" value="" placeholder="The name of your street" x-ref="street">
                                 <x-input-error field="street" />
                             </div>
                             <div class="mb-4">
                                 <label class="block text-gray-700 font-medium mb-2 dark:text-gray-300" for="ward">Ward</label>
-                                <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300 dark:bg-gray-800 dark:text-gray-300 dark:placeholder:text-gray-400 dark:border-gray-600 dark:focus:outline-gray-900" name="ward" id="ward" type="text" value="" placeholder="Ward number" x-ref="ward">
+                                <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300 dark:bg-gray-800 dark:text-gray-300 dark:placeholder:text-gray-400 dark:border-gray-600 dark:focus:outline-gray-900" name="ward" type="text" value="" placeholder="Ward number" x-ref="ward">
                                 <x-input-error field="ward" />
                             </div>
                             <div class="mb-4">
                                 <label class="block text-gray-700 font-medium mb-2 dark:text-gray-300" for="township">Township</label>
-                                <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300 dark:bg-gray-800 dark:text-gray-300 dark:placeholder:text-gray-400 dark:border-gray-600 dark:focus:outline-gray-900" name="township" id="township" type="text" value="" placeholder="The name of your township" x-ref="township">
+                                <input class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-300 dark:bg-gray-800 dark:text-gray-300 dark:placeholder:text-gray-400 dark:border-gray-600 dark:focus:outline-gray-900" name="township" type="text" value="" placeholder="The name of your township" x-ref="township">
                                 <x-input-error field="township" />
                             </div>
                             <button type="submit" class="bg-blue-500 text-white py-2 px-3 rounded-lg hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800">

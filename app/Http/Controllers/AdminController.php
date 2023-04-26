@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\UserAnalytic;
+use App\Traits\PhotoUploadTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -11,6 +12,8 @@ use Illuminate\Validation\Rule;
 
 class AdminController extends Controller
 {
+    use PhotoUploadTrait;
+
     /** dashboard */
     public function index()
     {
@@ -41,6 +44,11 @@ class AdminController extends Controller
     public function update(Request $request, User $user)
     {
         $update_type = $request->input('update_type');
+
+        if($update_type == 'image')
+        {
+            return $this->uploadImage($request, $user);
+        }
 
         if($update_type == 'info')
         {
@@ -74,16 +82,34 @@ class AdminController extends Controller
             'old_password' => ['required'],
             'password' => ['required', 'confirmed', 'min:8'],
         ]);
-        
+
         if (!Hash::check($request->input('old_password'), $user->password)) {
             return back()->withInput()->withErrors(['old_password' => 'Incorrect password']);
         }
-        
+
         // If old password is correct, update the user's password
         $user->password = $updatedPassword['password'];
         $user->save();
-        
+
         return redirect()->route('admin.show', $user->username)
             ->with('success', 'Password updated successfully');
+    }
+
+    public function uploadImage(Request $request, User $user)
+    {
+        if($request->image == null) 
+        {
+            return back()->with('error', 'Failed to upload new image');
+        }
+
+        $imageData = $request->validate([
+            'image' => 'required|image|mimes:jpeg,png,webp,svg,jpg|max:2048|dimensions:max_width=2000,max_height=2000', // Maximum file size of 2 MB, maximum dimensions of 2000x2000 pixels, and only JPEG and PNG files allowed
+        ]);
+
+        $storagePath = $this->upload($imageData['image']);
+        $user->update(['image' => $storagePath]);
+
+        return redirect()->route('admin.show', $user->username)
+            ->with('success', 'Profile Updated Successfully');
     }
 }

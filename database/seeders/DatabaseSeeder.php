@@ -77,7 +77,6 @@ class DatabaseSeeder extends Seeder
             'phone_number' => '0951260235',
             'password' => 'password',
             'is_verified' => true,
-            'image' => 'logo.svg'
         ]);
 
         /** seeding categories */
@@ -126,7 +125,7 @@ class DatabaseSeeder extends Seeder
                 'name' => $name,
                 'slug' => strtolower(str_replace(' ', '-', $name)),
                 'meta_type' => strtolower($fruit),
-                'image' => 'images/grocery/'.$fruit.'.jpeg',
+                'image' => $fruit.'.jpeg',
             ]);
 
             $categories = Category::where('sub_type', 'fruits')->get();
@@ -155,7 +154,7 @@ class DatabaseSeeder extends Seeder
                 'name' => $name,
                 'slug' => strtolower(str_replace(' ', '-', $name)),
                 'meta_type' => strtolower($alcohol),
-                // 'image' => 'images/grocery/'.$alcohol.'.jpeg',
+                // 'image' => $alcohol.'.jpeg',
             ]);
             $categories = Category::where('sub_type', 'alcohol')->get();
             $product->categories()->sync($categories);
@@ -183,7 +182,7 @@ class DatabaseSeeder extends Seeder
                 'name' => $name,
                 'slug' => strtolower(str_replace(' ', '-', $name)),
                 'meta_type' => strtolower($soft_drink),
-                // 'image' => 'images/grocery/'.$soft_drink.'.jpeg',
+                // 'image' => $soft_drink.'.jpeg',
             ]);
             $categories = Category::where('sub_type', 'soft drinks')->get();
             $product->categories()->sync($categories);
