@@ -92,7 +92,7 @@
                         @csrf
                         <div class="mb-4">
                             <label class="block text-gray-300 font-medium mb-3" for="type">Main Type</label>
-                            @foreach ($categories->pluck('type')->unique() as $category)
+                            @foreach ($mainCategories as $category)
                             <div class="flex items-center mb-2.5">
                                 <input id="type" type="radio" name="type" value="{{ $category }}" class="w-4 h-4 text-blue-400 bg-gray-100 border-gray-300" {{$loop->iteration == 1 ? 'checked' : ''}}>
                                 <label for="type" class="ml-2 text-sm font-medium text-gray-300">{{ $category }}</label>

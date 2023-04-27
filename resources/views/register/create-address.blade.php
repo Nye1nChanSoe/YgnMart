@@ -15,7 +15,7 @@
     <x-container>
         <form action="{{ route('register.store.address') }}" method="POST" class="flex items-center justify-center p-2 md:p-10">
             @csrf
-            <div class="bg-white rounded-lg shadow-lg px-4 py-4 w-80 md:px-10 md:w-128 dark:bg-gray-900">
+            <div class="bg-white rounded-lg shadow-lg px-4 py-4 w-80 md:px-10 md:w-128 dark:bg-slate-800">
                 <h3 class="text-lg font-bold text-center dark:text-gray-300">Address</h3>
                 <div class="px-3 py-2 border rounded-lg my-3 md:my-5 dark:border-gray-600">
                     <x-icon name="info" class="text-blue-500 inline-block"/>

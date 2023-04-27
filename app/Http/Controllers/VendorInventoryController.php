@@ -16,7 +16,7 @@ class VendorInventoryController extends Controller
         $inventories = Inventory::with('product')
             ->where('vendor_id', auth()->guard('vendor')->id())
             ->latest()
-            ->search($this->parseHyphens(request(['search'])))
+            ->search(request(['search']))
             ->paginate(25);
 
         return view('vendors.inventories.index', compact('inventories'));

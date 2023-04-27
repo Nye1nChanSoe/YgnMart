@@ -16,7 +16,7 @@
         <div class="hidden self-stretch md:basis-1/2 md:flex md:items-center md:justify-center">
             <img src="{{ asset('/images/vendor.png') }}" alt="" width="500">
         </div>
-        <x-card class="self-center w-full text-slate-700 py-4 px-6 md:py-10 md:px-10 md:basis-2/5 dark:bg-gray-800">
+        <x-card class="self-center w-full text-slate-700 py-2 px-2 md:py-10 md:px-10 md:basis-2/5 dark:bg-slate-800">
             {{-- TODO: Socialite for OAuth Sign in --}}
             <h2 class="text-center text-2xl font-semibold mb-4 md:mb-8 dark:text-gray-300">Vendor Sign in</h2>
             <form action="/vendor/login" method="POST" class="space-y-6 md:space-y-8">

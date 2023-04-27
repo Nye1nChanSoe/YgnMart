@@ -16,7 +16,6 @@ class CategoryFactory extends Factory
      */
     public function definition()
     {
-        $name = fake()->unique()->word();
         return [
             'description' => fake()->paragraph(),
         ];

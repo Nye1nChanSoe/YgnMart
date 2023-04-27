@@ -2,7 +2,6 @@
     {{-- hero / carousel --}}
     @include('partials._carousel')
 
-    {{-- TODO: divide sections and display related products for each section --}}
     <section class="pt-6 pb-10 dark:bg-gray-900">
         <x-container class="px-2 md:px-6">
             <ul class="flex items-center my-3 py-3">
@@ -30,7 +29,7 @@
             </div>
 
             @if (!$products->isEmpty())
-            <div class="grid grid-cols-2 gap-x-2 gap-y-4 text-gray-700 md:grid-cols-3 lg:grid-cols-4 3xl:grid-cols-6">
+            <div class="grid grid-cols-2 gap-x-2 gap-y-4 text-gray-700 md:grid-cols-3 lg:grid-cols-5 3xl:grid-cols-6">
                 @foreach ($products as $product)
                 <x-product-card class="border dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100" :product="$product">
                     <x-product-review :product="$product" class="justify-center mb-2.5" />

@@ -2,13 +2,8 @@
     {{-- hero / carousel --}}
     @include('partials._carousel')
 
-    {{-- TODO: divide sections and display related products for each section --}}
     <main>
         <div class="py-10 text-gray-700 dark:bg-gray-900">
-            {{-- <div class="mx-auto container mb-2">
-                {{ $householdProduct->links('vendor.pagination.result') }}
-            </div> --}}
-
             @unless ($recentProducts->isEmpty())
             <section class="p-4">
                 <div class="mx-auto container px-2 md:px-4 lg:px-5">
@@ -22,7 +17,7 @@
                                 <li class="glide__slide my-1.5">
                                     <x-product-card class="border dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100" :product="$recentProduct">
                                         <x-product-review :product="$recentProduct" class="justify-center mb-2.5" />
-                                        <div class="flex items-center justify-center h-24 md:h-32">
+                                        <div class="flex items-center justify-center h-24 md:h-36">
                                             @if ($recentProduct->image)
                                             <img src="{{ asset('storage/images/'.$recentProduct->image) }}" alt="" class="w-full h-full object-cover shrink-0">
                                             @else
@@ -89,7 +84,7 @@
                                 <li class="glide__slide my-1.5">
                                     <x-product-card class="border dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100" :product="$foodProduct">
                                         <x-product-review :product="$foodProduct" class="justify-center mb-2.5" />
-                                        <div class="flex items-center justify-center h-24 md:h-32">
+                                        <div class="flex items-center justify-center h-24 md:h-36">
                                             @if ($foodProduct->image)
                                             <img src="{{ asset('storage/images/'.$foodProduct->image) }}" alt="" class="w-full h-full object-cover shrink-0">
                                             @else
@@ -156,7 +151,7 @@
                                 <li class="glide__slide my-1.5">
                                     <x-product-card class="border dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100" :product="$drinkProduct">
                                         <x-product-review :product="$drinkProduct" class="justify-center mb-2.5" />
-                                        <div class="flex items-center justify-center h-24 md:h-32">
+                                        <div class="flex items-center justify-center h-24 md:h-36">
                                             @if ($drinkProduct->image)
                                             <img src="{{ asset('storage/images/'.$drinkProduct->image) }}" alt="" class="w-full h-full object-cover shrink-0">
                                             @else
@@ -223,7 +218,7 @@
                                 <li class="glide__slide my-1.5">
                                     <x-product-card class="border dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100" :product="$householdProduct">
                                         <x-product-review :product="$householdProduct" class="justify-center mb-2.5" />
-                                        <div class="flex items-center justify-center h-24 md:h-32">
+                                        <div class="flex items-center justify-center h-24 md:h-36">
                                             @if ($householdProduct->image)
                                             <img src="{{ asset('storage/images/'.$householdProduct->image) }}" alt="" class="w-full h-full object-cover shrink-0">
                                             @else
@@ -317,7 +312,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     let breakpoints = {
             1536: {
-                perView: 4,
+                perView: 5,
             },
             1024: {
                 perView: 3,

@@ -107,7 +107,7 @@
                         </div>
                     </template>
     
-                    <template x-if="type==='Beverages'">
+                    <template x-if="type==='Drinks'">
                         <div x-data="{open:true}" x-cloak>
                             <div class="flex items-center hover:text-blue-600 mb-3">
                                 <button type="button" @@click="open=!open">Beverages Categories
@@ -117,7 +117,7 @@
                             <div x-show="open" x-cloak>
                                 <div class="flex flex-col">
                                     @php
-                                        $subCategories = $categories->filter(fn($category) => $category->type === 'Beverages')->pluck('sub_type');
+                                        $subCategories = $categories->filter(fn($category) => $category->type === 'Drinks')->pluck('sub_type');
                                     @endphp
                                     @foreach ($subCategories as $category)
                                     <label class="inline-flex items-center">
@@ -131,7 +131,7 @@
                         </div>
                     </template>
     
-                    <template x-if="type==='Household'">
+                    <template x-if="type==='Households'">
                         <div x-data="{open:true}" x-cloak>
                             <div class="flex items-center hover:text-blue-600 mb-3">
                                 <button type="button" @@click="open=!open">Household Categories
@@ -141,7 +141,7 @@
                             <div x-show="open" x-cloak>
                                 <div class="flex flex-col">
                                     @php
-                                        $subCategories = $categories->filter(fn($category) => $category->type === 'Household')->pluck('sub_type');
+                                        $subCategories = $categories->filter(fn($category) => $category->type === 'Households')->pluck('sub_type');
                                     @endphp
                                     @foreach ($subCategories as $category)
                                     <label class="inline-flex items-center">

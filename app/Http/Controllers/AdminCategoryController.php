@@ -19,7 +19,8 @@ class AdminCategoryController extends Controller
             ->search($this->parseHyphens(request(['search'])))
             ->paginate(25);
 
-        return view('admins.categories.index', compact('categories'));
+        $mainCategories = Category::pluck('type')->unique();
+        return view('admins.categories.index', compact('categories', 'mainCategories'));
     }
 
     public function store(Request $request)

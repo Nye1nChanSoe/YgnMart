@@ -42,6 +42,10 @@ class Inventory extends Model
                         ->orwhereBetween('price', [$search, $search + 100])
                     )
                 )
+                ->orWhereHas('product.categories', fn($query) => $query
+                    ->where('type', 'like', "%{$search}%")
+                    ->orWhere('sub_type', 'like', "%{$search}%")
+                )
                 ->orWhere('sku', 'like', "%{$search}%")
                 ->orWhere('status', 'like', "%{$search}%")
                 ->when(ctype_digit($search), fn($query) => $query

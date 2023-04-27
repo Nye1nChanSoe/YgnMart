@@ -19,7 +19,7 @@
         {{-- product view --}}
         <div class="flex flex-col items-center h-full py-10 px-2.5 justify-between lg:justify-around md:space-x-2 md:flex-row dark:bg-gray-900">
             <div class="flex flex-col">
-                <div class="flex justify-center w-60 h-60 my-2.5 p-2 border rounded-lg md:w-80 md:h-80 dark:border-gray-700">
+                <div class="flex justify-center w-60 h-60 my-2.5 p-2 rounded-lg md:w-80 md:h-80">
                     @if ($product->image)
                     <img src="{{ asset('storage/images/'.$product->image) }}" alt="" class="w-full h-full object-cover shrink-0">
                     @else

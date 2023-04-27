@@ -196,7 +196,7 @@ class ProductController extends Controller
                 ->whereHas('inventory', fn($query) => $query
                     ->where('status', 'sell'))
                 ->whereHas('categories', fn($query) => $query
-                    ->where('type', 'food'))
+                    ->where('type', 'Food'))
                 ->inRandomOrder()
                 ->get();
         });
@@ -218,7 +218,7 @@ class ProductController extends Controller
                 ->whereHas('inventory', fn($query) => $query
                     ->where('status', 'sell'))
                 ->whereHas('categories', fn($query) => $query
-                    ->where('type', 'beverages'))
+                    ->where('type', 'Drinks'))
                 ->inRandomOrder()
                 ->get();
         });
@@ -240,7 +240,7 @@ class ProductController extends Controller
                 ->whereHas('inventory', fn($query) => $query
                     ->where('status', 'sell'))
                 ->whereHas('categories', fn($query) => $query
-                    ->where('type', 'household'))
+                    ->where('type', 'Households'))
                 ->inRandomOrder()
                 ->get();
         });

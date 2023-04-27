@@ -16,6 +16,7 @@ class AdminCustomerController extends Controller
     public function index()
     {
         $customers = User::with('addresses')
+            ->where('role', '<>', 'admin')
             ->latest()
             ->search($this->parseHyphens(request(['search'])))
             ->paginate(25);

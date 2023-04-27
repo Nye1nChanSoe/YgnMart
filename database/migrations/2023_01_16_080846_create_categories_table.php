@@ -16,12 +16,13 @@ return new class extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
             $table->string('type');                     // food, beverages, households, etc..      
-            $table->string('sub_type')->unique();       // fruits, meat, alcohol, seasonings, cleaning, medicine etc..
+            $table->string('sub_type');       // fruits, meat, alcohol, seasonings, cleaning, medicine etc..
             $table->text('description');
             $table->string('image')->nullable();
             $table->timestamps();
 
             /** constraints */
+            $table->unique(['type', 'sub_type']);
             $table->index(['type', 'sub_type']);
         });
     }

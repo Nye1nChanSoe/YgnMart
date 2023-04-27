@@ -16,11 +16,7 @@ class ProductFactory extends Factory
      */
     public function definition()
     {
-        $name = fake()->sentence(rand(6, 10));
         return [
-            'name' => $name,
-            'slug' => strtolower(str_replace(' ', '-', $name)),
-            'meta_type' => fake()->word(),
             'price' => rand(1000, 1500),
             'description' => fake()->paragraphs(3, true),
         ];

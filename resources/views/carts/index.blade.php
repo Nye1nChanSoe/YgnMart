@@ -60,7 +60,6 @@
                                     {{-- <img src="https://placehold.co/240/png" alt="" class="w-full h-full object-cover"> --}}
                                     <img src="{{ asset('images/no-image.png') }}" alt="" class="w-full h-full shrink-0 object-contain">
                                     @endif
-                                    <img src="{{$cart->product->image ? asset($cart->product->image) : asset('images/no-image.png')}}" alt="">
                                 </a>
                             </div>
                             <div class="w-full mr-4 sm:self-start">
