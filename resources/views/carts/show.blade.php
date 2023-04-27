@@ -18,7 +18,7 @@
             <div class="flex flex-col items-center md:flex-row md:justify-between md:space-x-4">
                 <div class="flex items-center justify-center w-48 h-48">
                     @if ($product->image)
-                    <img src="{{ asset('storage/images/'.$product->image) }}" alt="" class="w-full h-full object-cover shrink-0">
+                    <img src="{{ asset('storage/images/'.$product->image) }}" alt="" class="w-full h-full object-contain shrink-0">
                     @else
                     {{-- <img src="https://placehold.co/240/png" alt="" class="w-full h-full object-cover"> --}}
                     <img src="{{ asset('images/no-image.png') }}" alt="" class="w-full h-full shrink-0 object-contain">

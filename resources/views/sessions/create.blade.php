@@ -6,8 +6,8 @@
         <div class="hidden flex-shrink-0 self-stretch md:basis-1/2 md:flex md:items-center md:justify-center">
             <img src="images/creative/shopmore_savemoney.png" alt="" width="340">
         </div>
-        <div class="self-center w-full text-slate-700 py-2 px-2 md:py-10 md:px-10 md:basis-2/5">
-            <x-card class="text-slate-700 py-4 px-6 md:py-10 md:px-10 dark:bg-slate-800">
+        <div class="">
+            <x-card class="self-center w-full text-slate-700 py-2 px-5 md:py-10 md:px-10 md:basis-2/5 dark:bg-slate-800">
                 {{-- TODO: Socialite for OAuth Sign in --}}
                 <h2 class="text-center text-2xl font-semibold mb-4 md:mb-8 dark:text-gray-300">Sign in</h2>
                 <form action="/login" method="POST" class="space-y-6 md:space-y-8">
@@ -24,9 +24,9 @@
                             <x-input-error field="password" />
                         </div>
                     </div>
-                    <div class="flex flex-col justify-center items-center md:flex-row md:justify-between">
-                        <x-button class="w-full mb-2 md:mb-0 md:w-fit bg-blue-500 hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-600">Sign in</x-button>
-                        <p class="mt-2 md:mt-0 dark:text-gray-400">Don't have an account? <a href="/register" class="text-blue-500 hover:text-blue-700 dark:text-gray-200 dark:hover:text-gray-50">Register</a></p>
+                    <div class="flex flex-col justify-center items-center md:gap-x-5 md:flex-row md:justify-between">
+                        <button type="submit" class="w-full px-2 py-2 rounded mb-2 text-center text-white bg-blue-500 hover:bg-blue-500 md:w-[120px] md:mb-0 dark:bg-blue-700 dark:hover:bg-blue-800">Sign in</button>
+                        <p class="mt-2 md:mt-0 text-right dark:text-gray-400">Don't have an account? <a href="/register" class="text-blue-500 hover:text-blue-700 dark:text-gray-200 dark:hover:text-gray-50">Register</a></p>
                     </div>
                 </form>
             </x-card>

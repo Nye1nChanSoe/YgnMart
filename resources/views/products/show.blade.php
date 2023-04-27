@@ -29,7 +29,7 @@
                 </div>
                 <div class="flex justify-center w-24 h-24 my-2 p-1 border-2 rounded-lg border-slate-300 dark:border-gray-600 dark:ring-1 dark:ring-blue-300">
                     @if ($product->image)
-                    <img src="{{ asset('storage/images/'.$product->image) }}" alt="" class="w-full h-full object-cover shrink-0">
+                    <img src="{{ asset('storage/images/'.$product->image) }}" alt="" class="w-full h-full object-contain shrink-0">
                     @else
                     {{-- <img src="https://placehold.co/240/png" alt="" class="w-full h-full object-cover"> --}}
                     <img src="{{ asset('images/no-image.png') }}" alt="" class="w-full h-full shrink-0 object-contain">

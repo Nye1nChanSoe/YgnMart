@@ -142,12 +142,15 @@
             {{$slot}}
         </main>
 
-        <footer class="bg-neutral-800 dark:bg-slate-700 text-slate-300">
+        <footer class="bg-slate-300 dark:bg-slate-700 text-slate-800 dark:text-slate-300">
             <div class="container mx-auto flex flex-col px-8 py-6 md:px-12">
                 <section class="flex justify-center items-center md:justify-between mb-8">
                     <div class="space-y-4 text-center md:text-left">
                         <div class="text-center md:text-left">
-                            <p class="text-sm">We accept multiple payments</p>
+                            <div class="flex items-center justify-center gap-x-1.5 md:justify-start">
+                                <p class="text-center">We accept multiple payments</p>
+                                <x-icon name="card" class="text-gray-700"/>
+                            </div>
                         </div>
                         <h2 class="text-xl font-bold lg:text-2xl">Start shopping with Yangon Mart today.</h2>
                         <a href="/register" class="block w-full bg-blue-600 p-2 rounded-xl text-center shadow-lg text-white hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800">Sign up</a>
@@ -160,10 +163,12 @@
 
                 <section class="flex flex-col items-center space-y-10 md:m-0 md:flex-row md:justify-between md:items-end md:space-y-0">
                     <div class="w-full space-y-3 order-1 mt-8 text-center md:w-auto md:text-left md:order-first md:mt-0">
-                        <div>
-                            <img src="/images/logo/logo_w.svg" alt="" width="100" class="mx-auto md:mx-0">
+                        <div class="bg-slate-500 p-2 rounded w-fit">
+                            <a href="/">
+                                <img src="/images/logo/logo_w.svg" alt="" width="100" class="mx-auto md:mx-0" x-cloak>
+                            </a>
                         </div>
-                        <p class="italic tracking-wider font-semibold">Shop anytime, anywhere with us</p>
+                        <p class="italic tracking-wider text-lg font-semibold">Shop anytime, anywhere with us</p>
                         <div>
                             <div class="flex items-center justify-center space-x-2 md:justify-start">
                                 <x-icon name="telephone" />

@@ -11,6 +11,9 @@
                 @if (request()->filled('category'))
                 <li class="flex items-center ml-2 gap-x-1">
                     <a href="{{ route('home') }} . '?category=' . {{ request('category') }}" class="text-blue-600 dark:text-blue-300 hover:text-blue-700 dark:hover:text-blue-500">{{ ucwords(request('category')) }}</a>
+                    @if (request()->filled('search'))
+                    <x-icon name="chevron-right" class="dark:text-gray-200" />
+                    @endif
                 </li>
                 @endif
                 @if (request()->filled('search'))
@@ -35,7 +38,7 @@
                     <x-product-review :product="$product" class="justify-center mb-2.5" />
                     <div class="flex items-center justify-center h-24 md:h-32">
                         @if ($product->image)
-                        <img src="{{ asset('storage/images/'.$product->image) }}" alt="" class="w-full h-full object-cover shrink-0">
+                        <img src="{{ asset('storage/images/'.$product->image) }}" alt="" class="w-full h-full object-contain shrink-0">
                         @else
                         {{-- <img src="https://placehold.co/240/png" alt="" class="w-full h-full object-cover"> --}}
                         <img src="{{ asset('images/no-image.png') }}" alt="" class="w-full h-full shrink-0 object-contain">

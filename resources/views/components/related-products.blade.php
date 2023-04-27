@@ -9,8 +9,8 @@
             <a href="{{ route('products.show', ['product' => $relatedProduct->slug]) }}" class="flex flex-col items-center p-4 drop-shadow bg-white rounded-lg transition-all duration-300 hover:-translate-y-3 dark:border dark:bg-gray-800 dark:border-gray-700">
                 <x-product-review :product="$relatedProduct" class="pb-2" />
                 <div class="flex items-center justify-center w-32 h-24 md:w-40 md:h-32">
-                    @if ($product->image)
-                    <img src="{{ asset('storage/images/'.$relatedProduct->image) }}" alt="" class="w-full h-full object-cover shrink-0">
+                    @if ($relatedProduct->image)
+                    <img src="{{ asset('storage/images/'.$relatedProduct->image) }}" alt="" class="w-full h-full object-contain shrink-0">
                     @else
                     {{-- <img src="https://placehold.co/240/png" alt="" class="w-full h-full object-cover"> --}}
                     <img src="{{ asset('images/no-image.png') }}" alt="" class="w-full h-full shrink-0 object-contain">
@@ -29,8 +29,8 @@
             <a href="{{ route('products.show', ['product' => $relatedProduct->slug]) }}" class="flex flex-col items-center p-4 drop-shadow bg-white rounded-lg transition-all duration-300 hover:-translate-y-3 dark:border dark:bg-gray-800 dark:border-gray-700">
                 <x-product-review :product="$relatedProduct" class="pb-2" />
                 <div class="flex items-center justify-center w-32 h-24 md:w-40 md:h-32">
-                    @if ($product->image)
-                    <img src="{{ asset('storage/images/'.$relatedProduct->image) }}" alt="" class="w-full h-full object-cover shrink-0">
+                    @if ($relatedProduct->image)
+                    <img src="{{ asset('storage/images/'.$relatedProduct->image) }}" alt="" class="w-full h-full object-contain shrink-0">
                     @else
                     {{-- <img src="https://placehold.co/240/png" alt="" class="w-full h-full object-cover"> --}}
                     <img src="{{ asset('images/no-image.png') }}" alt="" class="w-full h-full shrink-0 object-contain">

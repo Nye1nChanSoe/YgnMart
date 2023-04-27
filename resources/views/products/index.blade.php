@@ -19,9 +19,9 @@
                                         <x-product-review :product="$recentProduct" class="justify-center mb-2.5" />
                                         <div class="flex items-center justify-center h-24 md:h-36">
                                             @if ($recentProduct->image)
-                                            <img src="{{ asset('storage/images/'.$recentProduct->image) }}" alt="" class="w-full h-full object-cover shrink-0">
+                                            <img src="{{ asset('storage/images/'.$recentProduct->image) }}" alt="" class="w-full h-full object-contain shrink-0">
                                             @else
-                                            {{-- <img src="https://placehold.co/240/png" alt="" class="w-full h-full object-cover"> --}}
+                                            {{-- <img src="https://placehold.co/240x240/svg/white/" alt="" class="w-full h-full object-cover"> --}}
                                             <img src="{{ asset('images/no-image.png') }}" alt="" class="w-full h-full shrink-0 object-contain">
                                             @endif
                                         </div>
@@ -86,7 +86,7 @@
                                         <x-product-review :product="$foodProduct" class="justify-center mb-2.5" />
                                         <div class="flex items-center justify-center h-24 md:h-36">
                                             @if ($foodProduct->image)
-                                            <img src="{{ asset('storage/images/'.$foodProduct->image) }}" alt="" class="w-full h-full object-cover shrink-0">
+                                            <img src="{{ asset('storage/images/'.$foodProduct->image) }}" alt="" class="w-full h-full object-contain shrink-0">
                                             @else
                                             {{-- <img src="https://placehold.co/240/png" alt="" class="w-full h-full object-cover"> --}}
                                             <img src="{{ asset('images/no-image.png') }}" alt="" class="w-full h-full shrink-0 object-contain">
@@ -153,7 +153,7 @@
                                         <x-product-review :product="$drinkProduct" class="justify-center mb-2.5" />
                                         <div class="flex items-center justify-center h-24 md:h-36">
                                             @if ($drinkProduct->image)
-                                            <img src="{{ asset('storage/images/'.$drinkProduct->image) }}" alt="" class="w-full h-full object-cover shrink-0">
+                                            <img src="{{ asset('storage/images/'.$drinkProduct->image) }}" alt="" class="w-full h-full object-contain shrink-0">
                                             @else
                                             {{-- <img src="https://placehold.co/240/png" alt="" class="w-full h-full object-cover"> --}}
                                             <img src="{{ asset('images/no-image.png') }}" alt="" class="w-full h-full shrink-0 object-contain">
@@ -220,7 +220,7 @@
                                         <x-product-review :product="$householdProduct" class="justify-center mb-2.5" />
                                         <div class="flex items-center justify-center h-24 md:h-36">
                                             @if ($householdProduct->image)
-                                            <img src="{{ asset('storage/images/'.$householdProduct->image) }}" alt="" class="w-full h-full object-cover shrink-0">
+                                            <img src="{{ asset('storage/images/'.$householdProduct->image) }}" alt="" class="w-full h-full object-contain shrink-0">
                                             @else
                                             {{-- <img src="https://placehold.co/240/png" alt="" class="w-full h-full object-cover"> --}}
                                             <img src="{{ asset('images/no-image.png') }}" alt="" class="w-full h-full shrink-0 object-contain">
