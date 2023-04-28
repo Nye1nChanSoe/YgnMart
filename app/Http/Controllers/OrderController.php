@@ -103,7 +103,7 @@ class OrderController extends Controller
         }
 
         $order->save();
-        
+
         for($i = 0; $i < count($productIdArray); ++ $i)
         {
             $records[$productIdArray[$i]] = ['quantity' => $quantityArray[$i]];
@@ -179,6 +179,7 @@ class OrderController extends Controller
                 $transaction = new Transaction();
                 $transaction->order_id = $order->id;
                 $transaction->vendor_id = $product->inventory->vendor->id;
+                $transaction->user_id = auth()->id();
                 $transaction->payment_type = $order->payment_intent_id ? 'card' : 'cash';
                 $transaction->currency = 'mmk';
                 $transaction->gross_amount = $order->total_price;

@@ -16,8 +16,13 @@
         </ul>
         <div class="p-4 mt-6 border border-stone-200 rounded-lg w-full xl:w-1/2 dark:border-gray-700 dark:text-gray-300 dark:bg-gray-900">
             <div class="flex flex-col items-center md:flex-row md:justify-between md:space-x-4">
-                <div class="w-48">
-                    <img src="{{$product->image ? asset($product->image) : asset('images/no-image.png')}}" alt="" class="max-w-full max-h-full object-contain">
+                <div class="flex items-center justify-center w-48 h-48">
+                    @if ($product->image)
+                    <img src="{{ asset('storage/images/'.$product->image) }}" alt="" class="w-full h-full object-contain shrink-0">
+                    @else
+                    {{-- <img src="https://placehold.co/240/png" alt="" class="w-full h-full object-cover"> --}}
+                    <img src="{{ asset('images/no-image.png') }}" alt="" class="w-full h-full shrink-0 object-contain">
+                    @endif
                 </div>
                 <p class="font-medium p-2 text-center rounded">{{ $product->name }}</p>
             </div>

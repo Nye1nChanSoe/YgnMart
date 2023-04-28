@@ -15,7 +15,7 @@
         <div class="flex justify-between items-center mb-3">
             <h1 class="text-xl text-gray-300 font-medium">Category List</h1>
             <div class="flex items-center gap-x-4">
-                <button x-on:click="open=!open" type="button" class="px-2.5 py-1.5 rounded-lg text-gray-100 bg-sky-600">Add New Category</button>
+                <button x-on:click="open=!open" type="button" class="px-2.5 py-1.5 rounded-lg text-gray-100 bg-sky-600 hover:bg-sky-700">Add New Category</button>
             </div>
         </div>
 
@@ -92,7 +92,7 @@
                         @csrf
                         <div class="mb-4">
                             <label class="block text-gray-300 font-medium mb-3" for="type">Main Type</label>
-                            @foreach ($categories->pluck('type')->unique() as $category)
+                            @foreach ($mainCategories as $category)
                             <div class="flex items-center mb-2.5">
                                 <input id="type" type="radio" name="type" value="{{ $category }}" class="w-4 h-4 text-blue-400 bg-gray-100 border-gray-300" {{$loop->iteration == 1 ? 'checked' : ''}}>
                                 <label for="type" class="ml-2 text-sm font-medium text-gray-300">{{ $category }}</label>

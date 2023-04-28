@@ -107,12 +107,21 @@
                     <canvas id="product-cart-chart"></canvas>
                 </div>
             </div>
-            
+
             <div class="flex gap-x-4 mt-8">
-                <div class="w-1/2 h-60 p-4 shadow md:h-72">
-                    <h1 class="text-lg font-medium">Product Description</h1>
-                    <div class="flex flex-col gap-y-1.5 mt-3 text-sm">
-                        <p>"<span class="text-green-600 font-medium text-sm">{{ $product->description }}</span>"</p>
+                <div class="w-1/2 h-60 p-4 shadow md:h-72 flex gap-x-10 items-center">
+                    <div class="flex items-center shrink-0 justify-center w-32 h-32 overflow-hidden rounded-full bg-white">
+                        @if ($product->image)
+                        <img src="{{ asset('storage/images/'.$product->image) }}" alt="" class="w-full h-full object-cover shrink-0 rounded-full">
+                        @else
+                        <img src="https://placehold.co/128/png" alt="" class="w-full h-full object-cover rounded-full">
+                        @endif
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-medium">Product Description</h1>
+                        <div>
+                            <p>"<span class="text-green-600 font-medium text-sm">{{ $product->description }}</span>"</p>
+                        </div>
                     </div>
                 </div>
                 <div class="w-1/2 h-60 p-4 shadow md:h-72">
@@ -120,10 +129,19 @@
                 </div>
             </div>
             @else
-            <div class="w-full p-4 shadow mt-4">
-                <h1 class="text-lg font-medium">Product Description</h1>
+            <div class="w-full p-4 shadow mt-4 flex gap-x-10 items-center">
+                <div class="flex items-center shrink-0 justify-center w-32 h-32 overflow-hidden rounded-full bg-white">
+                    @if ($product->image)
+                    <img src="{{ asset('storage/images/'.$product->image) }}" alt="" class="w-full h-full object-cover shrink-0 rounded-full">
+                    @else
+                    <img src="https://placehold.co/128/png" alt="" class="w-full h-full object-cover rounded-full">
+                    @endif
+                </div>
                 <div>
-                    <p>"<span class="text-green-600 font-medium text-sm">{{ $product->description }}</span>"</p>
+                    <h1 class="text-lg font-medium">Product Description</h1>
+                    <div>
+                        <p>"<span class="text-green-600 font-medium text-sm">{{ $product->description }}</span>"</p>
+                    </div>
                 </div>
             </div>
             <div class="w-full h-72 flex items-center justify-center mt-4">

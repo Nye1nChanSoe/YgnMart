@@ -213,7 +213,14 @@
                         <div x-show="open" class="mt-4 px-4 py-2 border rounded-lg divide-y space-y-3 w-fit md:p-3 md:mr-10 dark:border-gray-700">
                             @foreach ($cartItems as $cart)
                             <div class="flex flex-col items-center sm:flex-row md:h-28">
-                                <img src="{{$cart->product->image ? asset($cart->product->image) : asset('images/no-image.png')}}" alt="" width="120" style="object-fit:contain">
+                                <div class="flex items-center justify-center w-20 h-20 md:w-24 md:h-24">
+                                    @if ($cart->product->image)
+                                    <img src="{{ asset('storage/images/'.$cart->product->image) }}" alt="" class="w-full h-full object-cover shrink-0">
+                                    @else
+                                    {{-- <img src="https://placehold.co/240/png" alt="" class="w-full h-full object-cover"> --}}
+                                    <img src="{{ asset('images/no-image.png') }}" alt="" class="w-full h-full shrink-0 object-contain">
+                                    @endif
+                                </div>
                                 <div class="text-sm text-center mt-2 sm:mt-0 sm:text-left sm:ml-8">
                                     <p class="text-gray-900">{{$cart->product->name}}</p>
                                     <div class="bg-slate-50 rounded-lg mt-2 p-2 w-36 mx-auto sm:mx-0 dark:bg-gray-800">

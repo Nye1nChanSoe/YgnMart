@@ -43,8 +43,13 @@
                     @foreach ($order->products as $product)
                     <div class="grid grid-cols-4 items-center justify-items-center text-slate-700 py-2 md:py-3 md:grid-cols-6 dark:text-gray-300">
                         <div class="justify-self-start col-span-2 flex flex-col gap-x-1.5 items-start md:col-span-3 md:flex-row md:items-center">
-                            <div class="flex items-center w-14 h-14 rounded-full flex-shrink-0">
-                                <img src="{{$product->image ? asset($product->image) : asset('images/no-image.png')}}" alt="" class="w-full h-full object-contain">
+                            <div class="flex justify-center w-14 h-14 rounded-full shrink-0">
+                                @if ($product->image)
+                                <img src="{{ asset('storage/images/'.$product->image) }}" alt="" class="w-full h-full object-cover shrink-0">
+                                @else
+                                {{-- <img src="https://placehold.co/240/png" alt="" class="w-full h-full object-cover"> --}}
+                                <img src="{{ asset('images/no-image.png') }}" alt="" class="w-full h-full shrink-0 object-contain">
+                                @endif
                             </div>
                             <h4 class="text-sm mt-2 hover:text-blue-600 md:mt-0 md:ml-2 dark:hover:text-blue-300"><a href="{{route('products.show', ['product' => $product->slug])}}">{{$product->name}}</a></h4>
                         </div>

@@ -9,7 +9,12 @@
             <a href="{{ route('products.show', ['product' => $relatedProduct->slug]) }}" class="flex flex-col items-center p-4 drop-shadow bg-white rounded-lg transition-all duration-300 hover:-translate-y-3 dark:border dark:bg-gray-800 dark:border-gray-700">
                 <x-product-review :product="$relatedProduct" class="pb-2" />
                 <div class="flex items-center justify-center w-32 h-24 md:w-40 md:h-32">
-                    <img src="{{$relatedProduct->image ? asset($relatedProduct->image) : asset('images/no-image.png')}}" alt="" class="max-w-full max-h-full object-contain">
+                    @if ($relatedProduct->image)
+                    <img src="{{ asset('storage/images/'.$relatedProduct->image) }}" alt="" class="w-full h-full object-contain shrink-0">
+                    @else
+                    {{-- <img src="https://placehold.co/240/png" alt="" class="w-full h-full object-cover"> --}}
+                    <img src="{{ asset('images/no-image.png') }}" alt="" class="w-full h-full shrink-0 object-contain">
+                    @endif
                 </div>
                 <h2 class="text-xs text-center my-2 hover:text-blue-600 md:text-sm dark:hover:text-blue-300">{{ $relatedProduct->name }}</h2>
                 <div>
@@ -24,7 +29,12 @@
             <a href="{{ route('products.show', ['product' => $relatedProduct->slug]) }}" class="flex flex-col items-center p-4 drop-shadow bg-white rounded-lg transition-all duration-300 hover:-translate-y-3 dark:border dark:bg-gray-800 dark:border-gray-700">
                 <x-product-review :product="$relatedProduct" class="pb-2" />
                 <div class="flex items-center justify-center w-32 h-24 md:w-40 md:h-32">
-                    <img src="{{$relatedProduct->image ? asset($relatedProduct->image) : asset('images/no-image.png')}}" alt="" class="max-w-full max-h-full object-cont">
+                    @if ($relatedProduct->image)
+                    <img src="{{ asset('storage/images/'.$relatedProduct->image) }}" alt="" class="w-full h-full object-contain shrink-0">
+                    @else
+                    {{-- <img src="https://placehold.co/240/png" alt="" class="w-full h-full object-cover"> --}}
+                    <img src="{{ asset('images/no-image.png') }}" alt="" class="w-full h-full shrink-0 object-contain">
+                    @endif
                 </div>
                 <h2 class="text-xs text-center my-2 hover:text-blue-600 md:text-sm dark:hover:text-blue-300">{{ $relatedProduct->name }}</h2>
                 <div>

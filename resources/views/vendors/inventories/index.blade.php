@@ -27,7 +27,7 @@
                             No
                         </th>
                         <th scope="col" class="px-6 py-4 text-start">
-                            Product Name
+                            SKU
                         </th>
                         <th scope="col" class="px-6 py-4 text-start">
                             Total Stocks
@@ -55,10 +55,16 @@
                             <td class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                 <div class="flex items-center gap-x-4">
                                     <div class="flex flex-shrink-0 items-center w-10 h-10 rounded-full overflow-hidden">
-                                        <img src="{{ asset('images/no-image.png') }}" alt="" class="w-full h-full object-contain">
+                                        <div class="flex items-center justify-center w-10 h-10 overflow-hidden rounded-full bg-white">
+                                            @if ($inventory->product->image)
+                                            <img src="{{ asset('storage/images/'.$inventory->product->image) }}" alt="" class="w-full h-full object-cover shrink-0 rounded-full">
+                                            @else
+                                            <img src="https://placehold.co/40/png" alt="" class="w-full h-full object-cover rounded-full">
+                                            @endif
+                                        </div>
                                     </div>
                                     <div class="w-32 overflow-hidden lg:w-40">
-                                        <p class="truncate">{{ $inventory->product->name }}</p>
+                                        <p class="truncate">{{ $inventory->sku }}</p>
                                     </div>
                                 </div>
                             </td>

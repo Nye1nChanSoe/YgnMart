@@ -21,12 +21,16 @@
 
         <div x-data="{open:false, askPassword:false}" class="flex justify-around my-8 px-10">
             <div class="flex flex-col items-center">
-                <div class="flex bg-slate-200 flex-shrink-0 items-center w-32 h-32 rounded-full overflow-hidden">
-                    <img src="{{ asset('images/no-image.png') }}" alt="" class="w-full h-full object-contain">
+                <div class="flex items-center justify-center w-32 h-32 overflow-hidden rounded-full bg-white">
+                    @if ($category->image)
+                    <img src="{{ asset('storage/images/'.$category->image) }}" alt="" class="w-full h-full object-cover shrink-0 rounded-full">
+                    @else
+                    <img src="https://placehold.co/128/png" alt="" class="w-full h-full object-cover rounded-full">
+                    @endif
                 </div>
                 <div class="mt-6 space-y-1.5 text-center text-gray-300">
                     <div class="pt-2.5">
-                        <button x-on:click="open=!open" class="px-2.5 py-1.5 rounded-lg text-white bg-slate-500 hover:bg-slate-600">Edit Category</button>
+                        <button x-on:click="open=!open" type="button" class="px-2.5 py-1.5 rounded-lg text-white bg-slate-500 hover:bg-slate-600">Edit Category</button>
                     </div>
                 </div>
             </div>

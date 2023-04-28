@@ -44,8 +44,8 @@ class RegisterController extends Controller
     {
         /** sometimes | required -> if the field is present, then validation rules are applied */
         $address = $request->validate([
-            'street' => 'sometimes | required | max:32 ',   
-            'ward' => 'sometimes | required | numeric | max:10',
+            'street' => 'sometimes | required | max:32',   
+            'ward' => 'sometimes | required | numeric',
             'township' => 'sometimes | required | alpha | max:20',
         ]);
 

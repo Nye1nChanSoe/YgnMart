@@ -15,21 +15,10 @@ class AdminVendorController extends Controller
 
     public function index()
     {
-        if(request()->filled('search')) {
-            $vendors = Vendor::with('inventories')
-                ->latest()
-                ->search($this->parseHyphens(request(['search'])))
-                ->paginate(25);
-
-            return view('admins.vendors.index', compact('vendors'));
-        }
-
-        $cache_key = 'admin:vendor:' . Vendor::count();
-        $vendors = Cache::remember($cache_key, '300', function() {
-            return Vendor::with('inventories')
-                ->latest()
-                ->paginate(25);
-        });
+        $vendors = Vendor::with('inventories')
+            ->latest()
+            ->search($this->parseHyphens(request(['search'])))
+            ->paginate(25);
 
         return view('admins.vendors.index', compact('vendors'));
     }
@@ -49,7 +38,6 @@ class AdminVendorController extends Controller
         ]);
 
         $vendor->update($updatedInfo);
-        Cache::forget('admin:vendor:' . $vendor->count());
 
         return redirect()->route('admin.vendors.show', $vendor->username)
             ->with('success', "Vendor {$vendor->brand} updated");

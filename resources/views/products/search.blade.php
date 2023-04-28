@@ -2,7 +2,6 @@
     {{-- hero / carousel --}}
     @include('partials._carousel')
 
-    {{-- TODO: divide sections and display related products for each section --}}
     <section class="pt-6 pb-10 dark:bg-gray-900">
         <x-container class="px-2 md:px-6">
             <ul class="flex items-center my-3 py-3">
@@ -12,6 +11,9 @@
                 @if (request()->filled('category'))
                 <li class="flex items-center ml-2 gap-x-1">
                     <a href="{{ route('home') }} . '?category=' . {{ request('category') }}" class="text-blue-600 dark:text-blue-300 hover:text-blue-700 dark:hover:text-blue-500">{{ ucwords(request('category')) }}</a>
+                    @if (request()->filled('search'))
+                    <x-icon name="chevron-right" class="dark:text-gray-200" />
+                    @endif
                 </li>
                 @endif
                 @if (request()->filled('search'))
@@ -30,12 +32,17 @@
             </div>
 
             @if (!$products->isEmpty())
-            <div class="grid grid-cols-2 gap-x-2 gap-y-4 text-gray-700 md:grid-cols-3 lg:grid-cols-4 3xl:grid-cols-6">
+            <div class="grid grid-cols-2 gap-x-2 gap-y-4 text-gray-700 md:grid-cols-3 lg:grid-cols-5 3xl:grid-cols-6">
                 @foreach ($products as $product)
                 <x-product-card class="border dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100" :product="$product">
                     <x-product-review :product="$product" class="justify-center mb-2.5" />
-                    <div class="flex justify-center h-24 md:h-32">
-                        <img src="{{$product->image ? asset($product->image) : asset('images/no-image.png')}}" alt="" class="w-full h-full shrink-0 object-contain">
+                    <div class="flex items-center justify-center h-24 md:h-32">
+                        @if ($product->image)
+                        <img src="{{ asset('storage/images/'.$product->image) }}" alt="" class="w-full h-full object-contain shrink-0">
+                        @else
+                        {{-- <img src="https://placehold.co/240/png" alt="" class="w-full h-full object-cover"> --}}
+                        <img src="{{ asset('images/no-image.png') }}" alt="" class="w-full h-full shrink-0 object-contain">
+                        @endif
                     </div>
                     {{-- name and stock --}}
                     <div>

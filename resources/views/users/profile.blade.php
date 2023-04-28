@@ -13,8 +13,12 @@
             <div class="bg-white rounded-lg shadow-md py-4 px-4 md:px-6 dark:bg-gray-900">
                 <div class="flex items-center justify-around md:justify-start">
                     <div class="flex flex-col items-center">
-                        <div class="py-2 border rounded-full w-20 overflow-hidden object-cover md:w-32 md:py-4 md:px-18 dark:border-gray-700">
-                            <img src="{{$user->image ? asset($user->image) : asset('images/no-image.png')}}" alt="" style="max-width: 100%; max-height:100%; object-fit:contain">
+                        <div class="flex items-center justify-center border rounded-full w-20 h-20 md:w-32 md:h-32 dark:border-gray-700">
+                            @if ($user->image)
+                            <img src="{{ asset('storage/images/'.$user->image) }}" alt="" class="w-full h-full object-cover rounded-full">
+                            @else
+                            <img src="https://placehold.co/128/png" alt="" class="w-full h-full object-cover rounded-full">
+                            @endif
                         </div>
                         <button id="edit" class="mt-4 px-3 py-1.5 rounded-lg text-sm text-white bg-blue-500 dark:bg-blue-700 dark:hover:bg-blue-800">Edit profile</button>
                     </div>
@@ -52,7 +56,7 @@
             </div>
 
             <!-- Order History -->
-            <div id="history" class="bg-white rounded-lg shadow-md mt-10 py-4 px-4 md:px-6 dark:bg-gray-900">
+            <div id="history" class="bg-white mb-10 rounded-lg shadow-md mt-10 py-4 px-4 md:px-6 dark:bg-gray-900">
                 <h2 class="text-base text-gray-700 font-semibold mb-4 text-center md:text-lg md:text-left dark:text-gray-200">Orders History</h2>
                 @if ($orders->count() > 0)
                 <div class="grid grid-cols-4 items-center justify-items-center border-b border-gray-200 font-semibold text-slate-700 py-2 text-sm md:text-base md:py-4 md:grid-cols-4 lg:grid-cols-5 dark:border-gray-700 dark:text-gray-300">

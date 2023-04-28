@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer('review')->unsiged()->default(0);
             $table->integer('quantity')->unsigned()->default(0);
             $table->double('revenue')->unsigned()->default(0);
-            $table->date('date')->default(now()->format('Y-m-d'));
+            $table->date('date')->default(today('Asia/Yangon'));
             $table->timestamps();
 
             /** constraints */

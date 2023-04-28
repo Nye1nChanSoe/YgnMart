@@ -15,8 +15,12 @@
 
         <div class="flex justify-around my-8 px-10">
             <div class="flex flex-col items-center">
-                <div class="flex bg-slate-200 flex-shrink-0 items-center w-32 h-32 rounded-full overflow-hidden">
-                    <img src="{{ asset('images/no-image.png') }}" alt="" class="w-full h-full object-contain">
+                <div id="image-container" class="flex items-center justify-center border rounded-full w-32 h-32 dark:border-gray-700">
+                    @if ($user->image)
+                    <img src="{{ asset('storage/images/'.$user->image) }}" alt="" class="w-full h-full object-cover shrink-0 rounded-full">
+                    @else
+                    <img src="https://placehold.co/128/png" alt="" class="w-full h-full object-cover rounded-full">
+                    @endif
                 </div>
                 <div class="mt-6 space-y-1.5 text-center text-gray-300">
                     <div class="text-2xl font-semibold">{{ $user->name }}</div>
@@ -40,6 +44,26 @@
                 </div>
             </div>
             <div class="w-2/3">
+                <form action="{{ route('admin.update', $user->username) }}" method="POST" enctype="multipart/form-data" class="mb-6 flex flex-col items-center sm:block">
+                    @csrf
+                    @method('PATCH')
+                    <div class="flex gap-x-2.5 items-center mt-4">
+                        <input type="hidden" name="update_type" value="image">
+                        <input class="block w-fit text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400" name="image" type="file" onchange="previewImage(event)">
+                        <button type="submit" class="bg-blue-500 text-white py-1 px-2 rounded-lg text-sm hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800">Upload</button>
+                    </div>
+                    <p class="mt-3 text-sm text-gray-300 dark:text-gray-200 text-center sm:text-start">PNG, JPG, Webp or SVG (MAX. 2000x200px).</p>
+                </form>
+                <script>
+                    function previewImage(event) {
+                        var img = event.target.files[0];
+                        var reader = new FileReader();
+                        reader.onload = function(e) {
+                            document.querySelector('#image-container img').setAttribute('src', e.target.result);
+                        }
+                        reader.readAsDataURL(img);
+                    }
+                </script>
                 <form action="{{ route('admin.update', $user->username) }}" method="POST" class="py-4 px-4 bg-slate-600 rounded-lg text-gray-100 md:px-6">
                     @method('PATCH')
                     @csrf

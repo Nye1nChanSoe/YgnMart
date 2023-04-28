@@ -53,7 +53,14 @@
                                 <input type="checkbox" class="w-3.5 h-3.5" checked>
                             </div> --}}
                             <div class="w-20 self-start rounded-full sm:self-center sm:mr-8 sm:w-32">
-                                <a href="/products/{{$cart->product->slug}}"><img src="{{$cart->product->image ? asset($cart->product->image) : asset('images/no-image.png')}}" alt=""></a>
+                                <a href="/products/{{$cart->product->slug}}" class="flex items-center justify-center w-20 h-20 sm:w-32 sm:h-32">
+                                    @if ($cart->product->image)
+                                    <img src="{{ asset('storage/images/'.$cart->product->image) }}" alt="" class="w-full h-full object-contain shrink-0">
+                                    @else
+                                    {{-- <img src="https://placehold.co/240/png" alt="" class="w-full h-full object-cover"> --}}
+                                    <img src="{{ asset('images/no-image.png') }}" alt="" class="w-full h-full shrink-0 object-contain">
+                                    @endif
+                                </a>
                             </div>
                             <div class="w-full mr-4 sm:self-start">
                                 <h4 class="text-sm sm:text-base"><a href="/products/{{$cart->product->slug}}" class="hover:text-blue-600 dark:hover:text-blue-400">{{$cart->product->name}}</a></h4>

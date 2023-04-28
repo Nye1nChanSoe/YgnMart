@@ -49,8 +49,12 @@
                             </td>
                             <td class="px-6 py-2 font-medium text-white whitespace-nowrap dark:text-white">
                                 <div class="flex items-center gap-x-2.5">
-                                    <div class="flex flex-shrink-0 items-center w-10 h-10 rounded-full overflow-hidden">
-                                        <img src="{{ asset('images/no-image.png') }}" alt="" class="w-full h-full object-contain">
+                                    <div class="flex items-center justify-center w-10 h-10 overflow-hidden rounded-full bg-white">
+                                        @if ($customer->image)
+                                        <img src="{{ asset('storage/images/'.$customer->image) }}" alt="" class="w-full h-full object-cover shrink-0 rounded-full">
+                                        @else
+                                        <img src="https://placehold.co/40/png" alt="" class="w-full h-full object-cover rounded-full">
+                                        @endif
                                     </div>
                                     @if ($customer->user_status == 'active')
                                     <div class="bg-green-400 rounded-full px-1 py-1 w-fit "></div>

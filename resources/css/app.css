@@ -95,33 +95,10 @@ input:-webkit-autofill:active {
 }
 
 /* Dark Mode */
-@media (prefers-color-scheme: dark) {
-    input:-webkit-autofill,
-    input:-webkit-autofill:hover,
-    input:-webkit-autofill:focus,
-    input:-webkit-autofill:active {
-        -webkit-box-shadow: 0 0 0 30px #1f1f1f inset !important;
-    }
-
-    .scrollbar::-webkit-scrollbar-track {
-        background: #2d2d2d;
-    }
-
-    .scrollbar::-webkit-scrollbar-thumb {
-        background: #4f4f4f;
-        border: 3px solid #252525;
-    }
-
-    .scrollbar::-webkit-scrollbar-thumb:hover {
-        background: #727272;
-    }
-}
-
-.dark
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
+.dark input:-webkit-autofill,
+.dark input:-webkit-autofill:hover,
+.dark input:-webkit-autofill:focus,
+.dark input:-webkit-autofill:active {
     -webkit-box-shadow: 0 0 0 30px rgb(11, 18, 33) inset !important;
     -webkit-text-fill-color: #dedede;
 }

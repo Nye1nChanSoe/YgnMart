@@ -3,9 +3,13 @@
 @endphp
 
 <div x-data="{ open: false }" class="relative">
-    <button @@click="open = !open" class="flex items-center justify-center w-11 px-1 py-2 rounded-full overflow-hidden object-contain hover:text-blue-600 dark:hover:text-white">
-        <img src="/images/no-image.png" alt="" width="34">
-        <x-icon name="chevron-right" class="absolute -right-3.5 w-3.5 h-3.5" x-bind:class="{ 'rotate-90 transition-all duration-400':open }"/>
+    <button @@click="open = !open" class="flex items-center justify-center border rounded-full w-8 h-8 overflow-hidden object-contain hover:text-blue-600 dark:hover:text-white dark:border-gray-700">
+        @if ($user->image)
+        <img src="{{ asset('storage/images/'.$user->image) }}" alt="" class="w-full h-full object-cover rounded-full">
+        @else
+        <img src="https://placehold.co/32/png" alt="" class="w-full h-full object-cover rounded-full">
+        @endif
+        <x-icon name="chevron-right" class="absolute -right-5 w-3.5 h-3.5" x-bind:class="{ 'rotate-90 transition-all duration-400':open }"/>
     </button>
 
     <div x-show="open" @@click.outside="open = false" class="absolute -left-20 py-2 mt-2 bg-white shadow-lg w-32 max-h-56 rounded-xl border border-slate-200 z-10 md:w-36 dark:bg-gray-700 dark:text-gray-200 dark:border-slate-600" x-cloak x-transition>
