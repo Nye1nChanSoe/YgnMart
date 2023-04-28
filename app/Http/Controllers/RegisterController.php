@@ -76,7 +76,6 @@ class RegisterController extends Controller
     public function vstore(Request $request)
     {
         $vendorCredentials = $request->validate([
-            'name' => ['required', 'max:32'],
             'brand' => ['max:32'],
             'email' => ['required', 'email', Rule::unique('vendors', 'email')],
             'phone_number' => ['required', Rule::unique('vendors', 'phone_number'), 'regex:/^0\d{8,12}$/'],   // validate phone numbers that can contain leading 0, followed by 8 or 12 digits
@@ -90,7 +89,7 @@ class RegisterController extends Controller
 
         /** verified in admin panel */
         $vendorCredentials['is_verified'] = false;
-        $vendorCredentials['username'] = 'v_' . strtolower(str_replace([' ', '-'], '_', $vendorCredentials['name']) . '_' . Str::random(3));
+        $vendorCredentials['username'] = 'v_' . strtolower(str_replace([' ', '-'], '_', $request->name) . '_' . Str::random(3));
 
         $vendor = Vendor::create($vendorCredentials);
         auth()->guard('vendor')->login($vendor);
